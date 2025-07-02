@@ -1,0 +1,3009 @@
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 1
+
+
+   1              		.file	"main.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p0_m2p0_a2p0_c2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.section	.text.rtcInit,"ax",@progbits
+  10              		.align	1
+  11              		.globl	rtcInit
+  13              	rtcInit:
+  14              	.LFB3:
+  15              		.file 1 "main.c"
+   1:main.c        **** #include "gd32vf103.h"
+   2:main.c        **** #include "drivers.h"
+   3:main.c        **** #include "adc.h"
+   4:main.c        **** #include "lcd.h"
+   5:main.c        **** #include "usart.h"
+   6:main.c        **** #include <string.h>
+   7:main.c        **** #define EI 1
+   8:main.c        **** #define DI 0
+   9:main.c        **** 
+  10:main.c        **** void rtcInit(void){
+  16              		.loc 1 10 19
+  17              		.cfi_startproc
+  11:main.c        ****    // enable power managemenet unit - perhaps enabled by default
+  12:main.c        ****    rcu_periph_clock_enable(RCU_PMU);
+  18              		.loc 1 12 4
+  10:main.c        ****    // enable power managemenet unit - perhaps enabled by default
+  19              		.loc 1 10 19 is_stmt 0
+  20 0000 4111     		addi	sp,sp,-16
+  21              	.LCFI0:
+  22              		.cfi_def_cfa_offset 16
+  23              		.loc 1 12 4
+  24 0002 1305C071 		li	a0,1820
+  10:main.c        ****    // enable power managemenet unit - perhaps enabled by default
+  25              		.loc 1 10 19
+  26 0006 06C6     		sw	ra,12(sp)
+  27              		.cfi_offset 1, -4
+  28              		.loc 1 12 4
+  29 0008 97000000 		call	rcu_periph_clock_enable
+  29      E7800000 
+  30              	.LVL0:
+  13:main.c        ****    // enable write access to the registers in the backup domain
+  14:main.c        ****    pmu_backup_write_enable();
+  31              		.loc 1 14 4 is_stmt 1
+  32 0010 97000000 		call	pmu_backup_write_enable
+  32      E7800000 
+  33              	.LVL1:
+  15:main.c        ****    // enable backup domain
+  16:main.c        ****    rcu_periph_clock_enable(RCU_BKPI);
+  34              		.loc 1 16 4
+  35 0018 1305B071 		li	a0,1819
+  36 001c 97000000 		call	rcu_periph_clock_enable
+  36      E7800000 
+  37              	.LVL2:
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 2
+
+
+  17:main.c        ****    // reset backup domain registers
+  18:main.c        ****    bkp_deinit();
+  38              		.loc 1 18 4
+  39 0024 97000000 		call	bkp_deinit
+  39      E7800000 
+  40              	.LVL3:
+  19:main.c        ****    // set the results of a previous calibration procedure
+  20:main.c        ****    // bkp_rtc_calibration_value_set(x);
+  21:main.c        **** 
+  22:main.c        ****    // setup RTC
+  23:main.c        ****    // enable external low speed XO
+  24:main.c        ****    //rcu_osci_on(RCU_LXTAL);
+  25:main.c        ****    if (rcu_osci_stab_wait(RCU_HXTAL)) {
+  41              		.loc 1 25 4
+  42              		.loc 1 25 8 is_stmt 0
+  43 002c 4145     		li	a0,16
+  44 002e 97000000 		call	rcu_osci_stab_wait
+  44      E7800000 
+  45              	.LVL4:
+  46              		.loc 1 25 7
+  47 0036 21CD     		beq	a0,zero,.L1
+  48              	.LBB4:
+  49              	.LBB5:
+  26:main.c        **** 	 // use external low speed oscillaotr, i.e. 32.768 kHz
+  27:main.c        **** 	 rcu_rtc_clock_config(RCU_RTCSRC_HXTAL_DIV_128);
+  50              		.loc 1 27 3 is_stmt 1
+  51 0038 13050030 		li	a0,768
+  52 003c 97000000 		call	rcu_rtc_clock_config
+  52      E7800000 
+  53              	.LVL5:
+  28:main.c        **** 	 rcu_periph_clock_enable(RCU_RTC);
+  54              		.loc 1 28 3
+  55 0044 0565     		li	a0,4096
+  56 0046 1305F580 		addi	a0,a0,-2033
+  57 004a 97000000 		call	rcu_periph_clock_enable
+  57      E7800000 
+  58              	.LVL6:
+  29:main.c        **** 	 // wait until shadow registers are synced from the backup domain
+  30:main.c        **** 	 // over the APB bus
+  31:main.c        **** 	 rtc_register_sync_wait();
+  59              		.loc 1 31 3
+  60 0052 97000000 		call	rtc_register_sync_wait
+  60      E7800000 
+  61              	.LVL7:
+  32:main.c        **** 	 // wait until shadow register changes are synced over APB
+  33:main.c        **** 	 // to the backup doamin
+  34:main.c        **** 	 rtc_lwoff_wait();
+  62              		.loc 1 34 3
+  63 005a 97000000 		call	rtc_lwoff_wait
+  63      E7800000 
+  64              	.LVL8:
+  35:main.c        **** 	 // prescale to 1 second
+  36:main.c        **** 	 rtc_prescaler_set(62500 - 1);
+  65              		.loc 1 36 3
+  66 0062 3D65     		li	a0,61440
+  67 0064 13053542 		addi	a0,a0,1059
+  68 0068 97000000 		call	rtc_prescaler_set
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 3
+
+
+  68      E7800000 
+  69              	.LVL9:
+  37:main.c        **** 	 rtc_lwoff_wait();
+  70              		.loc 1 37 3
+  71 0070 97000000 		call	rtc_lwoff_wait
+  71      E7800000 
+  72              	.LVL10:
+  38:main.c        **** 	 rtc_flag_clear(RTC_INT_FLAG_SECOND);
+  73              		.loc 1 38 3
+  74 0078 0545     		li	a0,1
+  75 007a 97000000 		call	rtc_flag_clear
+  75      E7800000 
+  76              	.LVL11:
+  39:main.c        **** 	 //rtc_interrupt_enable(RTC_INT_SECOND);
+  40:main.c        **** 	 rtc_lwoff_wait();
+  77              		.loc 1 40 3
+  78              	.LBE5:
+  79              	.LBE4:
+  41:main.c        ****    }
+  42:main.c        **** }
+  80              		.loc 1 42 1 is_stmt 0
+  81 0082 B240     		lw	ra,12(sp)
+  82              		.cfi_remember_state
+  83              		.cfi_restore 1
+  84 0084 4101     		addi	sp,sp,16
+  85              	.LCFI1:
+  86              		.cfi_def_cfa_offset 0
+  87              	.LBB7:
+  88              	.LBB6:
+  40:main.c        ****    }
+  89              		.loc 1 40 3
+  90 0086 17030000 		tail	rtc_lwoff_wait
+  90      67000300 
+  91              	.LVL12:
+  92              	.L1:
+  93              	.LCFI2:
+  94              		.cfi_restore_state
+  95              	.LBE6:
+  96              	.LBE7:
+  97              		.loc 1 42 1
+  98 008e B240     		lw	ra,12(sp)
+  99              		.cfi_restore 1
+ 100 0090 4101     		addi	sp,sp,16
+ 101              	.LCFI3:
+ 102              		.cfi_def_cfa_offset 0
+ 103 0092 8280     		jr	ra
+ 104              		.cfi_endproc
+ 105              	.LFE3:
+ 107              		.section	.text.startup.main,"ax",@progbits
+ 108              		.align	1
+ 109              		.globl	main
+ 111              	main:
+ 112              	.LFB4:
+  43:main.c        **** 
+  44:main.c        **** int main(void){
+ 113              		.loc 1 44 15 is_stmt 1
+ 114              		.cfi_startproc
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 4
+
+
+  45:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 115              		.loc 1 45 2
+  44:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 116              		.loc 1 44 15 is_stmt 0
+ 117 0000 2D71     		addi	sp,sp,-288
+ 118              	.LCFI4:
+ 119              		.cfi_def_cfa_offset 288
+ 120              		.loc 1 45 15
+ 121 0002 02C2     		sw	zero,4(sp)
+ 122              		.loc 1 45 21
+ 123 0004 02C4     		sw	zero,8(sp)
+ 124              		.loc 1 45 31
+ 125 0006 FD57     		li	a5,-1
+ 126 0008 3EC8     		sw	a5,16(sp)
+ 127              		.loc 1 45 40
+ 128 000a 02CA     		sw	zero,20(sp)
+ 129              		.loc 1 45 45
+ 130 000c 02CC     		sw	zero,24(sp)
+ 131              		.loc 1 45 68
+ 132 000e 8547     		li	a5,1
+ 133              		.loc 1 45 53
+ 134 0010 02CE     		sw	zero,28(sp)
+ 135              		.loc 1 45 68
+ 136 0012 3ED0     		sw	a5,32(sp)
+ 137              		.loc 1 45 81
+ 138 0014 02D2     		sw	zero,36(sp)
+ 139              		.loc 1 45 97
+ 140 0016 02D4     		sw	zero,40(sp)
+ 141              		.loc 1 45 105
+ 142 0018 02D6     		sw	zero,44(sp)
+  46:main.c        **** 	int lookUpTbl[16]={1,4,7,14,2,5,8,0,3,6,9,15,10,11,12,13};
+ 143              		.loc 1 46 6
+ 144 001a B7050000 		lui	a1,%hi(.LANCHOR0)
+  44:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 145              		.loc 1 44 15
+ 146 001e 232C8110 		sw	s0,280(sp)
+  45:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 147              		.loc 1 45 113
+ 148 0022 02D8     		sw	zero,48(sp)
+ 149              		.cfi_offset 8, -8
+ 150              		.loc 1 46 6
+ 151 0024 13840500 		addi	s0,a1,%lo(.LANCHOR0)
+ 152 0028 13060004 		li	a2,64
+ 153 002c 93850500 		addi	a1,a1,%lo(.LANCHOR0)
+ 154 0030 8818     		addi	a0,sp,112
+  44:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 155              		.loc 1 44 15
+ 156 0032 232E1110 		sw	ra,284(sp)
+ 157 0036 232A9110 		sw	s1,276(sp)
+ 158 003a 23263111 		sw	s3,268(sp)
+ 159 003e 23244111 		sw	s4,264(sp)
+ 160 0042 23225111 		sw	s5,260(sp)
+ 161 0046 23206111 		sw	s6,256(sp)
+ 162 004a DEDF     		sw	s7,252(sp)
+ 163 004c E2DD     		sw	s8,248(sp)
+ 164 004e 23282111 		sw	s2,272(sp)
+ 165 0052 E6DB     		sw	s9,244(sp)
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 5
+
+
+ 166 0054 EAD9     		sw	s10,240(sp)
+ 167              		.cfi_offset 1, -4
+ 168              		.cfi_offset 9, -12
+ 169              		.cfi_offset 19, -20
+ 170              		.cfi_offset 20, -24
+ 171              		.cfi_offset 21, -28
+ 172              		.cfi_offset 22, -32
+ 173              		.cfi_offset 23, -36
+ 174              		.cfi_offset 24, -40
+ 175              		.cfi_offset 18, -16
+ 176              		.cfi_offset 25, -44
+ 177              		.cfi_offset 26, -48
+  45:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 178              		.loc 1 45 121
+ 179 0056 02DA     		sw	zero,52(sp)
+ 180              		.loc 1 46 2 is_stmt 1
+ 181              		.loc 1 46 6 is_stmt 0
+ 182 0058 97000000 		call	memcpy
+ 182      E7800000 
+ 183              	.LVL13:
+  47:main.c        **** 	int lookUpTblK[16]={13, 15, 0, 14, 12, 9, 8, 7, 11, 6, 5, 4, 10, 3, 2, 1};
+ 184              		.loc 1 47 2 is_stmt 1
+ 185              		.loc 1 47 6 is_stmt 0
+ 186 0060 13060004 		li	a2,64
+ 187 0064 93050404 		addi	a1,s0,64
+ 188 0068 0819     		addi	a0,sp,176
+ 189 006a 97000000 		call	memcpy
+ 189      E7800000 
+ 190              	.LVL14:
+  48:main.c        **** 	int dac=0, speed=-100;
+ 191              		.loc 1 48 2 is_stmt 1
+  49:main.c        **** 	int adcr, tmpr;
+ 192              		.loc 1 49 2
+  50:main.c        **** 	volatile char recieved, recievedFull[10] = {0}, tmprSend[7] = {0}, recievedTime[6] = {0}, message1
+ 193              		.loc 1 50 2
+ 194              		.loc 1 50 26 is_stmt 0
+ 195 0072 82C8     		sw	zero,80(sp)
+ 196 0074 82CA     		sw	zero,84(sp)
+ 197 0076 231C0104 		sh	zero,88(sp)
+ 198              		.loc 1 50 50
+ 199 007a 82C0     		sw	zero,64(sp)
+ 200 007c 23120104 		sh	zero,68(sp)
+ 201 0080 23030104 		sb	zero,70(sp)
+ 202              		.loc 1 50 69
+ 203 0084 02DC     		sw	zero,56(sp)
+ 204 0086 231E0102 		sh	zero,60(sp)
+ 205              		.loc 1 50 92
+ 206 008a 82CE     		sw	zero,92(sp)
+ 207 008c 82D0     		sw	zero,96(sp)
+ 208 008e 82D2     		sw	zero,100(sp)
+  51:main.c        **** 	char digits[10][10]={"Zero ","One  ","Two  ","Three","Four ","Five ","Six  ","Seven","Eight","Nine
+  52:main.c        **** 	char time[7]={0};
+  53:main.c        **** 	int timeReceived = 0;
+  54:main.c        **** 	volatile int res;
+  55:main.c        **** 
+  56:main.c        **** 	memset(message1, 32, 17);
+ 209              		.loc 1 56 2
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 6
+
+
+ 210 0090 4546     		li	a2,17
+ 211 0092 93050002 		li	a1,32
+  50:main.c        **** 	volatile char recieved, recievedFull[10] = {0}, tmprSend[7] = {0}, recievedTime[6] = {0}, message1
+ 212              		.loc 1 50 92
+ 213 0096 82D4     		sw	zero,104(sp)
+ 214              		.loc 1 56 2
+ 215 0098 E808     		addi	a0,sp,92
+  50:main.c        **** 	volatile char recieved, recievedFull[10] = {0}, tmprSend[7] = {0}, recievedTime[6] = {0}, message1
+ 216              		.loc 1 50 92
+ 217 009a 23060106 		sb	zero,108(sp)
+  51:main.c        **** 	char digits[10][10]={"Zero ","One  ","Two  ","Three","Four ","Five ","Six  ","Seven","Eight","Nine
+ 218              		.loc 1 51 2 is_stmt 1
+  52:main.c        **** 	int timeReceived = 0;
+ 219              		.loc 1 52 2
+  52:main.c        **** 	int timeReceived = 0;
+ 220              		.loc 1 52 7 is_stmt 0
+ 221 009e 82C4     		sw	zero,72(sp)
+ 222 00a0 23160104 		sh	zero,76(sp)
+ 223 00a4 23070104 		sb	zero,78(sp)
+  53:main.c        **** 	volatile int res;
+ 224              		.loc 1 53 2 is_stmt 1
+ 225              	.LVL15:
+  54:main.c        **** 
+ 226              		.loc 1 54 2
+ 227              		.loc 1 56 2
+ 228 00a8 97000000 		call	memset
+ 228      E7800000 
+ 229              	.LVL16:
+  57:main.c        **** 
+  58:main.c        **** 	t5omsi();                               // Initialize timer5 1kHz
+ 230              		.loc 1 58 2
+ 231 00b0 97000000 		call	t5omsi
+ 231      E7800000 
+ 232              	.LVL17:
+  59:main.c        **** 	colinit();                              // Initialize column toolbox
+ 233              		.loc 1 59 2
+ 234 00b8 97000000 		call	colinit
+ 234      E7800000 
+ 235              	.LVL18:
+  60:main.c        **** 	l88init();                              // Initialize 8*8 led toolbox
+ 236              		.loc 1 60 2
+ 237 00c0 97000000 		call	l88init
+ 237      E7800000 
+ 238              	.LVL19:
+  61:main.c        **** 	keyinit();                              // Initialize keyboard toolbox
+ 239              		.loc 1 61 2
+ 240 00c8 97000000 		call	keyinit
+ 240      E7800000 
+ 241              	.LVL20:
+  62:main.c        **** 	ADC3powerUpInit(1);                     // Initialize ADC0, Ch3
+ 242              		.loc 1 62 2
+ 243 00d0 0545     		li	a0,1
+ 244 00d2 97000000 		call	ADC3powerUpInit
+ 244      E7800000 
+ 245              	.LVL21:
+  63:main.c        **** 	Lcd_SetType(LCD_INVERTED);//NORMAL);                // or use LCD_INVERTED!
+ 246              		.loc 1 63 2
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 7
+
+
+ 247 00da 0545     		li	a0,1
+ 248 00dc 97000000 		call	Lcd_SetType
+ 248      E7800000 
+ 249              	.LVL22:
+  64:main.c        **** 	Lcd_Init();
+ 250              		.loc 1 64 2
+ 251 00e4 97000000 		call	Lcd_Init
+ 251      E7800000 
+ 252              	.LVL23:
+  65:main.c        **** 	LCD_Clear(RED);
+ 253              		.loc 1 65 2
+ 254 00ec 4165     		li	a0,65536
+ 255 00ee 13050580 		addi	a0,a0,-2048
+ 256 00f2 97000000 		call	LCD_Clear
+ 256      E7800000 
+ 257              	.LVL24:
+  66:main.c        **** 	//LCD_ShowStr(10, 10, "Lab #5", WHITE, TRANSPARENT);
+  67:main.c        **** 	rtcInit();                              // Initialize RTC
+ 258              		.loc 1 67 2
+ 259 00fa 97000000 		call	rtcInit
+ 259      E7800000 
+ 260              	.LVL25:
+  68:main.c        **** 	//rtc_counter_set(3600+60+1);
+  69:main.c        **** 	u0init(EI);                             // Initialize USART0 toolbox
+ 261              		.loc 1 69 2
+ 262 0102 0545     		li	a0,1
+  70:main.c        **** 
+  71:main.c        **** 	eclic_global_interrupt_enable();        // !!! INTERRUPT ENABLED !!!
+  72:main.c        **** 
+  73:main.c        **** 	while (1) {
+  74:main.c        **** 		idle++;                             // Manage Async events
+  75:main.c        **** 		LCD_WR_Queue();                     // Manage LCD com queue!
+  76:main.c        **** 		//u0_TX_Queue();                      // Manage U(S)ART TX Queue!
+  77:main.c        **** 		if (adc_flag_get(ADC0,ADC_FLAG_EOC)==SET) // ...ADC done?
+  78:main.c        **** 		{
+  79:main.c        **** 			if (adc_flag_get(ADC0,ADC_FLAG_EOIC)==SET)
+  80:main.c        **** 			{ //...ch3 or ch16?
+  81:main.c        **** 				tmpr = adc_inserted_data_read(ADC0, ADC_INSERTED_CHANNEL_0);
+  82:main.c        **** 				hh = rtc_counter_get() / 3600;
+ 263              		.loc 1 82 28 is_stmt 0
+ 264 0104 8564     		li	s1,4096
+  69:main.c        **** 
+ 265              		.loc 1 69 2
+ 266 0106 97000000 		call	u0init
+ 266      E7800000 
+ 267              	.LVL26:
+  71:main.c        **** 
+ 268              		.loc 1 71 2 is_stmt 1
+  53:main.c        **** 	volatile int res;
+ 269              		.loc 1 53 6 is_stmt 0
+ 270 010e 8149     		li	s3,0
+  71:main.c        **** 
+ 271              		.loc 1 71 2
+ 272 0110 97000000 		call	eclic_global_interrupt_enable
+ 272      E7800000 
+ 273              	.LVL27:
+ 274              		.loc 1 82 28
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 8
+
+
+ 275 0118 938404E1 		addi	s1,s1,-496
+  83:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+  84:main.c        **** 				ss = rtc_counter_get() % 60;
+  85:main.c        **** 				putch(hh);
+  86:main.c        **** 				putch(mm);
+  87:main.c        **** 				putch(ss);
+  88:main.c        **** 				putch('I');
+  89:main.c        **** 				putch('D');
+  90:main.c        **** 				putch('+');
+  91:main.c        **** 				putch(((((0x680-tmpr)/5)+25) / 100) + 48);
+  92:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+  93:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+  94:main.c        **** 				putch(10);
+  95:main.c        **** 				for (int i = 0; i < 7; i++)
+  96:main.c        **** 					tmprSend[i] = 0;
+  97:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+  98:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOIC);
+  99:main.c        **** 			}
+ 100:main.c        **** 			else
+ 101:main.c        **** 			{
+ 102:main.c        **** 				adcr = adc_regular_data_read(ADC0); // ......get data
+ 103:main.c        **** 				l88mem(4,adcr>>8);                  // ......move data
+ 104:main.c        **** 				l88mem(5,adcr);                     // ......(view each ms)
+ 105:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC); // ......clear IF
+ 106:main.c        **** 			}
+ 107:main.c        **** 		}
+ 108:main.c        **** 		if (usart_flag_get(USART0, USART_FLAG_RBNE)) // USART0 RX?
+ 109:main.c        **** 		{
+ 110:main.c        **** 			recieved = usart_data_receive(USART0);
+ 111:main.c        **** 
+ 112:main.c        **** 			message1[timeReceived + recvCount] = recieved;
+ 113:main.c        **** 
+ 114:main.c        **** 			if (timeReceived < 6)
+ 115:main.c        **** 			{
+ 116:main.c        **** 				recievedTime[timeReceived] = recieved;
+ 117:main.c        **** 				timeReceived++;
+ 118:main.c        **** 				continue;
+ 119:main.c        **** 			}
+ 120:main.c        **** 			switch (state)
+ 121:main.c        **** 			{
+ 122:main.c        **** 			case 0:
+ 123:main.c        **** 				if (recieved != 73) {
+ 124:main.c        **** 					correct = 0;
+ 125:main.c        **** 				}
+ 126:main.c        **** 				state++;
+ 127:main.c        **** 				break;
+ 128:main.c        **** 			case 1:
+ 129:main.c        **** 				if (recieved != 68) {
+ 130:main.c        **** 					correct = 0;
+ 131:main.c        **** 				}
+ 132:main.c        **** 				state++;
+ 133:main.c        **** 				break;
+ 134:main.c        **** 			case 2:
+ 135:main.c        **** 				if (recieved != 43 && recieved != 45) {
+ 136:main.c        **** 					correct = 0;
+ 137:main.c        **** 				}
+ 138:main.c        **** 				state++;
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 9
+
+
+ 139:main.c        **** 				break;
+ 140:main.c        **** 			default:
+ 141:main.c        **** 				if (recieved == 10) {
+ 142:main.c        **** 					LCD_Clear(RED);
+ 143:main.c        **** 					if (correct) {
+ 144:main.c        **** 						LCD_ShowStr(70, 10, recievedFull, WHITE, TRANSPARENT);
+ 145:main.c        **** 						LCD_ShowStr(recvCount * 10 + 70, 10, "OK!", WHITE, TRANSPARENT);
+ 146:main.c        **** 						message1[14] = 'O';
+ 147:main.c        **** 						message1[15] = 'K';
+ 148:main.c        **** 						message1[16] = '!';
+ 149:main.c        **** 						strcpy(message1[14], "OK!");
+ 150:main.c        **** 					}
+ 151:main.c        **** 					else {
+ 152:main.c        **** 						LCD_ShowStr(70, 10, recievedFull, WHITE, TRANSPARENT);
+ 153:main.c        **** 						LCD_ShowStr(recvCount * 10 + 70, 10, "ERR", WHITE, TRANSPARENT);
+ 154:main.c        **** 					}
+ 155:main.c        **** 					for (int i = 0; i < recvCount; i++)
+ 156:main.c        **** 						recievedFull[i] = 0;
+ 157:main.c        **** 					correct = 1;
+ 158:main.c        **** 					state = 0;
+ 159:main.c        **** 					recvCount = 0;
+ 160:main.c        **** 					timeReceived = 0;
+ 161:main.c        **** 					for (int x = 0; x < 6; x++)
+ 162:main.c        **** 						LCD_ShowChar(x*8 + 10, 10, recievedTime[x] + 48, TRANSPARENT, WHITE);
+ 163:main.c        **** 					for (int x = 0; x < 17; x++)
+ 164:main.c        **** 					{
+ 165:main.c        **** 						if (x < 6)
+ 166:main.c        **** 							LCD_ShowChar(x*8 + 10, 40, message1[x] + 48, TRANSPARENT, WHITE);
+ 167:main.c        **** 						else
+ 168:main.c        **** 							LCD_ShowChar(x*8 + 10, 40, message1[x], TRANSPARENT, WHITE);
+ 169:main.c        **** 					}
+ 170:main.c        **** 
+ 171:main.c        **** 					continue;
+ 172:main.c        **** 				}
+ 173:main.c        **** 				break;
+ 174:main.c        **** 			}
+ 175:main.c        **** 			recievedFull[recvCount] = recieved;
+ 176:main.c        **** 			recvCount++;
+ 177:main.c        **** 		}
+ 178:main.c        **** 		if (t5expq()) {                     // Manage periodic tasks
+ 179:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+ 180:main.c        **** 			ms++;                           // ...One second heart beat
+ 181:main.c        **** 			if (ms==1000)
+ 182:main.c        **** 			{
+ 183:main.c        **** 				ms=0;
+ 184:main.c        **** 				l88mem(0,s++);
+ 185:main.c        **** 				//LCD_ShowStr(10, 30, digits[s%10], WHITE, OPAQUE);
+ 186:main.c        **** 				//LCD_ShowChar(10, 50, 0x7E, OPAQUE, WHITE);
+ 187:main.c        **** 			}
+ 188:main.c        **** 			if ((key = keyscan()) >= 0)       // ...Any key pressed?
+ 189:main.c        **** 			{
+ 190:main.c        **** 				switch (lookUpTblK[key])
+ 191:main.c        **** 				{
+ 192:main.c        **** 				case 10:
+ 193:main.c        **** 					adc_software_trigger_enable(ADC0, //Trigger another ADC conversion!
+ 194:main.c        **** 													ADC_REGULAR_CHANNEL);
+ 195:main.c        **** 					break;
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 10
+
+
+ 196:main.c        **** 				case 11:
+ 197:main.c        **** 					hh = rtc_counter_get() / 3600;
+ 198:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 199:main.c        **** 					ss = rtc_counter_get() % 60;
+ 200:main.c        **** 					putch(hh / 10);
+ 201:main.c        **** 					putch(hh % 10);
+ 202:main.c        **** 					putch(mm / 10);
+ 203:main.c        **** 					putch(mm % 10);
+ 204:main.c        **** 					putch(ss / 10);
+ 205:main.c        **** 					putch(ss % 10);
+ 206:main.c        **** 					putstr("ID-000\n");
+ 276              		.loc 1 206 6
+ 277 011c B70A0000 		lui	s5,%hi(.LC5)
+ 207:main.c        **** 					break;
+ 208:main.c        **** 				case 12:
+ 209:main.c        **** 					hh = rtc_counter_get() / 3600;
+ 210:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 211:main.c        **** 					ss = rtc_counter_get() % 60;
+ 212:main.c        **** 					putch(hh);
+ 213:main.c        **** 					putch(mm);
+ 214:main.c        **** 					putch(ss);
+ 215:main.c        **** 					putstr("ID*000\n");
+ 278              		.loc 1 215 6
+ 279 0120 370B0000 		lui	s6,%hi(.LC6)
+ 216:main.c        **** 					break;
+ 217:main.c        **** 				case 13:
+ 218:main.c        **** 					LCD_Clear(RED);
+ 219:main.c        **** 					hh = (time[0] - 48) * 10 + (time[1] - 48);
+ 220:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 221:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 222:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 223:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 224:main.c        **** 					LCD_ShowStr(10*timeSend + 10, 10, "SET", WHITE, TRANSPARENT);
+ 280              		.loc 1 224 6
+ 281 0124 B70B0000 		lui	s7,%hi(.LC7)
+ 153:main.c        **** 					}
+ 282              		.loc 1 153 7
+ 283 0128 370C0000 		lui	s8,%hi(.LC4)
+ 145:main.c        **** 						message1[14] = 'O';
+ 284              		.loc 1 145 7
+ 285 012c 370A0000 		lui	s4,%hi(.LC3)
+ 286              	.LVL28:
+ 287              	.L5:
+  73:main.c        **** 		idle++;                             // Manage Async events
+ 288              		.loc 1 73 2 is_stmt 1
+  74:main.c        **** 		LCD_WR_Queue();                     // Manage LCD com queue!
+ 289              		.loc 1 74 3
+  74:main.c        **** 		LCD_WR_Queue();                     // Manage LCD com queue!
+ 290              		.loc 1 74 7 is_stmt 0
+ 291 0130 E247     		lw	a5,24(sp)
+  77:main.c        **** 		{
+ 292              		.loc 1 77 7
+ 293 0132 37290140 		li	s2,1073815552
+  74:main.c        **** 		LCD_WR_Queue();                     // Manage LCD com queue!
+ 294              		.loc 1 74 7
+ 295 0136 8507     		addi	a5,a5,1
+ 296 0138 3ECC     		sw	a5,24(sp)
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 11
+
+
+  75:main.c        **** 		//u0_TX_Queue();                      // Manage U(S)ART TX Queue!
+ 297              		.loc 1 75 3 is_stmt 1
+ 298 013a 97000000 		call	LCD_WR_Queue
+ 298      E7800000 
+ 299              	.LVL29:
+  77:main.c        **** 		{
+ 300              		.loc 1 77 3
+  77:main.c        **** 		{
+ 301              		.loc 1 77 7 is_stmt 0
+ 302 0142 8945     		li	a1,2
+ 303 0144 13050940 		addi	a0,s2,1024
+ 304 0148 97000000 		call	adc_flag_get
+ 304      E7800000 
+ 305              	.LVL30:
+  77:main.c        **** 		{
+ 306              		.loc 1 77 6
+ 307 0150 8547     		li	a5,1
+  77:main.c        **** 		{
+ 308              		.loc 1 77 7
+ 309 0152 2A84     		mv	s0,a0
+  77:main.c        **** 		{
+ 310              		.loc 1 77 6
+ 311 0154 631FF512 		bne	a0,a5,.L6
+  79:main.c        **** 			{ //...ch3 or ch16?
+ 312              		.loc 1 79 4 is_stmt 1
+  79:main.c        **** 			{ //...ch3 or ch16?
+ 313              		.loc 1 79 8 is_stmt 0
+ 314 0158 9145     		li	a1,4
+ 315 015a 13050940 		addi	a0,s2,1024
+ 316 015e 97000000 		call	adc_flag_get
+ 316      E7800000 
+ 317              	.LVL31:
+  79:main.c        **** 			{ //...ch3 or ch16?
+ 318              		.loc 1 79 7
+ 319 0166 63118518 		bne	a0,s0,.L7
+  81:main.c        **** 				hh = rtc_counter_get() / 3600;
+ 320              		.loc 1 81 5 is_stmt 1
+  81:main.c        **** 				hh = rtc_counter_get() / 3600;
+ 321              		.loc 1 81 12 is_stmt 0
+ 322 016a 8145     		li	a1,0
+ 323 016c 13050940 		addi	a0,s2,1024
+ 324 0170 97000000 		call	adc_inserted_data_read
+ 324      E7800000 
+ 325              	.LVL32:
+ 326 0178 2A8D     		mv	s10,a0
+ 327              	.LVL33:
+  82:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 328              		.loc 1 82 5 is_stmt 1
+  82:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 329              		.loc 1 82 10 is_stmt 0
+ 330 017a 97000000 		call	rtc_counter_get
+ 330      E7800000 
+ 331              	.LVL34:
+  82:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 332              		.loc 1 82 28
+ 333 0182 33559502 		divu	a0,a0,s1
+  83:main.c        **** 				ss = rtc_counter_get() % 60;
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 12
+
+
+ 334              		.loc 1 83 37
+ 335 0186 930CC003 		li	s9,60
+  91:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 336              		.loc 1 91 20
+ 337 018a 13040068 		li	s0,1664
+ 338 018e 3304A441 		sub	s0,s0,s10
+  82:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 339              		.loc 1 82 8
+ 340 0192 2AD4     		sw	a0,40(sp)
+  83:main.c        **** 				ss = rtc_counter_get() % 60;
+ 341              		.loc 1 83 5 is_stmt 1
+  83:main.c        **** 				ss = rtc_counter_get() % 60;
+ 342              		.loc 1 83 11 is_stmt 0
+ 343 0194 97000000 		call	rtc_counter_get
+ 343      E7800000 
+ 344              	.LVL35:
+  83:main.c        **** 				ss = rtc_counter_get() % 60;
+ 345              		.loc 1 83 29
+ 346 019c 33759502 		remu	a0,a0,s1
+  83:main.c        **** 				ss = rtc_counter_get() % 60;
+ 347              		.loc 1 83 37
+ 348 01a0 33559503 		divu	a0,a0,s9
+  83:main.c        **** 				ss = rtc_counter_get() % 60;
+ 349              		.loc 1 83 8
+ 350 01a4 2AD6     		sw	a0,44(sp)
+  84:main.c        **** 				putch(hh);
+ 351              		.loc 1 84 5 is_stmt 1
+  84:main.c        **** 				putch(hh);
+ 352              		.loc 1 84 10 is_stmt 0
+ 353 01a6 97000000 		call	rtc_counter_get
+ 353      E7800000 
+ 354              	.LVL36:
+  84:main.c        **** 				putch(hh);
+ 355              		.loc 1 84 28
+ 356 01ae 33759503 		remu	a0,a0,s9
+  92:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 357              		.loc 1 92 34
+ 358 01b2 A94C     		li	s9,10
+  84:main.c        **** 				putch(hh);
+ 359              		.loc 1 84 8
+ 360 01b4 2AD8     		sw	a0,48(sp)
+  85:main.c        **** 				putch(mm);
+ 361              		.loc 1 85 5 is_stmt 1
+ 362 01b6 2255     		lw	a0,40(sp)
+ 363 01b8 1375F50F 		andi	a0,a0,0xff
+ 364 01bc 97000000 		call	putch
+ 364      E7800000 
+ 365              	.LVL37:
+  86:main.c        **** 				putch(ss);
+ 366              		.loc 1 86 5
+ 367 01c4 3255     		lw	a0,44(sp)
+ 368 01c6 1375F50F 		andi	a0,a0,0xff
+ 369 01ca 97000000 		call	putch
+ 369      E7800000 
+ 370              	.LVL38:
+  87:main.c        **** 				putch('I');
+ 371              		.loc 1 87 5
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 13
+
+
+ 372 01d2 4255     		lw	a0,48(sp)
+ 373 01d4 1375F50F 		andi	a0,a0,0xff
+ 374 01d8 97000000 		call	putch
+ 374      E7800000 
+ 375              	.LVL39:
+  88:main.c        **** 				putch('D');
+ 376              		.loc 1 88 5
+ 377 01e0 13059004 		li	a0,73
+ 378 01e4 97000000 		call	putch
+ 378      E7800000 
+ 379              	.LVL40:
+  89:main.c        **** 				putch('+');
+ 380              		.loc 1 89 5
+ 381 01ec 13054004 		li	a0,68
+ 382 01f0 97000000 		call	putch
+ 382      E7800000 
+ 383              	.LVL41:
+  90:main.c        **** 				putch(((((0x680-tmpr)/5)+25) / 100) + 48);
+ 384              		.loc 1 90 5
+ 385 01f8 1305B002 		li	a0,43
+ 386 01fc 97000000 		call	putch
+ 386      E7800000 
+ 387              	.LVL42:
+  91:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 388              		.loc 1 91 5
+  91:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 389              		.loc 1 91 26 is_stmt 0
+ 390 0204 1545     		li	a0,5
+ 391 0206 3344A402 		div	s0,s0,a0
+  91:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 392              		.loc 1 91 34
+ 393 020a 13054006 		li	a0,100
+  91:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 394              		.loc 1 91 29
+ 395 020e 6504     		addi	s0,s0,25
+  91:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 396              		.loc 1 91 34
+ 397 0210 3345A402 		div	a0,s0,a0
+  91:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 398              		.loc 1 91 5
+ 399 0214 13050503 		addi	a0,a0,48
+ 400 0218 1375F50F 		andi	a0,a0,0xff
+ 401 021c 97000000 		call	putch
+ 401      E7800000 
+ 402              	.LVL43:
+  92:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 403              		.loc 1 92 5 is_stmt 1
+  92:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 404              		.loc 1 92 34 is_stmt 0
+ 405 0224 33459403 		div	a0,s0,s9
+  92:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 406              		.loc 1 92 39
+ 407 0228 33659503 		rem	a0,a0,s9
+  92:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 408              		.loc 1 92 5
+ 409 022c 13050503 		addi	a0,a0,48
+ 410 0230 1375F50F 		andi	a0,a0,0xff
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 14
+
+
+ 411 0234 97000000 		call	putch
+ 411      E7800000 
+ 412              	.LVL44:
+  93:main.c        **** 				putch(10);
+ 413              		.loc 1 93 5 is_stmt 1
+  93:main.c        **** 				putch(10);
+ 414              		.loc 1 93 34 is_stmt 0
+ 415 023c 33659403 		rem	a0,s0,s9
+  93:main.c        **** 				putch(10);
+ 416              		.loc 1 93 5
+ 417 0240 13050503 		addi	a0,a0,48
+ 418 0244 1375F50F 		andi	a0,a0,0xff
+ 419 0248 97000000 		call	putch
+ 419      E7800000 
+ 420              	.LVL45:
+  94:main.c        **** 				for (int i = 0; i < 7; i++)
+ 421              		.loc 1 94 5 is_stmt 1
+ 422 0250 2945     		li	a0,10
+ 423 0252 97000000 		call	putch
+ 423      E7800000 
+ 424              	.LVL46:
+  95:main.c        **** 					tmprSend[i] = 0;
+ 425              		.loc 1 95 5
+ 426              	.LBB8:
+  95:main.c        **** 					tmprSend[i] = 0;
+ 427              		.loc 1 95 10
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 428              		.loc 1 96 6
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 429              		.loc 1 96 18 is_stmt 0
+ 430 025a 23000104 		sb	zero,64(sp)
+ 431              	.LVL47:
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 432              		.loc 1 96 6 is_stmt 1
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 433              		.loc 1 96 18 is_stmt 0
+ 434 025e A3000104 		sb	zero,65(sp)
+ 435              	.LVL48:
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 436              		.loc 1 96 6 is_stmt 1
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 437              		.loc 1 96 18 is_stmt 0
+ 438 0262 23010104 		sb	zero,66(sp)
+ 439              	.LVL49:
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 440              		.loc 1 96 6 is_stmt 1
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 441              		.loc 1 96 18 is_stmt 0
+ 442 0266 A3010104 		sb	zero,67(sp)
+ 443              	.LVL50:
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 444              		.loc 1 96 6 is_stmt 1
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 445              		.loc 1 96 18 is_stmt 0
+ 446 026a 23020104 		sb	zero,68(sp)
+ 447              	.LVL51:
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 15
+
+
+ 448              		.loc 1 96 6 is_stmt 1
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 449              		.loc 1 96 18 is_stmt 0
+ 450 026e A3020104 		sb	zero,69(sp)
+ 451              	.LVL52:
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 452              		.loc 1 96 6 is_stmt 1
+ 453              	.LBE8:
+  97:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOIC);
+ 454              		.loc 1 97 5 is_stmt 0
+ 455 0272 8945     		li	a1,2
+ 456 0274 13050940 		addi	a0,s2,1024
+ 457              	.LBB9:
+  96:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 458              		.loc 1 96 18
+ 459 0278 23030104 		sb	zero,70(sp)
+ 460              	.LVL53:
+ 461              	.LBE9:
+  97:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOIC);
+ 462              		.loc 1 97 5 is_stmt 1
+ 463 027c 97000000 		call	adc_flag_clear
+ 463      E7800000 
+ 464              	.LVL54:
+  98:main.c        **** 			}
+ 465              		.loc 1 98 5
+ 466 0284 9145     		li	a1,4
+ 467              	.LVL55:
+ 468              	.L44:
+ 105:main.c        **** 			}
+ 469              		.loc 1 105 5 is_stmt 0
+ 470 0286 13050940 		addi	a0,s2,1024
+ 471 028a 97000000 		call	adc_flag_clear
+ 471      E7800000 
+ 472              	.LVL56:
+ 473              	.L6:
+ 108:main.c        **** 		{
+ 474              		.loc 1 108 3 is_stmt 1
+ 108:main.c        **** 		{
+ 475              		.loc 1 108 7 is_stmt 0
+ 476 0292 37440140 		li	s0,1073823744
+ 477 0296 9545     		li	a1,5
+ 478 0298 13050480 		addi	a0,s0,-2048
+ 479 029c 97000000 		call	usart_flag_get
+ 479      E7800000 
+ 480              	.LVL57:
+ 108:main.c        **** 		{
+ 481              		.loc 1 108 6
+ 482 02a4 55C5     		beq	a0,zero,.L8
+ 110:main.c        **** 
+ 483              		.loc 1 110 4 is_stmt 1
+ 110:main.c        **** 
+ 484              		.loc 1 110 15 is_stmt 0
+ 485 02a6 13050480 		addi	a0,s0,-2048
+ 486 02aa 97000000 		call	usart_data_receive
+ 486      E7800000 
+ 487              	.LVL58:
+ 110:main.c        **** 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 16
+
+
+ 488              		.loc 1 110 13
+ 489 02b2 1375F50F 		andi	a0,a0,0xff
+ 490 02b6 A301A100 		sb	a0,3(sp)
+ 112:main.c        **** 
+ 491              		.loc 1 112 4 is_stmt 1
+ 112:main.c        **** 
+ 492              		.loc 1 112 26 is_stmt 0
+ 493 02ba F247     		lw	a5,28(sp)
+ 112:main.c        **** 
+ 494              		.loc 1 112 39
+ 495 02bc 03473100 		lbu	a4,3(sp)
+ 496 02c0 9419     		addi	a3,sp,240
+ 112:main.c        **** 
+ 497              		.loc 1 112 26
+ 498 02c2 CE97     		add	a5,a5,s3
+ 112:main.c        **** 
+ 499              		.loc 1 112 39
+ 500 02c4 B697     		add	a5,a3,a5
+ 501 02c6 1377F70F 		andi	a4,a4,0xff
+ 502 02ca 2386E7F6 		sb	a4,-148(a5)
+ 114:main.c        **** 			{
+ 503              		.loc 1 114 4 is_stmt 1
+ 114:main.c        **** 			{
+ 504              		.loc 1 114 7 is_stmt 0
+ 505 02ce 9547     		li	a5,5
+ 506 02d0 63C23705 		bgt	s3,a5,.L9
+ 116:main.c        **** 				timeReceived++;
+ 507              		.loc 1 116 5 is_stmt 1
+ 116:main.c        **** 				timeReceived++;
+ 508              		.loc 1 116 32 is_stmt 0
+ 509 02d4 83473100 		lbu	a5,3(sp)
+ 510 02d8 33873601 		add	a4,a3,s3
+ 117:main.c        **** 				continue;
+ 511              		.loc 1 117 17
+ 512 02dc 8509     		addi	s3,s3,1
+ 513              	.LVL59:
+ 116:main.c        **** 				timeReceived++;
+ 514              		.loc 1 116 32
+ 515 02de 93F7F70F 		andi	a5,a5,0xff
+ 516 02e2 2304F7F4 		sb	a5,-184(a4)
+ 117:main.c        **** 				continue;
+ 517              		.loc 1 117 5 is_stmt 1
+ 518              	.LVL60:
+ 118:main.c        **** 			}
+ 519              		.loc 1 118 5
+ 520 02e6 A9B5     		j	.L5
+ 521              	.L7:
+ 102:main.c        **** 				l88mem(4,adcr>>8);                  // ......move data
+ 522              		.loc 1 102 5
+ 102:main.c        **** 				l88mem(4,adcr>>8);                  // ......move data
+ 523              		.loc 1 102 12 is_stmt 0
+ 524 02e8 13050940 		addi	a0,s2,1024
+ 525 02ec 97000000 		call	adc_regular_data_read
+ 525      E7800000 
+ 526              	.LVL61:
+ 103:main.c        **** 				l88mem(5,adcr);                     // ......(view each ms)
+ 527              		.loc 1 103 5
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 17
+
+
+ 528 02f4 93558540 		srai	a1,a0,8
+ 102:main.c        **** 				l88mem(4,adcr>>8);                  // ......move data
+ 529              		.loc 1 102 12
+ 530 02f8 2A84     		mv	s0,a0
+ 531              	.LVL62:
+ 103:main.c        **** 				l88mem(5,adcr);                     // ......(view each ms)
+ 532              		.loc 1 103 5 is_stmt 1
+ 533 02fa 1145     		li	a0,4
+ 534 02fc 97000000 		call	l88mem
+ 534      E7800000 
+ 535              	.LVL63:
+ 104:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC); // ......clear IF
+ 536              		.loc 1 104 5
+ 537 0304 A285     		mv	a1,s0
+ 538 0306 1545     		li	a0,5
+ 539 0308 97000000 		call	l88mem
+ 539      E7800000 
+ 540              	.LVL64:
+ 105:main.c        **** 			}
+ 541              		.loc 1 105 5
+ 542 0310 8945     		li	a1,2
+ 543 0312 95BF     		j	.L44
+ 544              	.LVL65:
+ 545              	.L9:
+ 120:main.c        **** 			{
+ 546              		.loc 1 120 4
+ 547 0314 9257     		lw	a5,36(sp)
+ 548 0316 0547     		li	a4,1
+ 549 0318 6381E70C 		beq	a5,a4,.L11
+ 550 031c 0947     		li	a4,2
+ 551 031e 6383E70C 		beq	a5,a4,.L12
+ 552 0322 E1EF     		bne	a5,zero,.L13
+ 123:main.c        **** 					correct = 0;
+ 553              		.loc 1 123 5
+ 123:main.c        **** 					correct = 0;
+ 554              		.loc 1 123 18 is_stmt 0
+ 555 0324 83473100 		lbu	a5,3(sp)
+ 123:main.c        **** 					correct = 0;
+ 556              		.loc 1 123 8
+ 557 0328 13079004 		li	a4,73
+ 558              	.L49:
+ 135:main.c        **** 					correct = 0;
+ 559              		.loc 1 135 24 discriminator 1
+ 560 032c 6303F700 		beq	a4,a5,.L17
+ 136:main.c        **** 				}
+ 561              		.loc 1 136 6 is_stmt 1
+ 136:main.c        **** 				}
+ 562              		.loc 1 136 14 is_stmt 0
+ 563 0330 02D0     		sw	zero,32(sp)
+ 564              	.L17:
+ 138:main.c        **** 				break;
+ 565              		.loc 1 138 5 is_stmt 1
+ 138:main.c        **** 				break;
+ 566              		.loc 1 138 10 is_stmt 0
+ 567 0332 9257     		lw	a5,36(sp)
+ 568 0334 8507     		addi	a5,a5,1
+ 569 0336 3ED2     		sw	a5,36(sp)
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 18
+
+
+ 139:main.c        **** 			default:
+ 570              		.loc 1 139 5 is_stmt 1
+ 571              	.L15:
+ 175:main.c        **** 			recvCount++;
+ 572              		.loc 1 175 4
+ 175:main.c        **** 			recvCount++;
+ 573              		.loc 1 175 16 is_stmt 0
+ 574 0338 F247     		lw	a5,28(sp)
+ 175:main.c        **** 			recvCount++;
+ 575              		.loc 1 175 28
+ 576 033a 03473100 		lbu	a4,3(sp)
+ 577 033e 9419     		addi	a3,sp,240
+ 578 0340 B697     		add	a5,a3,a5
+ 579 0342 1377F70F 		andi	a4,a4,0xff
+ 580 0346 2380E7F6 		sb	a4,-160(a5)
+ 176:main.c        **** 		}
+ 581              		.loc 1 176 4 is_stmt 1
+ 176:main.c        **** 		}
+ 582              		.loc 1 176 13 is_stmt 0
+ 583 034a F247     		lw	a5,28(sp)
+ 584 034c 8507     		addi	a5,a5,1
+ 585 034e 3ECE     		sw	a5,28(sp)
+ 586              	.L8:
+ 178:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+ 587              		.loc 1 178 3 is_stmt 1
+ 178:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+ 588              		.loc 1 178 7 is_stmt 0
+ 589 0350 97000000 		call	t5expq
+ 589      E7800000 
+ 590              	.LVL66:
+ 178:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+ 591              		.loc 1 178 6
+ 592 0358 E30C05DC 		beq	a0,zero,.L5
+ 179:main.c        **** 			ms++;                           // ...One second heart beat
+ 593              		.loc 1 179 4 is_stmt 1
+ 594 035c 97000000 		call	colset
+ 594      E7800000 
+ 595              	.LVL67:
+ 596 0364 97000000 		call	l88row
+ 596      E7800000 
+ 597              	.LVL68:
+ 180:main.c        **** 			if (ms==1000)
+ 598              		.loc 1 180 4
+ 180:main.c        **** 			if (ms==1000)
+ 599              		.loc 1 180 6 is_stmt 0
+ 600 036c 9247     		lw	a5,4(sp)
+ 601 036e 8507     		addi	a5,a5,1
+ 602 0370 3EC2     		sw	a5,4(sp)
+ 181:main.c        **** 			{
+ 603              		.loc 1 181 4 is_stmt 1
+ 181:main.c        **** 			{
+ 604              		.loc 1 181 10 is_stmt 0
+ 605 0372 1247     		lw	a4,4(sp)
+ 181:main.c        **** 			{
+ 606              		.loc 1 181 7
+ 607 0374 9307803E 		li	a5,1000
+ 608 0378 631CF700 		bne	a4,a5,.L26
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 19
+
+
+ 183:main.c        **** 				l88mem(0,s++);
+ 609              		.loc 1 183 5 is_stmt 1
+ 183:main.c        **** 				l88mem(0,s++);
+ 610              		.loc 1 183 7 is_stmt 0
+ 611 037c 02C2     		sw	zero,4(sp)
+ 184:main.c        **** 				//LCD_ShowStr(10, 30, digits[s%10], WHITE, OPAQUE);
+ 612              		.loc 1 184 5 is_stmt 1
+ 613 037e A245     		lw	a1,8(sp)
+ 614 0380 0145     		li	a0,0
+ 615 0382 93871500 		addi	a5,a1,1
+ 616 0386 3EC4     		sw	a5,8(sp)
+ 617 0388 97000000 		call	l88mem
+ 617      E7800000 
+ 618              	.LVL69:
+ 619              	.L26:
+ 188:main.c        **** 			{
+ 620              		.loc 1 188 4
+ 188:main.c        **** 			{
+ 621              		.loc 1 188 15 is_stmt 0
+ 622 0390 97000000 		call	keyscan
+ 622      E7800000 
+ 623              	.LVL70:
+ 188:main.c        **** 			{
+ 624              		.loc 1 188 13
+ 625 0398 2AC6     		sw	a0,12(sp)
+ 188:main.c        **** 			{
+ 626              		.loc 1 188 7
+ 627 039a 63400528 		blt	a0,zero,.L27
+ 190:main.c        **** 				{
+ 628              		.loc 1 190 5 is_stmt 1
+ 190:main.c        **** 				{
+ 629              		.loc 1 190 23 is_stmt 0
+ 630 039e B247     		lw	a5,12(sp)
+ 631 03a0 9819     		addi	a4,sp,240
+ 632 03a2 8A07     		slli	a5,a5,2
+ 633 03a4 BA97     		add	a5,a4,a5
+ 634 03a6 83A707FC 		lw	a5,-64(a5)
+ 190:main.c        **** 				{
+ 635              		.loc 1 190 5
+ 636 03aa 2D47     		li	a4,11
+ 637 03ac 6386E728 		beq	a5,a4,.L28
+ 638 03b0 6340F718 		bgt	a5,a4,.L29
+ 639 03b4 2947     		li	a4,10
+ 640 03b6 6388E722 		beq	a5,a4,.L30
+ 641              	.L31:
+ 225:main.c        **** 					timeSend = 0;
+ 226:main.c        **** 					break;
+ 227:main.c        **** 				default:
+ 228:main.c        **** 						time[timeSend] = lookUpTblK[key] + 48;
+ 642              		.loc 1 228 7 is_stmt 1
+ 643              		.loc 1 228 34 is_stmt 0
+ 644 03ba B247     		lw	a5,12(sp)
+ 645              		.loc 1 228 22
+ 646 03bc 9419     		addi	a3,sp,240
+ 647              		.loc 1 228 11
+ 648 03be 5257     		lw	a4,52(sp)
+ 649              		.loc 1 228 34
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 20
+
+
+ 650 03c0 8A07     		slli	a5,a5,2
+ 651 03c2 B697     		add	a5,a3,a5
+ 652              		.loc 1 228 40
+ 653 03c4 83A707FC 		lw	a5,-64(a5)
+ 654              		.loc 1 228 22
+ 655 03c8 3697     		add	a4,a3,a4
+ 656              		.loc 1 228 40
+ 657 03ca 93870703 		addi	a5,a5,48
+ 658              		.loc 1 228 22
+ 659 03ce 230CF7F4 		sb	a5,-168(a4)
+ 229:main.c        **** 						timeSend++;
+ 660              		.loc 1 229 7 is_stmt 1
+ 661              		.loc 1 229 15 is_stmt 0
+ 662 03d2 D257     		lw	a5,52(sp)
+ 663 03d4 8507     		addi	a5,a5,1
+ 664 03d6 3EDA     		sw	a5,52(sp)
+ 230:main.c        **** 					break;
+ 665              		.loc 1 230 6 is_stmt 1
+ 666 03d8 05A4     		j	.L34
+ 667              	.L11:
+ 129:main.c        **** 					correct = 0;
+ 668              		.loc 1 129 5
+ 129:main.c        **** 					correct = 0;
+ 669              		.loc 1 129 18 is_stmt 0
+ 670 03da 83473100 		lbu	a5,3(sp)
+ 129:main.c        **** 					correct = 0;
+ 671              		.loc 1 129 8
+ 672 03de 13074004 		li	a4,68
+ 673 03e2 A9B7     		j	.L49
+ 674              	.L12:
+ 135:main.c        **** 					correct = 0;
+ 675              		.loc 1 135 5 is_stmt 1
+ 135:main.c        **** 					correct = 0;
+ 676              		.loc 1 135 18 is_stmt 0
+ 677 03e4 83473100 		lbu	a5,3(sp)
+ 135:main.c        **** 					correct = 0;
+ 678              		.loc 1 135 8
+ 679 03e8 1307B002 		li	a4,43
+ 680 03ec E303F7F4 		beq	a4,a5,.L17
+ 135:main.c        **** 					correct = 0;
+ 681              		.loc 1 135 36 discriminator 1
+ 682 03f0 83473100 		lbu	a5,3(sp)
+ 135:main.c        **** 					correct = 0;
+ 683              		.loc 1 135 24 discriminator 1
+ 684 03f4 1307D002 		li	a4,45
+ 685 03f8 15BF     		j	.L49
+ 686              	.L13:
+ 141:main.c        **** 					LCD_Clear(RED);
+ 687              		.loc 1 141 5 is_stmt 1
+ 141:main.c        **** 					LCD_Clear(RED);
+ 688              		.loc 1 141 18 is_stmt 0
+ 689 03fa 03493100 		lbu	s2,3(sp)
+ 141:main.c        **** 					LCD_Clear(RED);
+ 690              		.loc 1 141 8
+ 691 03fe A947     		li	a5,10
+ 141:main.c        **** 					LCD_Clear(RED);
+ 692              		.loc 1 141 18
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 21
+
+
+ 693 0400 1379F90F 		andi	s2,s2,0xff
+ 141:main.c        **** 					LCD_Clear(RED);
+ 694              		.loc 1 141 8
+ 695 0404 E31AF9F2 		bne	s2,a5,.L15
+ 142:main.c        **** 					if (correct) {
+ 696              		.loc 1 142 6 is_stmt 1
+ 697 0408 4164     		li	s0,65536
+ 698 040a 13050480 		addi	a0,s0,-2048
+ 699 040e 97000000 		call	LCD_Clear
+ 699      E7800000 
+ 700              	.LVL71:
+ 143:main.c        **** 						LCD_ShowStr(70, 10, recievedFull, WHITE, TRANSPARENT);
+ 701              		.loc 1 143 6
+ 143:main.c        **** 						LCD_ShowStr(70, 10, recievedFull, WHITE, TRANSPARENT);
+ 702              		.loc 1 143 10 is_stmt 0
+ 703 0416 8257     		lw	a5,32(sp)
+ 144:main.c        **** 						LCD_ShowStr(recvCount * 10 + 70, 10, "OK!", WHITE, TRANSPARENT);
+ 704              		.loc 1 144 7
+ 705 0418 0547     		li	a4,1
+ 706 041a 9306F4FF 		addi	a3,s0,-1
+ 707 041e 9008     		addi	a2,sp,80
+ 708 0420 A945     		li	a1,10
+ 709 0422 13056004 		li	a0,70
+ 143:main.c        **** 						LCD_ShowStr(70, 10, recievedFull, WHITE, TRANSPARENT);
+ 710              		.loc 1 143 9
+ 711 0426 E1CB     		beq	a5,zero,.L18
+ 144:main.c        **** 						LCD_ShowStr(recvCount * 10 + 70, 10, "OK!", WHITE, TRANSPARENT);
+ 712              		.loc 1 144 7 is_stmt 1
+ 713 0428 97000000 		call	LCD_ShowStr
+ 713      E7800000 
+ 714              	.LVL72:
+ 145:main.c        **** 						message1[14] = 'O';
+ 715              		.loc 1 145 7
+ 145:main.c        **** 						message1[14] = 'O';
+ 716              		.loc 1 145 29 is_stmt 0
+ 717 0430 7245     		lw	a0,28(sp)
+ 145:main.c        **** 						message1[14] = 'O';
+ 718              		.loc 1 145 7
+ 719 0432 A945     		li	a1,10
+ 720 0434 0547     		li	a4,1
+ 145:main.c        **** 						message1[14] = 'O';
+ 721              		.loc 1 145 29
+ 722 0436 33052503 		mul	a0,a0,s2
+ 145:main.c        **** 						message1[14] = 'O';
+ 723              		.loc 1 145 7
+ 724 043a 9306F4FF 		addi	a3,s0,-1
+ 725 043e 13060A00 		addi	a2,s4,%lo(.LC3)
+ 726 0442 13056504 		addi	a0,a0,70
+ 727 0446 97000000 		call	LCD_ShowStr
+ 727      E7800000 
+ 728              	.LVL73:
+ 146:main.c        **** 						message1[15] = 'K';
+ 729              		.loc 1 146 7 is_stmt 1
+ 146:main.c        **** 						message1[15] = 'K';
+ 730              		.loc 1 146 20 is_stmt 0
+ 731 044e 9307F004 		li	a5,79
+ 732 0452 2305F106 		sb	a5,106(sp)
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 22
+
+
+ 147:main.c        **** 						message1[16] = '!';
+ 733              		.loc 1 147 7 is_stmt 1
+ 147:main.c        **** 						message1[16] = '!';
+ 734              		.loc 1 147 20 is_stmt 0
+ 735 0456 9307B004 		li	a5,75
+ 736 045a A305F106 		sb	a5,107(sp)
+ 148:main.c        **** 						strcpy(message1[14], "OK!");
+ 737              		.loc 1 148 7 is_stmt 1
+ 148:main.c        **** 						strcpy(message1[14], "OK!");
+ 738              		.loc 1 148 20 is_stmt 0
+ 739 045e 93071002 		li	a5,33
+ 740 0462 2306F106 		sb	a5,108(sp)
+ 149:main.c        **** 					}
+ 741              		.loc 1 149 7 is_stmt 1
+ 149:main.c        **** 					}
+ 742              		.loc 1 149 22 is_stmt 0
+ 743 0466 0345A106 		lbu	a0,106(sp)
+ 149:main.c        **** 					}
+ 744              		.loc 1 149 7
+ 745 046a 93050A00 		addi	a1,s4,%lo(.LC3)
+ 746 046e 97000000 		call	strcpy
+ 746      E7800000 
+ 747              	.LVL74:
+ 748              	.L20:
+  53:main.c        **** 	volatile int res;
+ 749              		.loc 1 53 6 discriminator 1
+ 750 0476 8147     		li	a5,0
+ 751              	.L19:
+ 752              	.LVL75:
+ 753              	.LBB10:
+ 155:main.c        **** 						recievedFull[i] = 0;
+ 754              		.loc 1 155 24 discriminator 1
+ 755 0478 7247     		lw	a4,28(sp)
+ 155:main.c        **** 						recievedFull[i] = 0;
+ 756              		.loc 1 155 6 discriminator 1
+ 757 047a 63C2E70A 		bgt	a4,a5,.L21
+ 758              	.LBE10:
+ 157:main.c        **** 					state = 0;
+ 759              		.loc 1 157 6 is_stmt 1
+ 157:main.c        **** 					state = 0;
+ 760              		.loc 1 157 14 is_stmt 0
+ 761 047e 8547     		li	a5,1
+ 762              	.LVL76:
+ 763 0480 3ED0     		sw	a5,32(sp)
+ 158:main.c        **** 					recvCount = 0;
+ 764              		.loc 1 158 6 is_stmt 1
+ 158:main.c        **** 					recvCount = 0;
+ 765              		.loc 1 158 12 is_stmt 0
+ 766 0482 02D2     		sw	zero,36(sp)
+ 159:main.c        **** 					timeReceived = 0;
+ 767              		.loc 1 159 6 is_stmt 1
+ 768              	.LBB11:
+ 162:main.c        **** 					for (int x = 0; x < 17; x++)
+ 769              		.loc 1 162 7 is_stmt 0
+ 770 0484 4169     		li	s2,65536
+ 771              	.LBE11:
+ 159:main.c        **** 					timeReceived = 0;
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 23
+
+
+ 772              		.loc 1 159 16
+ 773 0486 02CE     		sw	zero,28(sp)
+ 160:main.c        **** 					for (int x = 0; x < 6; x++)
+ 774              		.loc 1 160 6 is_stmt 1
+ 775              	.LVL77:
+ 161:main.c        **** 						LCD_ShowChar(x*8 + 10, 10, recievedTime[x] + 48, TRANSPARENT, WHITE);
+ 776              		.loc 1 161 6
+ 777              	.LBB12:
+ 161:main.c        **** 						LCD_ShowChar(x*8 + 10, 10, recievedTime[x] + 48, TRANSPARENT, WHITE);
+ 778              		.loc 1 161 11
+ 161:main.c        **** 						LCD_ShowChar(x*8 + 10, 10, recievedTime[x] + 48, TRANSPARENT, WHITE);
+ 779              		.loc 1 161 15 is_stmt 0
+ 780 0488 0144     		li	s0,0
+ 162:main.c        **** 					for (int x = 0; x < 17; x++)
+ 781              		.loc 1 162 7
+ 782 048a 7D19     		addi	s2,s2,-1
+ 161:main.c        **** 						LCD_ShowChar(x*8 + 10, 10, recievedTime[x] + 48, TRANSPARENT, WHITE);
+ 783              		.loc 1 161 6
+ 784 048c 9949     		li	s3,6
+ 785              	.LVL78:
+ 786              	.L22:
+ 162:main.c        **** 					for (int x = 0; x < 17; x++)
+ 787              		.loc 1 162 7 is_stmt 1 discriminator 3
+ 162:main.c        **** 					for (int x = 0; x < 17; x++)
+ 788              		.loc 1 162 46 is_stmt 0 discriminator 3
+ 789 048e 9C19     		addi	a5,sp,240
+ 790 0490 A297     		add	a5,a5,s0
+ 791 0492 03C687F4 		lbu	a2,-184(a5)
+ 162:main.c        **** 					for (int x = 0; x < 17; x++)
+ 792              		.loc 1 162 7 discriminator 3
+ 793 0496 13153400 		slli	a0,s0,3
+ 794 049a 4A87     		mv	a4,s2
+ 795 049c 13060603 		addi	a2,a2,48
+ 796 04a0 8546     		li	a3,1
+ 797 04a2 1376F60F 		andi	a2,a2,0xff
+ 798 04a6 A945     		li	a1,10
+ 799 04a8 2905     		addi	a0,a0,10
+ 161:main.c        **** 						LCD_ShowChar(x*8 + 10, 10, recievedTime[x] + 48, TRANSPARENT, WHITE);
+ 800              		.loc 1 161 30 discriminator 3
+ 801 04aa 0504     		addi	s0,s0,1
+ 802              	.LVL79:
+ 162:main.c        **** 					for (int x = 0; x < 17; x++)
+ 803              		.loc 1 162 7 discriminator 3
+ 804 04ac 97000000 		call	LCD_ShowChar
+ 804      E7800000 
+ 805              	.LVL80:
+ 161:main.c        **** 						LCD_ShowChar(x*8 + 10, 10, recievedTime[x] + 48, TRANSPARENT, WHITE);
+ 806              		.loc 1 161 6 discriminator 3
+ 807 04b4 E31D34FD 		bne	s0,s3,.L22
+ 808              	.LBE12:
+ 809              	.LBB13:
+ 168:main.c        **** 					}
+ 810              		.loc 1 168 8
+ 811 04b8 4169     		li	s2,65536
+ 163:main.c        **** 					{
+ 812              		.loc 1 163 15
+ 813 04ba 0144     		li	s0,0
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 24
+
+
+ 814              	.LVL81:
+ 165:main.c        **** 							LCD_ShowChar(x*8 + 10, 40, message1[x] + 48, TRANSPARENT, WHITE);
+ 815              		.loc 1 165 10
+ 816 04bc 954C     		li	s9,5
+ 168:main.c        **** 					}
+ 817              		.loc 1 168 8
+ 818 04be 7D19     		addi	s2,s2,-1
+ 163:main.c        **** 					{
+ 819              		.loc 1 163 6
+ 820 04c0 C549     		li	s3,17
+ 821              	.L25:
+ 822              	.LVL82:
+ 165:main.c        **** 							LCD_ShowChar(x*8 + 10, 40, message1[x] + 48, TRANSPARENT, WHITE);
+ 823              		.loc 1 165 7 is_stmt 1
+ 824 04c2 9C19     		addi	a5,sp,240
+ 825 04c4 A297     		add	a5,a5,s0
+ 166:main.c        **** 						else
+ 826              		.loc 1 166 43 is_stmt 0
+ 827 04c6 03C6C7F6 		lbu	a2,-148(a5)
+ 828 04ca 13153400 		slli	a0,s0,3
+ 829 04ce 2905     		addi	a0,a0,10
+ 165:main.c        **** 							LCD_ShowChar(x*8 + 10, 40, message1[x] + 48, TRANSPARENT, WHITE);
+ 830              		.loc 1 165 10
+ 831 04d0 63CD8C04 		bgt	s0,s9,.L23
+ 166:main.c        **** 						else
+ 832              		.loc 1 166 8 is_stmt 1
+ 833 04d4 13060603 		addi	a2,a2,48
+ 834 04d8 4A87     		mv	a4,s2
+ 835 04da 8546     		li	a3,1
+ 836 04dc 1376F60F 		andi	a2,a2,0xff
+ 837              	.L45:
+ 168:main.c        **** 					}
+ 838              		.loc 1 168 8 is_stmt 0
+ 839 04e0 93058002 		li	a1,40
+ 163:main.c        **** 					{
+ 840              		.loc 1 163 31
+ 841 04e4 0504     		addi	s0,s0,1
+ 842              	.LVL83:
+ 168:main.c        **** 					}
+ 843              		.loc 1 168 8
+ 844 04e6 97000000 		call	LCD_ShowChar
+ 844      E7800000 
+ 845              	.LVL84:
+ 163:main.c        **** 					{
+ 846              		.loc 1 163 6
+ 847 04ee E31A34FD 		bne	s0,s3,.L25
+ 848              	.LBE13:
+ 160:main.c        **** 					for (int x = 0; x < 6; x++)
+ 849              		.loc 1 160 19
+ 850 04f2 8149     		li	s3,0
+ 851 04f4 35B9     		j	.L5
+ 852              	.LVL85:
+ 853              	.L18:
+ 152:main.c        **** 						LCD_ShowStr(recvCount * 10 + 70, 10, "ERR", WHITE, TRANSPARENT);
+ 854              		.loc 1 152 7 is_stmt 1
+ 855 04f6 97000000 		call	LCD_ShowStr
+ 855      E7800000 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 25
+
+
+ 856              	.LVL86:
+ 153:main.c        **** 					}
+ 857              		.loc 1 153 7
+ 153:main.c        **** 					}
+ 858              		.loc 1 153 29 is_stmt 0
+ 859 04fe 7245     		lw	a0,28(sp)
+ 153:main.c        **** 					}
+ 860              		.loc 1 153 7
+ 861 0500 0547     		li	a4,1
+ 862 0502 9306F4FF 		addi	a3,s0,-1
+ 153:main.c        **** 					}
+ 863              		.loc 1 153 29
+ 864 0506 33052503 		mul	a0,a0,s2
+ 153:main.c        **** 					}
+ 865              		.loc 1 153 7
+ 866 050a 13060C00 		addi	a2,s8,%lo(.LC4)
+ 867 050e A945     		li	a1,10
+ 868 0510 13056504 		addi	a0,a0,70
+ 869 0514 97000000 		call	LCD_ShowStr
+ 869      E7800000 
+ 870              	.LVL87:
+ 871 051c A9BF     		j	.L20
+ 872              	.LVL88:
+ 873              	.L21:
+ 874              	.LBB14:
+ 156:main.c        **** 					correct = 1;
+ 875              		.loc 1 156 7 is_stmt 1 discriminator 3
+ 156:main.c        **** 					correct = 1;
+ 876              		.loc 1 156 23 is_stmt 0 discriminator 3
+ 877 051e 9819     		addi	a4,sp,240
+ 878 0520 3E97     		add	a4,a4,a5
+ 879 0522 230007F6 		sb	zero,-160(a4)
+ 155:main.c        **** 						recievedFull[i] = 0;
+ 880              		.loc 1 155 38 discriminator 3
+ 881 0526 8507     		addi	a5,a5,1
+ 882              	.LVL89:
+ 883 0528 81BF     		j	.L19
+ 884              	.LVL90:
+ 885              	.L23:
+ 886              	.LBE14:
+ 887              	.LBB15:
+ 168:main.c        **** 					}
+ 888              		.loc 1 168 8 is_stmt 1
+ 889 052a 4A87     		mv	a4,s2
+ 890 052c 8546     		li	a3,1
+ 891 052e 4DBF     		j	.L45
+ 892              	.LVL91:
+ 893              	.L29:
+ 894              	.LBE15:
+ 190:main.c        **** 				{
+ 895              		.loc 1 190 5 is_stmt 0
+ 896 0530 3147     		li	a4,12
+ 897 0532 638AE71A 		beq	a5,a4,.L32
+ 898 0536 3547     		li	a4,13
+ 899 0538 E391E7E8 		bne	a5,a4,.L31
+ 218:main.c        **** 					hh = (time[0] - 48) * 10 + (time[1] - 48);
+ 900              		.loc 1 218 6 is_stmt 1
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 26
+
+
+ 901 053c 4164     		li	s0,65536
+ 902 053e 13050480 		addi	a0,s0,-2048
+ 903 0542 97000000 		call	LCD_Clear
+ 903      E7800000 
+ 904              	.LVL92:
+ 219:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 905              		.loc 1 219 6
+ 219:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 906              		.loc 1 219 16 is_stmt 0
+ 907 054a 83478104 		lbu	a5,72(sp)
+ 219:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 908              		.loc 1 219 26
+ 909 054e 2949     		li	s2,10
+ 219:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 910              		.loc 1 219 38
+ 911 0550 03479104 		lbu	a4,73(sp)
+ 219:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 912              		.loc 1 219 20
+ 913 0554 938707FD 		addi	a5,a5,-48
+ 219:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 914              		.loc 1 219 26
+ 915 0558 B3872703 		mul	a5,a5,s2
+ 219:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 916              		.loc 1 219 42
+ 917 055c 130707FD 		addi	a4,a4,-48
+ 222:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 918              		.loc 1 222 34
+ 919 0560 9306C003 		li	a3,60
+ 219:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 920              		.loc 1 219 31
+ 921 0564 BA97     		add	a5,a5,a4
+ 219:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 922              		.loc 1 219 9
+ 923 0566 3ED4     		sw	a5,40(sp)
+ 220:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 924              		.loc 1 220 6 is_stmt 1
+ 220:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 925              		.loc 1 220 16 is_stmt 0
+ 926 0568 8347A104 		lbu	a5,74(sp)
+ 220:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 927              		.loc 1 220 38
+ 928 056c 0347B104 		lbu	a4,75(sp)
+ 220:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 929              		.loc 1 220 20
+ 930 0570 938707FD 		addi	a5,a5,-48
+ 220:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 931              		.loc 1 220 26
+ 932 0574 B3872703 		mul	a5,a5,s2
+ 220:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 933              		.loc 1 220 42
+ 934 0578 130707FD 		addi	a4,a4,-48
+ 220:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 935              		.loc 1 220 31
+ 936 057c BA97     		add	a5,a5,a4
+ 220:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 937              		.loc 1 220 9
+ 938 057e 3ED6     		sw	a5,44(sp)
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 27
+
+
+ 221:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 939              		.loc 1 221 6 is_stmt 1
+ 221:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 940              		.loc 1 221 16 is_stmt 0
+ 941 0580 8347C104 		lbu	a5,76(sp)
+ 221:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 942              		.loc 1 221 38
+ 943 0584 0347D104 		lbu	a4,77(sp)
+ 221:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 944              		.loc 1 221 20
+ 945 0588 938707FD 		addi	a5,a5,-48
+ 221:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 946              		.loc 1 221 26
+ 947 058c B3872703 		mul	a5,a5,s2
+ 221:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 948              		.loc 1 221 42
+ 949 0590 130707FD 		addi	a4,a4,-48
+ 221:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 950              		.loc 1 221 31
+ 951 0594 BA97     		add	a5,a5,a4
+ 221:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 952              		.loc 1 221 9
+ 953 0596 3ED8     		sw	a5,48(sp)
+ 222:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 954              		.loc 1 222 6 is_stmt 1
+ 222:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 955              		.loc 1 222 24 is_stmt 0
+ 956 0598 A257     		lw	a5,40(sp)
+ 222:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 957              		.loc 1 222 34
+ 958 059a 3257     		lw	a4,44(sp)
+ 222:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 959              		.loc 1 222 38
+ 960 059c 4255     		lw	a0,48(sp)
+ 222:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 961              		.loc 1 222 24
+ 962 059e B3879702 		mul	a5,a5,s1
+ 222:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 963              		.loc 1 222 34
+ 964 05a2 3307D702 		mul	a4,a4,a3
+ 222:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 965              		.loc 1 222 30
+ 966 05a6 BA97     		add	a5,a5,a4
+ 222:main.c        **** 					LCD_ShowStr(10, 10, time, WHITE, TRANSPARENT);
+ 967              		.loc 1 222 6
+ 968 05a8 3E95     		add	a0,a5,a0
+ 969 05aa 97000000 		call	rtc_counter_set
+ 969      E7800000 
+ 970              	.LVL93:
+ 223:main.c        **** 					LCD_ShowStr(10*timeSend + 10, 10, "SET", WHITE, TRANSPARENT);
+ 971              		.loc 1 223 6 is_stmt 1
+ 972 05b2 0547     		li	a4,1
+ 973 05b4 9306F4FF 		addi	a3,s0,-1
+ 974 05b8 B000     		addi	a2,sp,72
+ 975 05ba A945     		li	a1,10
+ 976 05bc 2945     		li	a0,10
+ 977 05be 97000000 		call	LCD_ShowStr
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 28
+
+
+ 977      E7800000 
+ 978              	.LVL94:
+ 224:main.c        **** 					timeSend = 0;
+ 979              		.loc 1 224 6
+ 224:main.c        **** 					timeSend = 0;
+ 980              		.loc 1 224 30 is_stmt 0
+ 981 05c6 5255     		lw	a0,52(sp)
+ 224:main.c        **** 					timeSend = 0;
+ 982              		.loc 1 224 6
+ 983 05c8 0547     		li	a4,1
+ 984 05ca 9306F4FF 		addi	a3,s0,-1
+ 224:main.c        **** 					timeSend = 0;
+ 985              		.loc 1 224 30
+ 986 05ce 0505     		addi	a0,a0,1
+ 224:main.c        **** 					timeSend = 0;
+ 987              		.loc 1 224 6
+ 988 05d0 33052503 		mul	a0,a0,s2
+ 989 05d4 13860B00 		addi	a2,s7,%lo(.LC7)
+ 990 05d8 A945     		li	a1,10
+ 991 05da 97000000 		call	LCD_ShowStr
+ 991      E7800000 
+ 992              	.LVL95:
+ 225:main.c        **** 					break;
+ 993              		.loc 1 225 6 is_stmt 1
+ 225:main.c        **** 					break;
+ 994              		.loc 1 225 15 is_stmt 0
+ 995 05e2 02DA     		sw	zero,52(sp)
+ 226:main.c        **** 				default:
+ 996              		.loc 1 226 6 is_stmt 1
+ 997 05e4 11A8     		j	.L34
+ 998              	.L30:
+ 193:main.c        **** 													ADC_REGULAR_CHANNEL);
+ 999              		.loc 1 193 6
+ 1000 05e6 37250140 		li	a0,1073815552
+ 1001 05ea 8545     		li	a1,1
+ 1002 05ec 13050540 		addi	a0,a0,1024
+ 1003 05f0 97000000 		call	adc_software_trigger_enable
+ 1003      E7800000 
+ 1004              	.LVL96:
+ 195:main.c        **** 				case 11:
+ 1005              		.loc 1 195 6
+ 1006              	.L34:
+ 231:main.c        **** 				}
+ 232:main.c        **** 				c++;
+ 1007              		.loc 1 232 5
+ 1008              		.loc 1 232 6 is_stmt 0
+ 1009 05f8 D247     		lw	a5,20(sp)
+ 233:main.c        **** 				l88mem(1,lookUpTbl[key]+(c<<4));
+ 1010              		.loc 1 233 23
+ 1011 05fa 9419     		addi	a3,sp,240
+ 1012              		.loc 1 233 5
+ 1013 05fc 0545     		li	a0,1
+ 232:main.c        **** 				l88mem(1,lookUpTbl[key]+(c<<4));
+ 1014              		.loc 1 232 6
+ 1015 05fe 8507     		addi	a5,a5,1
+ 1016 0600 3ECA     		sw	a5,20(sp)
+ 1017              		.loc 1 233 5 is_stmt 1
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 29
+
+
+ 1018              		.loc 1 233 23 is_stmt 0
+ 1019 0602 B247     		lw	a5,12(sp)
+ 1020              		.loc 1 233 31
+ 1021 0604 5247     		lw	a4,20(sp)
+ 1022              		.loc 1 233 23
+ 1023 0606 8A07     		slli	a5,a5,2
+ 1024 0608 B697     		add	a5,a3,a5
+ 1025              		.loc 1 233 5
+ 1026 060a 83A507F8 		lw	a1,-128(a5)
+ 1027              		.loc 1 233 31
+ 1028 060e 1207     		slli	a4,a4,4
+ 1029              		.loc 1 233 5
+ 1030 0610 BA95     		add	a1,a4,a1
+ 1031 0612 97000000 		call	l88mem
+ 1031      E7800000 
+ 1032              	.LVL97:
+ 1033              	.L27:
+ 234:main.c        **** 			}
+ 235:main.c        **** 			l88mem(2,idle>>8);              // ...Performance monitor
+ 1034              		.loc 1 235 4 is_stmt 1
+ 1035 061a E245     		lw	a1,24(sp)
+ 1036 061c 0945     		li	a0,2
+ 1037 061e A185     		srai	a1,a1,8
+ 1038 0620 97000000 		call	l88mem
+ 1038      E7800000 
+ 1039              	.LVL98:
+ 236:main.c        **** 			l88mem(3,idle); idle=0;
+ 1040              		.loc 1 236 4
+ 1041 0628 E245     		lw	a1,24(sp)
+ 1042 062a 0D45     		li	a0,3
+ 1043 062c 97000000 		call	l88mem
+ 1043      E7800000 
+ 1044              	.LVL99:
+ 1045              		.loc 1 236 20
+ 1046              		.loc 1 236 24 is_stmt 0
+ 1047 0634 02CC     		sw	zero,24(sp)
+ 1048 0636 EDBC     		j	.L5
+ 1049              	.L28:
+ 197:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1050              		.loc 1 197 6 is_stmt 1
+ 197:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1051              		.loc 1 197 11 is_stmt 0
+ 1052 0638 97000000 		call	rtc_counter_get
+ 1052      E7800000 
+ 1053              	.LVL100:
+ 197:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1054              		.loc 1 197 29
+ 1055 0640 33559502 		divu	a0,a0,s1
+ 198:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1056              		.loc 1 198 38
+ 1057 0644 1304C003 		li	s0,60
+ 197:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1058              		.loc 1 197 9
+ 1059 0648 2AD4     		sw	a0,40(sp)
+ 198:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1060              		.loc 1 198 6 is_stmt 1
+ 198:main.c        **** 					ss = rtc_counter_get() % 60;
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 30
+
+
+ 1061              		.loc 1 198 12 is_stmt 0
+ 1062 064a 97000000 		call	rtc_counter_get
+ 1062      E7800000 
+ 1063              	.LVL101:
+ 198:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1064              		.loc 1 198 30
+ 1065 0652 33759502 		remu	a0,a0,s1
+ 198:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1066              		.loc 1 198 38
+ 1067 0656 33558502 		divu	a0,a0,s0
+ 198:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1068              		.loc 1 198 9
+ 1069 065a 2AD6     		sw	a0,44(sp)
+ 199:main.c        **** 					putch(hh / 10);
+ 1070              		.loc 1 199 6 is_stmt 1
+ 199:main.c        **** 					putch(hh / 10);
+ 1071              		.loc 1 199 11 is_stmt 0
+ 1072 065c 97000000 		call	rtc_counter_get
+ 1072      E7800000 
+ 1073              	.LVL102:
+ 199:main.c        **** 					putch(hh / 10);
+ 1074              		.loc 1 199 29
+ 1075 0664 33758502 		remu	a0,a0,s0
+ 200:main.c        **** 					putch(hh % 10);
+ 1076              		.loc 1 200 15
+ 1077 0668 2944     		li	s0,10
+ 199:main.c        **** 					putch(hh / 10);
+ 1078              		.loc 1 199 9
+ 1079 066a 2AD8     		sw	a0,48(sp)
+ 200:main.c        **** 					putch(hh % 10);
+ 1080              		.loc 1 200 6 is_stmt 1
+ 200:main.c        **** 					putch(hh % 10);
+ 1081              		.loc 1 200 15 is_stmt 0
+ 1082 066c 2255     		lw	a0,40(sp)
+ 1083 066e 33458502 		div	a0,a0,s0
+ 200:main.c        **** 					putch(hh % 10);
+ 1084              		.loc 1 200 6
+ 1085 0672 1375F50F 		andi	a0,a0,0xff
+ 1086 0676 97000000 		call	putch
+ 1086      E7800000 
+ 1087              	.LVL103:
+ 201:main.c        **** 					putch(mm / 10);
+ 1088              		.loc 1 201 6 is_stmt 1
+ 201:main.c        **** 					putch(mm / 10);
+ 1089              		.loc 1 201 15 is_stmt 0
+ 1090 067e 2255     		lw	a0,40(sp)
+ 1091 0680 33658502 		rem	a0,a0,s0
+ 201:main.c        **** 					putch(mm / 10);
+ 1092              		.loc 1 201 6
+ 1093 0684 1375F50F 		andi	a0,a0,0xff
+ 1094 0688 97000000 		call	putch
+ 1094      E7800000 
+ 1095              	.LVL104:
+ 202:main.c        **** 					putch(mm % 10);
+ 1096              		.loc 1 202 6 is_stmt 1
+ 202:main.c        **** 					putch(mm % 10);
+ 1097              		.loc 1 202 15 is_stmt 0
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 31
+
+
+ 1098 0690 3255     		lw	a0,44(sp)
+ 1099 0692 33458502 		div	a0,a0,s0
+ 202:main.c        **** 					putch(mm % 10);
+ 1100              		.loc 1 202 6
+ 1101 0696 1375F50F 		andi	a0,a0,0xff
+ 1102 069a 97000000 		call	putch
+ 1102      E7800000 
+ 1103              	.LVL105:
+ 203:main.c        **** 					putch(ss / 10);
+ 1104              		.loc 1 203 6 is_stmt 1
+ 203:main.c        **** 					putch(ss / 10);
+ 1105              		.loc 1 203 15 is_stmt 0
+ 1106 06a2 3255     		lw	a0,44(sp)
+ 1107 06a4 33658502 		rem	a0,a0,s0
+ 203:main.c        **** 					putch(ss / 10);
+ 1108              		.loc 1 203 6
+ 1109 06a8 1375F50F 		andi	a0,a0,0xff
+ 1110 06ac 97000000 		call	putch
+ 1110      E7800000 
+ 1111              	.LVL106:
+ 204:main.c        **** 					putch(ss % 10);
+ 1112              		.loc 1 204 6 is_stmt 1
+ 204:main.c        **** 					putch(ss % 10);
+ 1113              		.loc 1 204 15 is_stmt 0
+ 1114 06b4 4255     		lw	a0,48(sp)
+ 1115 06b6 33458502 		div	a0,a0,s0
+ 204:main.c        **** 					putch(ss % 10);
+ 1116              		.loc 1 204 6
+ 1117 06ba 1375F50F 		andi	a0,a0,0xff
+ 1118 06be 97000000 		call	putch
+ 1118      E7800000 
+ 1119              	.LVL107:
+ 205:main.c        **** 					putstr("ID-000\n");
+ 1120              		.loc 1 205 6 is_stmt 1
+ 205:main.c        **** 					putstr("ID-000\n");
+ 1121              		.loc 1 205 15 is_stmt 0
+ 1122 06c6 4255     		lw	a0,48(sp)
+ 1123 06c8 33658502 		rem	a0,a0,s0
+ 205:main.c        **** 					putstr("ID-000\n");
+ 1124              		.loc 1 205 6
+ 1125 06cc 1375F50F 		andi	a0,a0,0xff
+ 1126 06d0 97000000 		call	putch
+ 1126      E7800000 
+ 1127              	.LVL108:
+ 206:main.c        **** 					break;
+ 1128              		.loc 1 206 6 is_stmt 1
+ 1129 06d8 13850A00 		addi	a0,s5,%lo(.LC5)
+ 1130              	.L46:
+ 215:main.c        **** 					break;
+ 1131              		.loc 1 215 6 is_stmt 0
+ 1132 06dc 97000000 		call	putstr
+ 1132      E7800000 
+ 1133              	.LVL109:
+ 216:main.c        **** 				case 13:
+ 1134              		.loc 1 216 6 is_stmt 1
+ 1135 06e4 11BF     		j	.L34
+ 1136              	.L32:
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 32
+
+
+ 209:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1137              		.loc 1 209 6
+ 209:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1138              		.loc 1 209 11 is_stmt 0
+ 1139 06e6 97000000 		call	rtc_counter_get
+ 1139      E7800000 
+ 1140              	.LVL110:
+ 209:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1141              		.loc 1 209 29
+ 1142 06ee 33559502 		divu	a0,a0,s1
+ 210:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1143              		.loc 1 210 38
+ 1144 06f2 1304C003 		li	s0,60
+ 209:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1145              		.loc 1 209 9
+ 1146 06f6 2AD4     		sw	a0,40(sp)
+ 210:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1147              		.loc 1 210 6 is_stmt 1
+ 210:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1148              		.loc 1 210 12 is_stmt 0
+ 1149 06f8 97000000 		call	rtc_counter_get
+ 1149      E7800000 
+ 1150              	.LVL111:
+ 210:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1151              		.loc 1 210 30
+ 1152 0700 33759502 		remu	a0,a0,s1
+ 210:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1153              		.loc 1 210 38
+ 1154 0704 33558502 		divu	a0,a0,s0
+ 210:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1155              		.loc 1 210 9
+ 1156 0708 2AD6     		sw	a0,44(sp)
+ 211:main.c        **** 					putch(hh);
+ 1157              		.loc 1 211 6 is_stmt 1
+ 211:main.c        **** 					putch(hh);
+ 1158              		.loc 1 211 11 is_stmt 0
+ 1159 070a 97000000 		call	rtc_counter_get
+ 1159      E7800000 
+ 1160              	.LVL112:
+ 211:main.c        **** 					putch(hh);
+ 1161              		.loc 1 211 29
+ 1162 0712 33758502 		remu	a0,a0,s0
+ 211:main.c        **** 					putch(hh);
+ 1163              		.loc 1 211 9
+ 1164 0716 2AD8     		sw	a0,48(sp)
+ 212:main.c        **** 					putch(mm);
+ 1165              		.loc 1 212 6 is_stmt 1
+ 1166 0718 2255     		lw	a0,40(sp)
+ 1167 071a 1375F50F 		andi	a0,a0,0xff
+ 1168 071e 97000000 		call	putch
+ 1168      E7800000 
+ 1169              	.LVL113:
+ 213:main.c        **** 					putch(ss);
+ 1170              		.loc 1 213 6
+ 1171 0726 3255     		lw	a0,44(sp)
+ 1172 0728 1375F50F 		andi	a0,a0,0xff
+ 1173 072c 97000000 		call	putch
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 33
+
+
+ 1173      E7800000 
+ 1174              	.LVL114:
+ 214:main.c        **** 					putstr("ID*000\n");
+ 1175              		.loc 1 214 6
+ 1176 0734 4255     		lw	a0,48(sp)
+ 1177 0736 1375F50F 		andi	a0,a0,0xff
+ 1178 073a 97000000 		call	putch
+ 1178      E7800000 
+ 1179              	.LVL115:
+ 215:main.c        **** 					break;
+ 1180              		.loc 1 215 6
+ 1181 0742 13050B00 		addi	a0,s6,%lo(.LC6)
+ 1182 0746 59BF     		j	.L46
+ 1183              		.cfi_endproc
+ 1184              	.LFE4:
+ 1186              		.section	.rodata
+ 1187              		.align	2
+ 1188              		.set	.LANCHOR0,. + 0
+ 1189              	.LC0:
+ 1190 0000 01000000 		.word	1
+ 1191 0004 04000000 		.word	4
+ 1192 0008 07000000 		.word	7
+ 1193 000c 0E000000 		.word	14
+ 1194 0010 02000000 		.word	2
+ 1195 0014 05000000 		.word	5
+ 1196 0018 08000000 		.word	8
+ 1197 001c 00000000 		.word	0
+ 1198 0020 03000000 		.word	3
+ 1199 0024 06000000 		.word	6
+ 1200 0028 09000000 		.word	9
+ 1201 002c 0F000000 		.word	15
+ 1202 0030 0A000000 		.word	10
+ 1203 0034 0B000000 		.word	11
+ 1204 0038 0C000000 		.word	12
+ 1205 003c 0D000000 		.word	13
+ 1206              	.LC1:
+ 1207 0040 0D000000 		.word	13
+ 1208 0044 0F000000 		.word	15
+ 1209 0048 00000000 		.word	0
+ 1210 004c 0E000000 		.word	14
+ 1211 0050 0C000000 		.word	12
+ 1212 0054 09000000 		.word	9
+ 1213 0058 08000000 		.word	8
+ 1214 005c 07000000 		.word	7
+ 1215 0060 0B000000 		.word	11
+ 1216 0064 06000000 		.word	6
+ 1217 0068 05000000 		.word	5
+ 1218 006c 04000000 		.word	4
+ 1219 0070 0A000000 		.word	10
+ 1220 0074 03000000 		.word	3
+ 1221 0078 02000000 		.word	2
+ 1222 007c 01000000 		.word	1
+ 1223              		.section	.rodata.main.str1.4,"aMS",@progbits,1
+ 1224              		.align	2
+ 1225              	.LC3:
+ 1226 0000 4F4B2100 		.string	"OK!"
+ 1227              	.LC4:
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 34
+
+
+ 1228 0004 45525200 		.string	"ERR"
+ 1229              	.LC5:
+ 1230 0008 49442D30 		.string	"ID-000\n"
+ 1230      30300A00 
+ 1231              	.LC6:
+ 1232 0010 49442A30 		.string	"ID*000\n"
+ 1232      30300A00 
+ 1233              	.LC7:
+ 1234 0018 53455400 		.string	"SET"
+ 1235              		.text
+ 1236              	.Letext0:
+ 1237              		.file 2 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+ 1238              		.file 3 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+ 1239              		.file 4 "./../../firmware/GD32VF103_standard_peripheral/gd32vf103.h"
+ 1240              		.file 5 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_rcu.h"
+ 1241              		.file 6 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_usart.h"
+ 1242              		.file 7 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\lib\\gcc\\riscv64-unknown-el
+ 1243              		.file 8 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+ 1244              		.file 9 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+ 1245              		.file 10 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\includ
+ 1246              		.file 11 "./../../firmware/GD32VF103_standard_peripheral/system_gd32vf103.h"
+ 1247              		.file 12 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\includ
+ 1248              		.file 13 "lcd.h"
+ 1249              		.file 14 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\includ
+ 1250              		.file 15 "drivers.h"
+ 1251              		.file 16 "adc.h"
+ 1252              		.file 17 "usart.h"
+ 1253              		.file 18 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_eclic.h"
+ 1254              		.file 19 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_adc.h"
+ 1255              		.file 20 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_rtc.h"
+ 1256              		.file 21 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_pmu.h"
+ 1257              		.file 22 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_bkp.h"
+ 1258              		.file 23 "<built-in>"
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 35
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+C:\WINDOWS\ccZbYo8B.s:13     .text.rtcInit:0000000000000000 rtcInit
+C:\WINDOWS\ccZbYo8B.s:17     .text.rtcInit:0000000000000000 .L0 
+C:\WINDOWS\ccZbYo8B.s:18     .text.rtcInit:0000000000000000 .L0 
+C:\WINDOWS\ccZbYo8B.s:19     .text.rtcInit:0000000000000000 .L0 
+C:\WINDOWS\ccZbYo8B.s:20     .text.rtcInit:0000000000000000 .L0 
+C:\WINDOWS\ccZbYo8B.s:22     .text.rtcInit:0000000000000002 .L0 
+C:\WINDOWS\ccZbYo8B.s:24     .text.rtcInit:0000000000000002 .L0 
+C:\WINDOWS\ccZbYo8B.s:26     .text.rtcInit:0000000000000006 .L0 
+C:\WINDOWS\ccZbYo8B.s:27     .text.rtcInit:0000000000000008 .L0 
+C:\WINDOWS\ccZbYo8B.s:29     .text.rtcInit:0000000000000008 .L0 
+C:\WINDOWS\ccZbYo8B.s:32     .text.rtcInit:0000000000000010 .L0 
+C:\WINDOWS\ccZbYo8B.s:35     .text.rtcInit:0000000000000018 .L0 
+C:\WINDOWS\ccZbYo8B.s:39     .text.rtcInit:0000000000000024 .L0 
+C:\WINDOWS\ccZbYo8B.s:42     .text.rtcInit:000000000000002c .L0 
+C:\WINDOWS\ccZbYo8B.s:43     .text.rtcInit:000000000000002c .L0 
+C:\WINDOWS\ccZbYo8B.s:47     .text.rtcInit:0000000000000036 .L0 
+C:\WINDOWS\ccZbYo8B.s:51     .text.rtcInit:0000000000000038 .L0 
+C:\WINDOWS\ccZbYo8B.s:55     .text.rtcInit:0000000000000044 .L0 
+C:\WINDOWS\ccZbYo8B.s:60     .text.rtcInit:0000000000000052 .L0 
+C:\WINDOWS\ccZbYo8B.s:63     .text.rtcInit:000000000000005a .L0 
+C:\WINDOWS\ccZbYo8B.s:66     .text.rtcInit:0000000000000062 .L0 
+C:\WINDOWS\ccZbYo8B.s:71     .text.rtcInit:0000000000000070 .L0 
+C:\WINDOWS\ccZbYo8B.s:74     .text.rtcInit:0000000000000078 .L0 
+C:\WINDOWS\ccZbYo8B.s:80     .text.rtcInit:0000000000000082 .L0 
+C:\WINDOWS\ccZbYo8B.s:81     .text.rtcInit:0000000000000082 .L0 
+C:\WINDOWS\ccZbYo8B.s:82     .text.rtcInit:0000000000000084 .L0 
+C:\WINDOWS\ccZbYo8B.s:83     .text.rtcInit:0000000000000084 .L0 
+C:\WINDOWS\ccZbYo8B.s:86     .text.rtcInit:0000000000000086 .L0 
+C:\WINDOWS\ccZbYo8B.s:90     .text.rtcInit:0000000000000086 .L0 
+C:\WINDOWS\ccZbYo8B.s:94     .text.rtcInit:000000000000008e .L0 
+C:\WINDOWS\ccZbYo8B.s:98     .text.rtcInit:000000000000008e .L0 
+C:\WINDOWS\ccZbYo8B.s:99     .text.rtcInit:0000000000000090 .L0 
+C:\WINDOWS\ccZbYo8B.s:102    .text.rtcInit:0000000000000092 .L0 
+C:\WINDOWS\ccZbYo8B.s:104    .text.rtcInit:0000000000000094 .L0 
+C:\WINDOWS\ccZbYo8B.s:111    .text.startup.main:0000000000000000 main
+C:\WINDOWS\ccZbYo8B.s:114    .text.startup.main:0000000000000000 .L0 
+C:\WINDOWS\ccZbYo8B.s:115    .text.startup.main:0000000000000000 .L0 
+C:\WINDOWS\ccZbYo8B.s:116    .text.startup.main:0000000000000000 .L0 
+C:\WINDOWS\ccZbYo8B.s:117    .text.startup.main:0000000000000000 .L0 
+C:\WINDOWS\ccZbYo8B.s:119    .text.startup.main:0000000000000002 .L0 
+C:\WINDOWS\ccZbYo8B.s:121    .text.startup.main:0000000000000002 .L0 
+C:\WINDOWS\ccZbYo8B.s:123    .text.startup.main:0000000000000004 .L0 
+C:\WINDOWS\ccZbYo8B.s:125    .text.startup.main:0000000000000006 .L0 
+C:\WINDOWS\ccZbYo8B.s:128    .text.startup.main:000000000000000a .L0 
+C:\WINDOWS\ccZbYo8B.s:130    .text.startup.main:000000000000000c .L0 
+C:\WINDOWS\ccZbYo8B.s:132    .text.startup.main:000000000000000e .L0 
+C:\WINDOWS\ccZbYo8B.s:134    .text.startup.main:0000000000000010 .L0 
+C:\WINDOWS\ccZbYo8B.s:136    .text.startup.main:0000000000000012 .L0 
+C:\WINDOWS\ccZbYo8B.s:138    .text.startup.main:0000000000000014 .L0 
+C:\WINDOWS\ccZbYo8B.s:140    .text.startup.main:0000000000000016 .L0 
+C:\WINDOWS\ccZbYo8B.s:142    .text.startup.main:0000000000000018 .L0 
+C:\WINDOWS\ccZbYo8B.s:144    .text.startup.main:000000000000001a .L0 
+C:\WINDOWS\ccZbYo8B.s:146    .text.startup.main:000000000000001e .L0 
+C:\WINDOWS\ccZbYo8B.s:148    .text.startup.main:0000000000000022 .L0 
+C:\WINDOWS\ccZbYo8B.s:149    .text.startup.main:0000000000000024 .L0 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 36
+
+
+C:\WINDOWS\ccZbYo8B.s:151    .text.startup.main:0000000000000024 .L0 
+C:\WINDOWS\ccZbYo8B.s:156    .text.startup.main:0000000000000032 .L0 
+C:\WINDOWS\ccZbYo8B.s:167    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:168    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:169    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:170    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:171    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:172    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:173    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:174    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:175    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:176    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:177    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:179    .text.startup.main:0000000000000056 .L0 
+C:\WINDOWS\ccZbYo8B.s:181    .text.startup.main:0000000000000058 .L0 
+C:\WINDOWS\ccZbYo8B.s:182    .text.startup.main:0000000000000058 .L0 
+C:\WINDOWS\ccZbYo8B.s:185    .text.startup.main:0000000000000060 .L0 
+C:\WINDOWS\ccZbYo8B.s:186    .text.startup.main:0000000000000060 .L0 
+C:\WINDOWS\ccZbYo8B.s:192    .text.startup.main:0000000000000072 .L0 
+C:\WINDOWS\ccZbYo8B.s:193    .text.startup.main:0000000000000072 .L0 
+C:\WINDOWS\ccZbYo8B.s:194    .text.startup.main:0000000000000072 .L0 
+C:\WINDOWS\ccZbYo8B.s:195    .text.startup.main:0000000000000072 .L0 
+C:\WINDOWS\ccZbYo8B.s:199    .text.startup.main:000000000000007a .L0 
+C:\WINDOWS\ccZbYo8B.s:203    .text.startup.main:0000000000000084 .L0 
+C:\WINDOWS\ccZbYo8B.s:206    .text.startup.main:000000000000008a .L0 
+C:\WINDOWS\ccZbYo8B.s:210    .text.startup.main:0000000000000090 .L0 
+C:\WINDOWS\ccZbYo8B.s:213    .text.startup.main:0000000000000096 .L0 
+C:\WINDOWS\ccZbYo8B.s:215    .text.startup.main:0000000000000098 .L0 
+C:\WINDOWS\ccZbYo8B.s:217    .text.startup.main:000000000000009a .L0 
+C:\WINDOWS\ccZbYo8B.s:219    .text.startup.main:000000000000009e .L0 
+C:\WINDOWS\ccZbYo8B.s:220    .text.startup.main:000000000000009e .L0 
+C:\WINDOWS\ccZbYo8B.s:221    .text.startup.main:000000000000009e .L0 
+C:\WINDOWS\ccZbYo8B.s:226    .text.startup.main:00000000000000a8 .L0 
+C:\WINDOWS\ccZbYo8B.s:227    .text.startup.main:00000000000000a8 .L0 
+C:\WINDOWS\ccZbYo8B.s:228    .text.startup.main:00000000000000a8 .L0 
+C:\WINDOWS\ccZbYo8B.s:231    .text.startup.main:00000000000000b0 .L0 
+C:\WINDOWS\ccZbYo8B.s:234    .text.startup.main:00000000000000b8 .L0 
+C:\WINDOWS\ccZbYo8B.s:237    .text.startup.main:00000000000000c0 .L0 
+C:\WINDOWS\ccZbYo8B.s:240    .text.startup.main:00000000000000c8 .L0 
+C:\WINDOWS\ccZbYo8B.s:243    .text.startup.main:00000000000000d0 .L0 
+C:\WINDOWS\ccZbYo8B.s:247    .text.startup.main:00000000000000da .L0 
+C:\WINDOWS\ccZbYo8B.s:251    .text.startup.main:00000000000000e4 .L0 
+C:\WINDOWS\ccZbYo8B.s:254    .text.startup.main:00000000000000ec .L0 
+C:\WINDOWS\ccZbYo8B.s:259    .text.startup.main:00000000000000fa .L0 
+C:\WINDOWS\ccZbYo8B.s:262    .text.startup.main:0000000000000102 .L0 
+C:\WINDOWS\ccZbYo8B.s:264    .text.startup.main:0000000000000104 .L0 
+C:\WINDOWS\ccZbYo8B.s:266    .text.startup.main:0000000000000106 .L0 
+C:\WINDOWS\ccZbYo8B.s:269    .text.startup.main:000000000000010e .L0 
+C:\WINDOWS\ccZbYo8B.s:270    .text.startup.main:000000000000010e .L0 
+C:\WINDOWS\ccZbYo8B.s:272    .text.startup.main:0000000000000110 .L0 
+C:\WINDOWS\ccZbYo8B.s:275    .text.startup.main:0000000000000118 .L0 
+C:\WINDOWS\ccZbYo8B.s:277    .text.startup.main:000000000000011c .L0 
+C:\WINDOWS\ccZbYo8B.s:279    .text.startup.main:0000000000000120 .L0 
+C:\WINDOWS\ccZbYo8B.s:281    .text.startup.main:0000000000000124 .L0 
+C:\WINDOWS\ccZbYo8B.s:283    .text.startup.main:0000000000000128 .L0 
+C:\WINDOWS\ccZbYo8B.s:285    .text.startup.main:000000000000012c .L0 
+C:\WINDOWS\ccZbYo8B.s:289    .text.startup.main:0000000000000130 .L0 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 37
+
+
+C:\WINDOWS\ccZbYo8B.s:290    .text.startup.main:0000000000000130 .L0 
+C:\WINDOWS\ccZbYo8B.s:291    .text.startup.main:0000000000000130 .L0 
+C:\WINDOWS\ccZbYo8B.s:293    .text.startup.main:0000000000000132 .L0 
+C:\WINDOWS\ccZbYo8B.s:295    .text.startup.main:0000000000000136 .L0 
+C:\WINDOWS\ccZbYo8B.s:298    .text.startup.main:000000000000013a .L0 
+C:\WINDOWS\ccZbYo8B.s:301    .text.startup.main:0000000000000142 .L0 
+C:\WINDOWS\ccZbYo8B.s:302    .text.startup.main:0000000000000142 .L0 
+C:\WINDOWS\ccZbYo8B.s:307    .text.startup.main:0000000000000150 .L0 
+C:\WINDOWS\ccZbYo8B.s:309    .text.startup.main:0000000000000152 .L0 
+C:\WINDOWS\ccZbYo8B.s:311    .text.startup.main:0000000000000154 .L0 
+C:\WINDOWS\ccZbYo8B.s:313    .text.startup.main:0000000000000158 .L0 
+C:\WINDOWS\ccZbYo8B.s:314    .text.startup.main:0000000000000158 .L0 
+C:\WINDOWS\ccZbYo8B.s:319    .text.startup.main:0000000000000166 .L0 
+C:\WINDOWS\ccZbYo8B.s:321    .text.startup.main:000000000000016a .L0 
+C:\WINDOWS\ccZbYo8B.s:322    .text.startup.main:000000000000016a .L0 
+C:\WINDOWS\ccZbYo8B.s:329    .text.startup.main:000000000000017a .L0 
+C:\WINDOWS\ccZbYo8B.s:330    .text.startup.main:000000000000017a .L0 
+C:\WINDOWS\ccZbYo8B.s:333    .text.startup.main:0000000000000182 .L0 
+C:\WINDOWS\ccZbYo8B.s:335    .text.startup.main:0000000000000186 .L0 
+C:\WINDOWS\ccZbYo8B.s:337    .text.startup.main:000000000000018a .L0 
+C:\WINDOWS\ccZbYo8B.s:340    .text.startup.main:0000000000000192 .L0 
+C:\WINDOWS\ccZbYo8B.s:342    .text.startup.main:0000000000000194 .L0 
+C:\WINDOWS\ccZbYo8B.s:343    .text.startup.main:0000000000000194 .L0 
+C:\WINDOWS\ccZbYo8B.s:346    .text.startup.main:000000000000019c .L0 
+C:\WINDOWS\ccZbYo8B.s:348    .text.startup.main:00000000000001a0 .L0 
+C:\WINDOWS\ccZbYo8B.s:350    .text.startup.main:00000000000001a4 .L0 
+C:\WINDOWS\ccZbYo8B.s:352    .text.startup.main:00000000000001a6 .L0 
+C:\WINDOWS\ccZbYo8B.s:353    .text.startup.main:00000000000001a6 .L0 
+C:\WINDOWS\ccZbYo8B.s:356    .text.startup.main:00000000000001ae .L0 
+C:\WINDOWS\ccZbYo8B.s:358    .text.startup.main:00000000000001b2 .L0 
+C:\WINDOWS\ccZbYo8B.s:360    .text.startup.main:00000000000001b4 .L0 
+C:\WINDOWS\ccZbYo8B.s:362    .text.startup.main:00000000000001b6 .L0 
+C:\WINDOWS\ccZbYo8B.s:367    .text.startup.main:00000000000001c4 .L0 
+C:\WINDOWS\ccZbYo8B.s:372    .text.startup.main:00000000000001d2 .L0 
+C:\WINDOWS\ccZbYo8B.s:377    .text.startup.main:00000000000001e0 .L0 
+C:\WINDOWS\ccZbYo8B.s:381    .text.startup.main:00000000000001ec .L0 
+C:\WINDOWS\ccZbYo8B.s:385    .text.startup.main:00000000000001f8 .L0 
+C:\WINDOWS\ccZbYo8B.s:389    .text.startup.main:0000000000000204 .L0 
+C:\WINDOWS\ccZbYo8B.s:390    .text.startup.main:0000000000000204 .L0 
+C:\WINDOWS\ccZbYo8B.s:393    .text.startup.main:000000000000020a .L0 
+C:\WINDOWS\ccZbYo8B.s:395    .text.startup.main:000000000000020e .L0 
+C:\WINDOWS\ccZbYo8B.s:397    .text.startup.main:0000000000000210 .L0 
+C:\WINDOWS\ccZbYo8B.s:399    .text.startup.main:0000000000000214 .L0 
+C:\WINDOWS\ccZbYo8B.s:404    .text.startup.main:0000000000000224 .L0 
+C:\WINDOWS\ccZbYo8B.s:405    .text.startup.main:0000000000000224 .L0 
+C:\WINDOWS\ccZbYo8B.s:407    .text.startup.main:0000000000000228 .L0 
+C:\WINDOWS\ccZbYo8B.s:409    .text.startup.main:000000000000022c .L0 
+C:\WINDOWS\ccZbYo8B.s:414    .text.startup.main:000000000000023c .L0 
+C:\WINDOWS\ccZbYo8B.s:415    .text.startup.main:000000000000023c .L0 
+C:\WINDOWS\ccZbYo8B.s:417    .text.startup.main:0000000000000240 .L0 
+C:\WINDOWS\ccZbYo8B.s:422    .text.startup.main:0000000000000250 .L0 
+C:\WINDOWS\ccZbYo8B.s:427    .text.startup.main:000000000000025a .L0 
+C:\WINDOWS\ccZbYo8B.s:428    .text.startup.main:000000000000025a .L0 
+C:\WINDOWS\ccZbYo8B.s:429    .text.startup.main:000000000000025a .L0 
+C:\WINDOWS\ccZbYo8B.s:430    .text.startup.main:000000000000025a .L0 
+C:\WINDOWS\ccZbYo8B.s:433    .text.startup.main:000000000000025e .L0 
+C:\WINDOWS\ccZbYo8B.s:434    .text.startup.main:000000000000025e .L0 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 38
+
+
+C:\WINDOWS\ccZbYo8B.s:437    .text.startup.main:0000000000000262 .L0 
+C:\WINDOWS\ccZbYo8B.s:438    .text.startup.main:0000000000000262 .L0 
+C:\WINDOWS\ccZbYo8B.s:441    .text.startup.main:0000000000000266 .L0 
+C:\WINDOWS\ccZbYo8B.s:442    .text.startup.main:0000000000000266 .L0 
+C:\WINDOWS\ccZbYo8B.s:445    .text.startup.main:000000000000026a .L0 
+C:\WINDOWS\ccZbYo8B.s:446    .text.startup.main:000000000000026a .L0 
+C:\WINDOWS\ccZbYo8B.s:449    .text.startup.main:000000000000026e .L0 
+C:\WINDOWS\ccZbYo8B.s:450    .text.startup.main:000000000000026e .L0 
+C:\WINDOWS\ccZbYo8B.s:454    .text.startup.main:0000000000000272 .L0 
+C:\WINDOWS\ccZbYo8B.s:455    .text.startup.main:0000000000000272 .L0 
+C:\WINDOWS\ccZbYo8B.s:459    .text.startup.main:0000000000000278 .L0 
+C:\WINDOWS\ccZbYo8B.s:463    .text.startup.main:000000000000027c .L0 
+C:\WINDOWS\ccZbYo8B.s:466    .text.startup.main:0000000000000284 .L0 
+C:\WINDOWS\ccZbYo8B.s:470    .text.startup.main:0000000000000286 .L0 
+C:\WINDOWS\ccZbYo8B.s:475    .text.startup.main:0000000000000292 .L0 
+C:\WINDOWS\ccZbYo8B.s:476    .text.startup.main:0000000000000292 .L0 
+C:\WINDOWS\ccZbYo8B.s:482    .text.startup.main:00000000000002a4 .L0 
+C:\WINDOWS\ccZbYo8B.s:484    .text.startup.main:00000000000002a6 .L0 
+C:\WINDOWS\ccZbYo8B.s:485    .text.startup.main:00000000000002a6 .L0 
+C:\WINDOWS\ccZbYo8B.s:489    .text.startup.main:00000000000002b2 .L0 
+C:\WINDOWS\ccZbYo8B.s:492    .text.startup.main:00000000000002ba .L0 
+C:\WINDOWS\ccZbYo8B.s:493    .text.startup.main:00000000000002ba .L0 
+C:\WINDOWS\ccZbYo8B.s:495    .text.startup.main:00000000000002bc .L0 
+C:\WINDOWS\ccZbYo8B.s:498    .text.startup.main:00000000000002c2 .L0 
+C:\WINDOWS\ccZbYo8B.s:500    .text.startup.main:00000000000002c4 .L0 
+C:\WINDOWS\ccZbYo8B.s:504    .text.startup.main:00000000000002ce .L0 
+C:\WINDOWS\ccZbYo8B.s:505    .text.startup.main:00000000000002ce .L0 
+C:\WINDOWS\ccZbYo8B.s:508    .text.startup.main:00000000000002d4 .L0 
+C:\WINDOWS\ccZbYo8B.s:509    .text.startup.main:00000000000002d4 .L0 
+C:\WINDOWS\ccZbYo8B.s:512    .text.startup.main:00000000000002dc .L0 
+C:\WINDOWS\ccZbYo8B.s:515    .text.startup.main:00000000000002de .L0 
+C:\WINDOWS\ccZbYo8B.s:519    .text.startup.main:00000000000002e6 .L0 
+C:\WINDOWS\ccZbYo8B.s:520    .text.startup.main:00000000000002e6 .L0 
+C:\WINDOWS\ccZbYo8B.s:523    .text.startup.main:00000000000002e8 .L0 
+C:\WINDOWS\ccZbYo8B.s:524    .text.startup.main:00000000000002e8 .L0 
+C:\WINDOWS\ccZbYo8B.s:528    .text.startup.main:00000000000002f4 .L0 
+C:\WINDOWS\ccZbYo8B.s:530    .text.startup.main:00000000000002f8 .L0 
+C:\WINDOWS\ccZbYo8B.s:533    .text.startup.main:00000000000002fa .L0 
+C:\WINDOWS\ccZbYo8B.s:537    .text.startup.main:0000000000000304 .L0 
+C:\WINDOWS\ccZbYo8B.s:542    .text.startup.main:0000000000000310 .L0 
+C:\WINDOWS\ccZbYo8B.s:547    .text.startup.main:0000000000000314 .L0 
+C:\WINDOWS\ccZbYo8B.s:554    .text.startup.main:0000000000000324 .L0 
+C:\WINDOWS\ccZbYo8B.s:555    .text.startup.main:0000000000000324 .L0 
+C:\WINDOWS\ccZbYo8B.s:557    .text.startup.main:0000000000000328 .L0 
+C:\WINDOWS\ccZbYo8B.s:560    .text.startup.main:000000000000032c .L0 
+C:\WINDOWS\ccZbYo8B.s:562    .text.startup.main:0000000000000330 .L0 
+C:\WINDOWS\ccZbYo8B.s:563    .text.startup.main:0000000000000330 .L0 
+C:\WINDOWS\ccZbYo8B.s:566    .text.startup.main:0000000000000332 .L0 
+C:\WINDOWS\ccZbYo8B.s:567    .text.startup.main:0000000000000332 .L0 
+C:\WINDOWS\ccZbYo8B.s:572    .text.startup.main:0000000000000338 .L0 
+C:\WINDOWS\ccZbYo8B.s:573    .text.startup.main:0000000000000338 .L0 
+C:\WINDOWS\ccZbYo8B.s:574    .text.startup.main:0000000000000338 .L0 
+C:\WINDOWS\ccZbYo8B.s:576    .text.startup.main:000000000000033a .L0 
+C:\WINDOWS\ccZbYo8B.s:582    .text.startup.main:000000000000034a .L0 
+C:\WINDOWS\ccZbYo8B.s:583    .text.startup.main:000000000000034a .L0 
+C:\WINDOWS\ccZbYo8B.s:588    .text.startup.main:0000000000000350 .L0 
+C:\WINDOWS\ccZbYo8B.s:589    .text.startup.main:0000000000000350 .L0 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 39
+
+
+C:\WINDOWS\ccZbYo8B.s:592    .text.startup.main:0000000000000358 .L0 
+C:\WINDOWS\ccZbYo8B.s:594    .text.startup.main:000000000000035c .L0 
+C:\WINDOWS\ccZbYo8B.s:599    .text.startup.main:000000000000036c .L0 
+C:\WINDOWS\ccZbYo8B.s:600    .text.startup.main:000000000000036c .L0 
+C:\WINDOWS\ccZbYo8B.s:604    .text.startup.main:0000000000000372 .L0 
+C:\WINDOWS\ccZbYo8B.s:605    .text.startup.main:0000000000000372 .L0 
+C:\WINDOWS\ccZbYo8B.s:607    .text.startup.main:0000000000000374 .L0 
+C:\WINDOWS\ccZbYo8B.s:610    .text.startup.main:000000000000037c .L0 
+C:\WINDOWS\ccZbYo8B.s:611    .text.startup.main:000000000000037c .L0 
+C:\WINDOWS\ccZbYo8B.s:613    .text.startup.main:000000000000037e .L0 
+C:\WINDOWS\ccZbYo8B.s:621    .text.startup.main:0000000000000390 .L0 
+C:\WINDOWS\ccZbYo8B.s:622    .text.startup.main:0000000000000390 .L0 
+C:\WINDOWS\ccZbYo8B.s:625    .text.startup.main:0000000000000398 .L0 
+C:\WINDOWS\ccZbYo8B.s:627    .text.startup.main:000000000000039a .L0 
+C:\WINDOWS\ccZbYo8B.s:629    .text.startup.main:000000000000039e .L0 
+C:\WINDOWS\ccZbYo8B.s:630    .text.startup.main:000000000000039e .L0 
+C:\WINDOWS\ccZbYo8B.s:636    .text.startup.main:00000000000003aa .L0 
+C:\WINDOWS\ccZbYo8B.s:643    .text.startup.main:00000000000003ba .L0 
+C:\WINDOWS\ccZbYo8B.s:644    .text.startup.main:00000000000003ba .L0 
+C:\WINDOWS\ccZbYo8B.s:646    .text.startup.main:00000000000003bc .L0 
+C:\WINDOWS\ccZbYo8B.s:648    .text.startup.main:00000000000003be .L0 
+C:\WINDOWS\ccZbYo8B.s:650    .text.startup.main:00000000000003c0 .L0 
+C:\WINDOWS\ccZbYo8B.s:653    .text.startup.main:00000000000003c4 .L0 
+C:\WINDOWS\ccZbYo8B.s:655    .text.startup.main:00000000000003c8 .L0 
+C:\WINDOWS\ccZbYo8B.s:657    .text.startup.main:00000000000003ca .L0 
+C:\WINDOWS\ccZbYo8B.s:659    .text.startup.main:00000000000003ce .L0 
+C:\WINDOWS\ccZbYo8B.s:661    .text.startup.main:00000000000003d2 .L0 
+C:\WINDOWS\ccZbYo8B.s:662    .text.startup.main:00000000000003d2 .L0 
+C:\WINDOWS\ccZbYo8B.s:666    .text.startup.main:00000000000003d8 .L0 
+C:\WINDOWS\ccZbYo8B.s:669    .text.startup.main:00000000000003da .L0 
+C:\WINDOWS\ccZbYo8B.s:670    .text.startup.main:00000000000003da .L0 
+C:\WINDOWS\ccZbYo8B.s:672    .text.startup.main:00000000000003de .L0 
+C:\WINDOWS\ccZbYo8B.s:676    .text.startup.main:00000000000003e4 .L0 
+C:\WINDOWS\ccZbYo8B.s:677    .text.startup.main:00000000000003e4 .L0 
+C:\WINDOWS\ccZbYo8B.s:679    .text.startup.main:00000000000003e8 .L0 
+C:\WINDOWS\ccZbYo8B.s:682    .text.startup.main:00000000000003f0 .L0 
+C:\WINDOWS\ccZbYo8B.s:684    .text.startup.main:00000000000003f4 .L0 
+C:\WINDOWS\ccZbYo8B.s:688    .text.startup.main:00000000000003fa .L0 
+C:\WINDOWS\ccZbYo8B.s:689    .text.startup.main:00000000000003fa .L0 
+C:\WINDOWS\ccZbYo8B.s:691    .text.startup.main:00000000000003fe .L0 
+C:\WINDOWS\ccZbYo8B.s:693    .text.startup.main:0000000000000400 .L0 
+C:\WINDOWS\ccZbYo8B.s:695    .text.startup.main:0000000000000404 .L0 
+C:\WINDOWS\ccZbYo8B.s:697    .text.startup.main:0000000000000408 .L0 
+C:\WINDOWS\ccZbYo8B.s:702    .text.startup.main:0000000000000416 .L0 
+C:\WINDOWS\ccZbYo8B.s:703    .text.startup.main:0000000000000416 .L0 
+C:\WINDOWS\ccZbYo8B.s:705    .text.startup.main:0000000000000418 .L0 
+C:\WINDOWS\ccZbYo8B.s:711    .text.startup.main:0000000000000426 .L0 
+C:\WINDOWS\ccZbYo8B.s:713    .text.startup.main:0000000000000428 .L0 
+C:\WINDOWS\ccZbYo8B.s:716    .text.startup.main:0000000000000430 .L0 
+C:\WINDOWS\ccZbYo8B.s:717    .text.startup.main:0000000000000430 .L0 
+C:\WINDOWS\ccZbYo8B.s:719    .text.startup.main:0000000000000432 .L0 
+C:\WINDOWS\ccZbYo8B.s:722    .text.startup.main:0000000000000436 .L0 
+C:\WINDOWS\ccZbYo8B.s:724    .text.startup.main:000000000000043a .L0 
+C:\WINDOWS\ccZbYo8B.s:730    .text.startup.main:000000000000044e .L0 
+C:\WINDOWS\ccZbYo8B.s:731    .text.startup.main:000000000000044e .L0 
+C:\WINDOWS\ccZbYo8B.s:734    .text.startup.main:0000000000000456 .L0 
+C:\WINDOWS\ccZbYo8B.s:735    .text.startup.main:0000000000000456 .L0 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 40
+
+
+C:\WINDOWS\ccZbYo8B.s:738    .text.startup.main:000000000000045e .L0 
+C:\WINDOWS\ccZbYo8B.s:739    .text.startup.main:000000000000045e .L0 
+C:\WINDOWS\ccZbYo8B.s:742    .text.startup.main:0000000000000466 .L0 
+C:\WINDOWS\ccZbYo8B.s:743    .text.startup.main:0000000000000466 .L0 
+C:\WINDOWS\ccZbYo8B.s:745    .text.startup.main:000000000000046a .L0 
+C:\WINDOWS\ccZbYo8B.s:750    .text.startup.main:0000000000000476 .L0 
+C:\WINDOWS\ccZbYo8B.s:755    .text.startup.main:0000000000000478 .L0 
+C:\WINDOWS\ccZbYo8B.s:757    .text.startup.main:000000000000047a .L0 
+C:\WINDOWS\ccZbYo8B.s:760    .text.startup.main:000000000000047e .L0 
+C:\WINDOWS\ccZbYo8B.s:761    .text.startup.main:000000000000047e .L0 
+C:\WINDOWS\ccZbYo8B.s:765    .text.startup.main:0000000000000482 .L0 
+C:\WINDOWS\ccZbYo8B.s:766    .text.startup.main:0000000000000482 .L0 
+C:\WINDOWS\ccZbYo8B.s:769    .text.startup.main:0000000000000484 .L0 
+C:\WINDOWS\ccZbYo8B.s:770    .text.startup.main:0000000000000484 .L0 
+C:\WINDOWS\ccZbYo8B.s:773    .text.startup.main:0000000000000486 .L0 
+C:\WINDOWS\ccZbYo8B.s:776    .text.startup.main:0000000000000488 .L0 
+C:\WINDOWS\ccZbYo8B.s:778    .text.startup.main:0000000000000488 .L0 
+C:\WINDOWS\ccZbYo8B.s:779    .text.startup.main:0000000000000488 .L0 
+C:\WINDOWS\ccZbYo8B.s:780    .text.startup.main:0000000000000488 .L0 
+C:\WINDOWS\ccZbYo8B.s:782    .text.startup.main:000000000000048a .L0 
+C:\WINDOWS\ccZbYo8B.s:784    .text.startup.main:000000000000048c .L0 
+C:\WINDOWS\ccZbYo8B.s:788    .text.startup.main:000000000000048e .L0 
+C:\WINDOWS\ccZbYo8B.s:789    .text.startup.main:000000000000048e .L0 
+C:\WINDOWS\ccZbYo8B.s:793    .text.startup.main:0000000000000496 .L0 
+C:\WINDOWS\ccZbYo8B.s:801    .text.startup.main:00000000000004aa .L0 
+C:\WINDOWS\ccZbYo8B.s:804    .text.startup.main:00000000000004ac .L0 
+C:\WINDOWS\ccZbYo8B.s:807    .text.startup.main:00000000000004b4 .L0 
+C:\WINDOWS\ccZbYo8B.s:811    .text.startup.main:00000000000004b8 .L0 
+C:\WINDOWS\ccZbYo8B.s:813    .text.startup.main:00000000000004ba .L0 
+C:\WINDOWS\ccZbYo8B.s:816    .text.startup.main:00000000000004bc .L0 
+C:\WINDOWS\ccZbYo8B.s:818    .text.startup.main:00000000000004be .L0 
+C:\WINDOWS\ccZbYo8B.s:820    .text.startup.main:00000000000004c0 .L0 
+C:\WINDOWS\ccZbYo8B.s:824    .text.startup.main:00000000000004c2 .L0 
+C:\WINDOWS\ccZbYo8B.s:827    .text.startup.main:00000000000004c6 .L0 
+C:\WINDOWS\ccZbYo8B.s:831    .text.startup.main:00000000000004d0 .L0 
+C:\WINDOWS\ccZbYo8B.s:833    .text.startup.main:00000000000004d4 .L0 
+C:\WINDOWS\ccZbYo8B.s:839    .text.startup.main:00000000000004e0 .L0 
+C:\WINDOWS\ccZbYo8B.s:841    .text.startup.main:00000000000004e4 .L0 
+C:\WINDOWS\ccZbYo8B.s:844    .text.startup.main:00000000000004e6 .L0 
+C:\WINDOWS\ccZbYo8B.s:847    .text.startup.main:00000000000004ee .L0 
+C:\WINDOWS\ccZbYo8B.s:850    .text.startup.main:00000000000004f2 .L0 
+C:\WINDOWS\ccZbYo8B.s:855    .text.startup.main:00000000000004f6 .L0 
+C:\WINDOWS\ccZbYo8B.s:858    .text.startup.main:00000000000004fe .L0 
+C:\WINDOWS\ccZbYo8B.s:859    .text.startup.main:00000000000004fe .L0 
+C:\WINDOWS\ccZbYo8B.s:861    .text.startup.main:0000000000000500 .L0 
+C:\WINDOWS\ccZbYo8B.s:864    .text.startup.main:0000000000000506 .L0 
+C:\WINDOWS\ccZbYo8B.s:866    .text.startup.main:000000000000050a .L0 
+C:\WINDOWS\ccZbYo8B.s:876    .text.startup.main:000000000000051e .L0 
+C:\WINDOWS\ccZbYo8B.s:877    .text.startup.main:000000000000051e .L0 
+C:\WINDOWS\ccZbYo8B.s:881    .text.startup.main:0000000000000526 .L0 
+C:\WINDOWS\ccZbYo8B.s:889    .text.startup.main:000000000000052a .L0 
+C:\WINDOWS\ccZbYo8B.s:896    .text.startup.main:0000000000000530 .L0 
+C:\WINDOWS\ccZbYo8B.s:901    .text.startup.main:000000000000053c .L0 
+C:\WINDOWS\ccZbYo8B.s:906    .text.startup.main:000000000000054a .L0 
+C:\WINDOWS\ccZbYo8B.s:907    .text.startup.main:000000000000054a .L0 
+C:\WINDOWS\ccZbYo8B.s:909    .text.startup.main:000000000000054e .L0 
+C:\WINDOWS\ccZbYo8B.s:911    .text.startup.main:0000000000000550 .L0 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 41
+
+
+C:\WINDOWS\ccZbYo8B.s:913    .text.startup.main:0000000000000554 .L0 
+C:\WINDOWS\ccZbYo8B.s:915    .text.startup.main:0000000000000558 .L0 
+C:\WINDOWS\ccZbYo8B.s:917    .text.startup.main:000000000000055c .L0 
+C:\WINDOWS\ccZbYo8B.s:919    .text.startup.main:0000000000000560 .L0 
+C:\WINDOWS\ccZbYo8B.s:921    .text.startup.main:0000000000000564 .L0 
+C:\WINDOWS\ccZbYo8B.s:923    .text.startup.main:0000000000000566 .L0 
+C:\WINDOWS\ccZbYo8B.s:925    .text.startup.main:0000000000000568 .L0 
+C:\WINDOWS\ccZbYo8B.s:926    .text.startup.main:0000000000000568 .L0 
+C:\WINDOWS\ccZbYo8B.s:928    .text.startup.main:000000000000056c .L0 
+C:\WINDOWS\ccZbYo8B.s:930    .text.startup.main:0000000000000570 .L0 
+C:\WINDOWS\ccZbYo8B.s:932    .text.startup.main:0000000000000574 .L0 
+C:\WINDOWS\ccZbYo8B.s:934    .text.startup.main:0000000000000578 .L0 
+C:\WINDOWS\ccZbYo8B.s:936    .text.startup.main:000000000000057c .L0 
+C:\WINDOWS\ccZbYo8B.s:938    .text.startup.main:000000000000057e .L0 
+C:\WINDOWS\ccZbYo8B.s:940    .text.startup.main:0000000000000580 .L0 
+C:\WINDOWS\ccZbYo8B.s:941    .text.startup.main:0000000000000580 .L0 
+C:\WINDOWS\ccZbYo8B.s:943    .text.startup.main:0000000000000584 .L0 
+C:\WINDOWS\ccZbYo8B.s:945    .text.startup.main:0000000000000588 .L0 
+C:\WINDOWS\ccZbYo8B.s:947    .text.startup.main:000000000000058c .L0 
+C:\WINDOWS\ccZbYo8B.s:949    .text.startup.main:0000000000000590 .L0 
+C:\WINDOWS\ccZbYo8B.s:951    .text.startup.main:0000000000000594 .L0 
+C:\WINDOWS\ccZbYo8B.s:953    .text.startup.main:0000000000000596 .L0 
+C:\WINDOWS\ccZbYo8B.s:955    .text.startup.main:0000000000000598 .L0 
+C:\WINDOWS\ccZbYo8B.s:956    .text.startup.main:0000000000000598 .L0 
+C:\WINDOWS\ccZbYo8B.s:958    .text.startup.main:000000000000059a .L0 
+C:\WINDOWS\ccZbYo8B.s:960    .text.startup.main:000000000000059c .L0 
+C:\WINDOWS\ccZbYo8B.s:962    .text.startup.main:000000000000059e .L0 
+C:\WINDOWS\ccZbYo8B.s:964    .text.startup.main:00000000000005a2 .L0 
+C:\WINDOWS\ccZbYo8B.s:966    .text.startup.main:00000000000005a6 .L0 
+C:\WINDOWS\ccZbYo8B.s:968    .text.startup.main:00000000000005a8 .L0 
+C:\WINDOWS\ccZbYo8B.s:972    .text.startup.main:00000000000005b2 .L0 
+C:\WINDOWS\ccZbYo8B.s:980    .text.startup.main:00000000000005c6 .L0 
+C:\WINDOWS\ccZbYo8B.s:981    .text.startup.main:00000000000005c6 .L0 
+C:\WINDOWS\ccZbYo8B.s:983    .text.startup.main:00000000000005c8 .L0 
+C:\WINDOWS\ccZbYo8B.s:986    .text.startup.main:00000000000005ce .L0 
+C:\WINDOWS\ccZbYo8B.s:988    .text.startup.main:00000000000005d0 .L0 
+C:\WINDOWS\ccZbYo8B.s:994    .text.startup.main:00000000000005e2 .L0 
+C:\WINDOWS\ccZbYo8B.s:995    .text.startup.main:00000000000005e2 .L0 
+C:\WINDOWS\ccZbYo8B.s:997    .text.startup.main:00000000000005e4 .L0 
+C:\WINDOWS\ccZbYo8B.s:1000   .text.startup.main:00000000000005e6 .L0 
+C:\WINDOWS\ccZbYo8B.s:1007   .text.startup.main:00000000000005f8 .L0 
+C:\WINDOWS\ccZbYo8B.s:1008   .text.startup.main:00000000000005f8 .L0 
+C:\WINDOWS\ccZbYo8B.s:1009   .text.startup.main:00000000000005f8 .L0 
+C:\WINDOWS\ccZbYo8B.s:1011   .text.startup.main:00000000000005fa .L0 
+C:\WINDOWS\ccZbYo8B.s:1013   .text.startup.main:00000000000005fc .L0 
+C:\WINDOWS\ccZbYo8B.s:1015   .text.startup.main:00000000000005fe .L0 
+C:\WINDOWS\ccZbYo8B.s:1018   .text.startup.main:0000000000000602 .L0 
+C:\WINDOWS\ccZbYo8B.s:1019   .text.startup.main:0000000000000602 .L0 
+C:\WINDOWS\ccZbYo8B.s:1021   .text.startup.main:0000000000000604 .L0 
+C:\WINDOWS\ccZbYo8B.s:1023   .text.startup.main:0000000000000606 .L0 
+C:\WINDOWS\ccZbYo8B.s:1026   .text.startup.main:000000000000060a .L0 
+C:\WINDOWS\ccZbYo8B.s:1028   .text.startup.main:000000000000060e .L0 
+C:\WINDOWS\ccZbYo8B.s:1030   .text.startup.main:0000000000000610 .L0 
+C:\WINDOWS\ccZbYo8B.s:1035   .text.startup.main:000000000000061a .L0 
+C:\WINDOWS\ccZbYo8B.s:1041   .text.startup.main:0000000000000628 .L0 
+C:\WINDOWS\ccZbYo8B.s:1046   .text.startup.main:0000000000000634 .L0 
+C:\WINDOWS\ccZbYo8B.s:1047   .text.startup.main:0000000000000634 .L0 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 42
+
+
+C:\WINDOWS\ccZbYo8B.s:1051   .text.startup.main:0000000000000638 .L0 
+C:\WINDOWS\ccZbYo8B.s:1052   .text.startup.main:0000000000000638 .L0 
+C:\WINDOWS\ccZbYo8B.s:1055   .text.startup.main:0000000000000640 .L0 
+C:\WINDOWS\ccZbYo8B.s:1057   .text.startup.main:0000000000000644 .L0 
+C:\WINDOWS\ccZbYo8B.s:1059   .text.startup.main:0000000000000648 .L0 
+C:\WINDOWS\ccZbYo8B.s:1061   .text.startup.main:000000000000064a .L0 
+C:\WINDOWS\ccZbYo8B.s:1062   .text.startup.main:000000000000064a .L0 
+C:\WINDOWS\ccZbYo8B.s:1065   .text.startup.main:0000000000000652 .L0 
+C:\WINDOWS\ccZbYo8B.s:1067   .text.startup.main:0000000000000656 .L0 
+C:\WINDOWS\ccZbYo8B.s:1069   .text.startup.main:000000000000065a .L0 
+C:\WINDOWS\ccZbYo8B.s:1071   .text.startup.main:000000000000065c .L0 
+C:\WINDOWS\ccZbYo8B.s:1072   .text.startup.main:000000000000065c .L0 
+C:\WINDOWS\ccZbYo8B.s:1075   .text.startup.main:0000000000000664 .L0 
+C:\WINDOWS\ccZbYo8B.s:1077   .text.startup.main:0000000000000668 .L0 
+C:\WINDOWS\ccZbYo8B.s:1079   .text.startup.main:000000000000066a .L0 
+C:\WINDOWS\ccZbYo8B.s:1081   .text.startup.main:000000000000066c .L0 
+C:\WINDOWS\ccZbYo8B.s:1082   .text.startup.main:000000000000066c .L0 
+C:\WINDOWS\ccZbYo8B.s:1085   .text.startup.main:0000000000000672 .L0 
+C:\WINDOWS\ccZbYo8B.s:1089   .text.startup.main:000000000000067e .L0 
+C:\WINDOWS\ccZbYo8B.s:1090   .text.startup.main:000000000000067e .L0 
+C:\WINDOWS\ccZbYo8B.s:1093   .text.startup.main:0000000000000684 .L0 
+C:\WINDOWS\ccZbYo8B.s:1097   .text.startup.main:0000000000000690 .L0 
+C:\WINDOWS\ccZbYo8B.s:1098   .text.startup.main:0000000000000690 .L0 
+C:\WINDOWS\ccZbYo8B.s:1101   .text.startup.main:0000000000000696 .L0 
+C:\WINDOWS\ccZbYo8B.s:1105   .text.startup.main:00000000000006a2 .L0 
+C:\WINDOWS\ccZbYo8B.s:1106   .text.startup.main:00000000000006a2 .L0 
+C:\WINDOWS\ccZbYo8B.s:1109   .text.startup.main:00000000000006a8 .L0 
+C:\WINDOWS\ccZbYo8B.s:1113   .text.startup.main:00000000000006b4 .L0 
+C:\WINDOWS\ccZbYo8B.s:1114   .text.startup.main:00000000000006b4 .L0 
+C:\WINDOWS\ccZbYo8B.s:1117   .text.startup.main:00000000000006ba .L0 
+C:\WINDOWS\ccZbYo8B.s:1121   .text.startup.main:00000000000006c6 .L0 
+C:\WINDOWS\ccZbYo8B.s:1122   .text.startup.main:00000000000006c6 .L0 
+C:\WINDOWS\ccZbYo8B.s:1125   .text.startup.main:00000000000006cc .L0 
+C:\WINDOWS\ccZbYo8B.s:1129   .text.startup.main:00000000000006d8 .L0 
+C:\WINDOWS\ccZbYo8B.s:1132   .text.startup.main:00000000000006dc .L0 
+C:\WINDOWS\ccZbYo8B.s:1135   .text.startup.main:00000000000006e4 .L0 
+C:\WINDOWS\ccZbYo8B.s:1138   .text.startup.main:00000000000006e6 .L0 
+C:\WINDOWS\ccZbYo8B.s:1139   .text.startup.main:00000000000006e6 .L0 
+C:\WINDOWS\ccZbYo8B.s:1142   .text.startup.main:00000000000006ee .L0 
+C:\WINDOWS\ccZbYo8B.s:1144   .text.startup.main:00000000000006f2 .L0 
+C:\WINDOWS\ccZbYo8B.s:1146   .text.startup.main:00000000000006f6 .L0 
+C:\WINDOWS\ccZbYo8B.s:1148   .text.startup.main:00000000000006f8 .L0 
+C:\WINDOWS\ccZbYo8B.s:1149   .text.startup.main:00000000000006f8 .L0 
+C:\WINDOWS\ccZbYo8B.s:1152   .text.startup.main:0000000000000700 .L0 
+C:\WINDOWS\ccZbYo8B.s:1154   .text.startup.main:0000000000000704 .L0 
+C:\WINDOWS\ccZbYo8B.s:1156   .text.startup.main:0000000000000708 .L0 
+C:\WINDOWS\ccZbYo8B.s:1158   .text.startup.main:000000000000070a .L0 
+C:\WINDOWS\ccZbYo8B.s:1159   .text.startup.main:000000000000070a .L0 
+C:\WINDOWS\ccZbYo8B.s:1162   .text.startup.main:0000000000000712 .L0 
+C:\WINDOWS\ccZbYo8B.s:1164   .text.startup.main:0000000000000716 .L0 
+C:\WINDOWS\ccZbYo8B.s:1166   .text.startup.main:0000000000000718 .L0 
+C:\WINDOWS\ccZbYo8B.s:1171   .text.startup.main:0000000000000726 .L0 
+C:\WINDOWS\ccZbYo8B.s:1176   .text.startup.main:0000000000000734 .L0 
+C:\WINDOWS\ccZbYo8B.s:1181   .text.startup.main:0000000000000742 .L0 
+C:\WINDOWS\ccZbYo8B.s:1183   .text.startup.main:0000000000000748 .L0 
+C:\WINDOWS\ccZbYo8B.s:1188   .rodata:0000000000000000 .LANCHOR0
+C:\WINDOWS\ccZbYo8B.s:107    .text.rtcInit:0000000000000094 .L0 
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 43
+
+
+C:\WINDOWS\ccZbYo8B.s:1186   .text.startup.main:0000000000000748 .L0 
+                     .debug_frame:0000000000000000 .L0 
+C:\WINDOWS\ccZbYo8B.s:92     .text.rtcInit:000000000000008e .L1
+C:\WINDOWS\ccZbYo8B.s:1229   .rodata.main.str1.4:0000000000000008 .LC5
+C:\WINDOWS\ccZbYo8B.s:1231   .rodata.main.str1.4:0000000000000010 .LC6
+C:\WINDOWS\ccZbYo8B.s:1233   .rodata.main.str1.4:0000000000000018 .LC7
+C:\WINDOWS\ccZbYo8B.s:1227   .rodata.main.str1.4:0000000000000004 .LC4
+C:\WINDOWS\ccZbYo8B.s:1225   .rodata.main.str1.4:0000000000000000 .LC3
+C:\WINDOWS\ccZbYo8B.s:473    .text.startup.main:0000000000000292 .L6
+C:\WINDOWS\ccZbYo8B.s:521    .text.startup.main:00000000000002e8 .L7
+C:\WINDOWS\ccZbYo8B.s:586    .text.startup.main:0000000000000350 .L8
+C:\WINDOWS\ccZbYo8B.s:545    .text.startup.main:0000000000000314 .L9
+C:\WINDOWS\ccZbYo8B.s:287    .text.startup.main:0000000000000130 .L5
+C:\WINDOWS\ccZbYo8B.s:468    .text.startup.main:0000000000000286 .L44
+C:\WINDOWS\ccZbYo8B.s:667    .text.startup.main:00000000000003da .L11
+C:\WINDOWS\ccZbYo8B.s:674    .text.startup.main:00000000000003e4 .L12
+C:\WINDOWS\ccZbYo8B.s:686    .text.startup.main:00000000000003fa .L13
+C:\WINDOWS\ccZbYo8B.s:564    .text.startup.main:0000000000000332 .L17
+C:\WINDOWS\ccZbYo8B.s:619    .text.startup.main:0000000000000390 .L26
+C:\WINDOWS\ccZbYo8B.s:1033   .text.startup.main:000000000000061a .L27
+C:\WINDOWS\ccZbYo8B.s:1049   .text.startup.main:0000000000000638 .L28
+C:\WINDOWS\ccZbYo8B.s:893    .text.startup.main:0000000000000530 .L29
+C:\WINDOWS\ccZbYo8B.s:998    .text.startup.main:00000000000005e6 .L30
+C:\WINDOWS\ccZbYo8B.s:1006   .text.startup.main:00000000000005f8 .L34
+C:\WINDOWS\ccZbYo8B.s:558    .text.startup.main:000000000000032c .L49
+C:\WINDOWS\ccZbYo8B.s:571    .text.startup.main:0000000000000338 .L15
+C:\WINDOWS\ccZbYo8B.s:853    .text.startup.main:00000000000004f6 .L18
+C:\WINDOWS\ccZbYo8B.s:873    .text.startup.main:000000000000051e .L21
+C:\WINDOWS\ccZbYo8B.s:786    .text.startup.main:000000000000048e .L22
+C:\WINDOWS\ccZbYo8B.s:885    .text.startup.main:000000000000052a .L23
+C:\WINDOWS\ccZbYo8B.s:821    .text.startup.main:00000000000004c2 .L25
+C:\WINDOWS\ccZbYo8B.s:748    .text.startup.main:0000000000000476 .L20
+C:\WINDOWS\ccZbYo8B.s:751    .text.startup.main:0000000000000478 .L19
+C:\WINDOWS\ccZbYo8B.s:837    .text.startup.main:00000000000004e0 .L45
+C:\WINDOWS\ccZbYo8B.s:1136   .text.startup.main:00000000000006e6 .L32
+C:\WINDOWS\ccZbYo8B.s:641    .text.startup.main:00000000000003ba .L31
+C:\WINDOWS\ccZbYo8B.s:1130   .text.startup.main:00000000000006dc .L46
+C:\WINDOWS\ccZbYo8B.s:4469   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+C:\WINDOWS\ccZbYo8B.s:5615   .debug_str:000000000000015e .LASF241
+C:\WINDOWS\ccZbYo8B.s:5833   .debug_str:00000000000006c9 .LASF242
+C:\WINDOWS\ccZbYo8B.s:5689   .debug_str:0000000000000381 .LASF243
+C:\WINDOWS\ccZbYo8B.s:5505   .debug_ranges:0000000000000000 .Ldebug_ranges0
+C:\WINDOWS\ccZbYo8B.s:5543   .debug_line:0000000000000000 .Ldebug_line0
+C:\WINDOWS\ccZbYo8B.s:5853   .debug_str:0000000000000724 .LASF0
+C:\WINDOWS\ccZbYo8B.s:5677   .debug_str:000000000000033a .LASF1
+C:\WINDOWS\ccZbYo8B.s:5631   .debug_str:0000000000000244 .LASF6
+C:\WINDOWS\ccZbYo8B.s:5687   .debug_str:0000000000000373 .LASF2
+C:\WINDOWS\ccZbYo8B.s:5957   .debug_str:000000000000091f .LASF3
+C:\WINDOWS\ccZbYo8B.s:6015   .debug_str:0000000000000a2d .LASF4
+C:\WINDOWS\ccZbYo8B.s:5647   .debug_str:00000000000002a5 .LASF5
+C:\WINDOWS\ccZbYo8B.s:5805   .debug_str:0000000000000644 .LASF7
+C:\WINDOWS\ccZbYo8B.s:5759   .debug_str:0000000000000547 .LASF8
+C:\WINDOWS\ccZbYo8B.s:5813   .debug_str:000000000000066c .LASF9
+C:\WINDOWS\ccZbYo8B.s:5915   .debug_str:000000000000084e .LASF10
+C:\WINDOWS\ccZbYo8B.s:5679   .debug_str:0000000000000346 .LASF11
+C:\WINDOWS\ccZbYo8B.s:5999   .debug_str:00000000000009de .LASF12
+C:\WINDOWS\ccZbYo8B.s:5769   .debug_str:000000000000057b .LASF177
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 44
+
+
+C:\WINDOWS\ccZbYo8B.s:5937   .debug_str:00000000000008c7 .LASF13
+C:\WINDOWS\ccZbYo8B.s:5943   .debug_str:00000000000008dd .LASF14
+C:\WINDOWS\ccZbYo8B.s:5945   .debug_str:00000000000008e6 .LASF15
+C:\WINDOWS\ccZbYo8B.s:5855   .debug_str:0000000000000731 .LASF16
+C:\WINDOWS\ccZbYo8B.s:5989   .debug_str:00000000000009b6 .LASF17
+C:\WINDOWS\ccZbYo8B.s:5793   .debug_str:00000000000005f3 .LASF18
+C:\WINDOWS\ccZbYo8B.s:5589   .debug_str:00000000000000d7 .LASF19
+C:\WINDOWS\ccZbYo8B.s:5591   .debug_str:00000000000000e2 .LASF20
+C:\WINDOWS\ccZbYo8B.s:5593   .debug_str:00000000000000ed .LASF21
+C:\WINDOWS\ccZbYo8B.s:5595   .debug_str:00000000000000f8 .LASF22
+C:\WINDOWS\ccZbYo8B.s:5597   .debug_str:0000000000000103 .LASF23
+C:\WINDOWS\ccZbYo8B.s:5599   .debug_str:000000000000010e .LASF24
+C:\WINDOWS\ccZbYo8B.s:5885   .debug_str:00000000000007c8 .LASF25
+C:\WINDOWS\ccZbYo8B.s:5669   .debug_str:000000000000030c .LASF26
+C:\WINDOWS\ccZbYo8B.s:5671   .debug_str:0000000000000315 .LASF27
+C:\WINDOWS\ccZbYo8B.s:5607   .debug_str:000000000000013c .LASF28
+C:\WINDOWS\ccZbYo8B.s:5609   .debug_str:0000000000000147 .LASF29
+C:\WINDOWS\ccZbYo8B.s:5573   .debug_str:000000000000008b .LASF30
+C:\WINDOWS\ccZbYo8B.s:5575   .debug_str:0000000000000095 .LASF31
+C:\WINDOWS\ccZbYo8B.s:6001   .debug_str:00000000000009e7 .LASF32
+C:\WINDOWS\ccZbYo8B.s:6003   .debug_str:00000000000009f0 .LASF33
+C:\WINDOWS\ccZbYo8B.s:5705   .debug_str:0000000000000428 .LASF34
+C:\WINDOWS\ccZbYo8B.s:5707   .debug_str:0000000000000431 .LASF35
+C:\WINDOWS\ccZbYo8B.s:5973   .debug_str:0000000000000972 .LASF36
+C:\WINDOWS\ccZbYo8B.s:5559   .debug_str:000000000000003e .LASF37
+C:\WINDOWS\ccZbYo8B.s:5681   .debug_str:000000000000034e .LASF38
+C:\WINDOWS\ccZbYo8B.s:5897   .debug_str:0000000000000801 .LASF39
+C:\WINDOWS\ccZbYo8B.s:5773   .debug_str:0000000000000593 .LASF40
+C:\WINDOWS\ccZbYo8B.s:5815   .debug_str:000000000000067a .LASF41
+C:\WINDOWS\ccZbYo8B.s:5817   .debug_str:0000000000000684 .LASF42
+C:\WINDOWS\ccZbYo8B.s:5819   .debug_str:000000000000068e .LASF43
+C:\WINDOWS\ccZbYo8B.s:5821   .debug_str:0000000000000698 .LASF44
+C:\WINDOWS\ccZbYo8B.s:5823   .debug_str:00000000000006a2 .LASF45
+C:\WINDOWS\ccZbYo8B.s:5809   .debug_str:000000000000065a .LASF46
+C:\WINDOWS\ccZbYo8B.s:5811   .debug_str:0000000000000663 .LASF47
+C:\WINDOWS\ccZbYo8B.s:5587   .debug_str:00000000000000cc .LASF48
+C:\WINDOWS\ccZbYo8B.s:5667   .debug_str:0000000000000303 .LASF49
+C:\WINDOWS\ccZbYo8B.s:5605   .debug_str:0000000000000131 .LASF50
+C:\WINDOWS\ccZbYo8B.s:5649   .debug_str:00000000000002ae .LASF51
+C:\WINDOWS\ccZbYo8B.s:5839   .debug_str:00000000000006e9 .LASF52
+C:\WINDOWS\ccZbYo8B.s:5695   .debug_str:00000000000003e1 .LASF53
+C:\WINDOWS\ccZbYo8B.s:5731   .debug_str:00000000000004b7 .LASF54
+C:\WINDOWS\ccZbYo8B.s:5601   .debug_str:0000000000000119 .LASF55
+C:\WINDOWS\ccZbYo8B.s:6031   .debug_str:0000000000000a94 .LASF56
+C:\WINDOWS\ccZbYo8B.s:5803   .debug_str:0000000000000638 .LASF57
+C:\WINDOWS\ccZbYo8B.s:6037   .debug_str:0000000000000ab6 .LASF58
+C:\WINDOWS\ccZbYo8B.s:5675   .debug_str:000000000000032b .LASF59
+C:\WINDOWS\ccZbYo8B.s:5967   .debug_str:0000000000000954 .LASF60
+C:\WINDOWS\ccZbYo8B.s:5571   .debug_str:000000000000007d .LASF61
+C:\WINDOWS\ccZbYo8B.s:5843   .debug_str:00000000000006f9 .LASF62
+C:\WINDOWS\ccZbYo8B.s:5729   .debug_str:00000000000004a7 .LASF63
+C:\WINDOWS\ccZbYo8B.s:6007   .debug_str:0000000000000a01 .LASF64
+C:\WINDOWS\ccZbYo8B.s:5703   .debug_str:0000000000000418 .LASF65
+C:\WINDOWS\ccZbYo8B.s:5683   .debug_str:0000000000000356 .LASF66
+C:\WINDOWS\ccZbYo8B.s:5711   .debug_str:0000000000000443 .LASF67
+C:\WINDOWS\ccZbYo8B.s:5893   .debug_str:00000000000007eb .LASF68
+C:\WINDOWS\ccZbYo8B.s:5947   .debug_str:00000000000008ef .LASF69
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 45
+
+
+C:\WINDOWS\ccZbYo8B.s:6009   .debug_str:0000000000000a12 .LASF70
+C:\WINDOWS\ccZbYo8B.s:5903   .debug_str:0000000000000815 .LASF71
+C:\WINDOWS\ccZbYo8B.s:5547   .debug_str:000000000000000d .LASF72
+C:\WINDOWS\ccZbYo8B.s:5629   .debug_str:000000000000023e .LASF73
+C:\WINDOWS\ccZbYo8B.s:5905   .debug_str:000000000000081d .LASF74
+C:\WINDOWS\ccZbYo8B.s:5887   .debug_str:00000000000007d2 .LASF75
+C:\WINDOWS\ccZbYo8B.s:5551   .debug_str:0000000000000021 .LASF76
+C:\WINDOWS\ccZbYo8B.s:5939   .debug_str:00000000000008cd .LASF77
+C:\WINDOWS\ccZbYo8B.s:5995   .debug_str:00000000000009ce .LASF78
+C:\WINDOWS\ccZbYo8B.s:5775   .debug_str:000000000000059a .LASF79
+C:\WINDOWS\ccZbYo8B.s:5933   .debug_str:00000000000008b7 .LASF80
+C:\WINDOWS\ccZbYo8B.s:5785   .debug_str:00000000000005cd .LASF85
+C:\WINDOWS\ccZbYo8B.s:5949   .debug_str:00000000000008f6 .LASF81
+C:\WINDOWS\ccZbYo8B.s:5791   .debug_str:00000000000005eb .LASF82
+C:\WINDOWS\ccZbYo8B.s:5847   .debug_str:000000000000070f .LASF83
+C:\WINDOWS\ccZbYo8B.s:5743   .debug_str:0000000000000501 .LASF84
+C:\WINDOWS\ccZbYo8B.s:5579   .debug_str:00000000000000a7 .LASF86
+C:\WINDOWS\ccZbYo8B.s:5585   .debug_str:00000000000000c3 .LASF87
+C:\WINDOWS\ccZbYo8B.s:6033   .debug_str:0000000000000aa0 .LASF88
+C:\WINDOWS\ccZbYo8B.s:6017   .debug_str:0000000000000a40 .LASF89
+C:\WINDOWS\ccZbYo8B.s:5865   .debug_str:0000000000000767 .LASF90
+C:\WINDOWS\ccZbYo8B.s:5665   .debug_str:00000000000002fa .LASF91
+C:\WINDOWS\ccZbYo8B.s:5969   .debug_str:0000000000000963 .LASF92
+C:\WINDOWS\ccZbYo8B.s:5891   .debug_str:00000000000007e1 .LASF93
+C:\WINDOWS\ccZbYo8B.s:5895   .debug_str:00000000000007f7 .LASF94
+C:\WINDOWS\ccZbYo8B.s:6029   .debug_str:0000000000000a89 .LASF95
+C:\WINDOWS\ccZbYo8B.s:5639   .debug_str:0000000000000266 .LASF96
+C:\WINDOWS\ccZbYo8B.s:6027   .debug_str:0000000000000a81 .LASF97
+C:\WINDOWS\ccZbYo8B.s:5917   .debug_str:0000000000000865 .LASF98
+C:\WINDOWS\ccZbYo8B.s:5963   .debug_str:000000000000093c .LASF99
+C:\WINDOWS\ccZbYo8B.s:5987   .debug_str:00000000000009ae .LASF100
+C:\WINDOWS\ccZbYo8B.s:5883   .debug_str:00000000000007c0 .LASF101
+C:\WINDOWS\ccZbYo8B.s:5981   .debug_str:000000000000099b .LASF102
+C:\WINDOWS\ccZbYo8B.s:5717   .debug_str:000000000000045f .LASF103
+C:\WINDOWS\ccZbYo8B.s:5983   .debug_str:00000000000009a0 .LASF104
+C:\WINDOWS\ccZbYo8B.s:5925   .debug_str:000000000000088a .LASF105
+C:\WINDOWS\ccZbYo8B.s:5657   .debug_str:00000000000002d5 .LASF106
+C:\WINDOWS\ccZbYo8B.s:5763   .debug_str:0000000000000560 .LASF107
+C:\WINDOWS\ccZbYo8B.s:5881   .debug_str:00000000000007b9 .LASF108
+C:\WINDOWS\ccZbYo8B.s:5637   .debug_str:0000000000000260 .LASF109
+C:\WINDOWS\ccZbYo8B.s:5977   .debug_str:000000000000098d .LASF110
+C:\WINDOWS\ccZbYo8B.s:5737   .debug_str:00000000000004e3 .LASF111
+C:\WINDOWS\ccZbYo8B.s:5555   .debug_str:000000000000002e .LASF112
+C:\WINDOWS\ccZbYo8B.s:5561   .debug_str:0000000000000046 .LASF113
+C:\WINDOWS\ccZbYo8B.s:5901   .debug_str:000000000000080f .LASF114
+C:\WINDOWS\ccZbYo8B.s:5719   .debug_str:0000000000000464 .LASF115
+C:\WINDOWS\ccZbYo8B.s:5869   .debug_str:0000000000000776 .LASF116
+C:\WINDOWS\ccZbYo8B.s:5583   .debug_str:00000000000000bd .LASF117
+C:\WINDOWS\ccZbYo8B.s:5923   .debug_str:0000000000000881 .LASF118
+C:\WINDOWS\ccZbYo8B.s:5751   .debug_str:000000000000052b .LASF119
+C:\WINDOWS\ccZbYo8B.s:5951   .debug_str:00000000000008fc .LASF120
+C:\WINDOWS\ccZbYo8B.s:5613   .debug_str:0000000000000158 .LASF121
+C:\WINDOWS\ccZbYo8B.s:5875   .debug_str:0000000000000792 .LASF122
+C:\WINDOWS\ccZbYo8B.s:5767   .debug_str:0000000000000573 .LASF123
+C:\WINDOWS\ccZbYo8B.s:5697   .debug_str:00000000000003eb .LASF124
+C:\WINDOWS\ccZbYo8B.s:5777   .debug_str:00000000000005ac .LASF125
+C:\WINDOWS\ccZbYo8B.s:5727   .debug_str:00000000000004a0 .LASF126
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 46
+
+
+C:\WINDOWS\ccZbYo8B.s:5921   .debug_str:0000000000000879 .LASF127
+C:\WINDOWS\ccZbYo8B.s:5871   .debug_str:000000000000077c .LASF128
+C:\WINDOWS\ccZbYo8B.s:5979   .debug_str:0000000000000996 .LASF129
+C:\WINDOWS\ccZbYo8B.s:5807   .debug_str:000000000000064f .LASF130
+C:\WINDOWS\ccZbYo8B.s:5693   .debug_str:00000000000003c8 .LASF131
+C:\WINDOWS\ccZbYo8B.s:5993   .debug_str:00000000000009c6 .LASF132
+C:\WINDOWS\ccZbYo8B.s:5765   .debug_str:0000000000000568 .LASF133
+C:\WINDOWS\ccZbYo8B.s:5797   .debug_str:0000000000000607 .LASF134
+C:\WINDOWS\ccZbYo8B.s:6005   .debug_str:00000000000009f9 .LASF135
+C:\WINDOWS\ccZbYo8B.s:5653   .debug_str:00000000000002c4 .LASF136
+C:\WINDOWS\ccZbYo8B.s:5757   .debug_str:0000000000000542 .LASF137
+C:\WINDOWS\ccZbYo8B.s:5837   .debug_str:00000000000006df .LASF138
+C:\WINDOWS\ccZbYo8B.s:5569   .debug_str:0000000000000075 .LASF139
+C:\WINDOWS\ccZbYo8B.s:5753   .debug_str:0000000000000533 .LASF140
+C:\WINDOWS\ccZbYo8B.s:5867   .debug_str:0000000000000771 .LASF141
+C:\WINDOWS\ccZbYo8B.s:5799   .debug_str:0000000000000611 .LASF142
+C:\WINDOWS\ccZbYo8B.s:5747   .debug_str:0000000000000515 .LASF143
+C:\WINDOWS\ccZbYo8B.s:5827   .debug_str:00000000000006b3 .LASF144
+C:\WINDOWS\ccZbYo8B.s:5553   .debug_str:0000000000000029 .LASF145
+C:\WINDOWS\ccZbYo8B.s:5713   .debug_str:0000000000000453 .LASF146
+C:\WINDOWS\ccZbYo8B.s:5935   .debug_str:00000000000008c0 .LASF147
+C:\WINDOWS\ccZbYo8B.s:5845   .debug_str:0000000000000709 .LASF148
+C:\WINDOWS\ccZbYo8B.s:5825   .debug_str:00000000000006ac .LASF149
+C:\WINDOWS\ccZbYo8B.s:5841   .debug_str:00000000000006f3 .LASF150
+C:\WINDOWS\ccZbYo8B.s:5919   .debug_str:0000000000000871 .LASF151
+C:\WINDOWS\ccZbYo8B.s:5899   .debug_str:0000000000000809 .LASF152
+C:\WINDOWS\ccZbYo8B.s:5617   .debug_str:00000000000001e6 .LASF153
+C:\WINDOWS\ccZbYo8B.s:6013   .debug_str:0000000000000a28 .LASF154
+C:\WINDOWS\ccZbYo8B.s:5673   .debug_str:000000000000031e .LASF155
+C:\WINDOWS\ccZbYo8B.s:5927   .debug_str:0000000000000890 .LASF156
+C:\WINDOWS\ccZbYo8B.s:5567   .debug_str:0000000000000068 .LASF157
+C:\WINDOWS\ccZbYo8B.s:5659   .debug_str:00000000000002db .LASF158
+C:\WINDOWS\ccZbYo8B.s:5835   .debug_str:00000000000006d0 .LASF159
+C:\WINDOWS\ccZbYo8B.s:5877   .debug_str:000000000000079b .LASF160
+C:\WINDOWS\ccZbYo8B.s:5941   .debug_str:00000000000008d8 .LASF161
+C:\WINDOWS\ccZbYo8B.s:5955   .debug_str:0000000000000912 .LASF162
+C:\WINDOWS\ccZbYo8B.s:5911   .debug_str:0000000000000833 .LASF163
+C:\WINDOWS\ccZbYo8B.s:5873   .debug_str:0000000000000784 .LASF164
+C:\WINDOWS\ccZbYo8B.s:5907   .debug_str:0000000000000824 .LASF165
+C:\WINDOWS\ccZbYo8B.s:5779   .debug_str:00000000000005b3 .LASF166
+C:\WINDOWS\ccZbYo8B.s:6035   .debug_str:0000000000000aa9 .LASF167
+C:\WINDOWS\ccZbYo8B.s:5645   .debug_str:0000000000000297 .LASF168
+C:\WINDOWS\ccZbYo8B.s:5929   .debug_str:000000000000089d .LASF169
+C:\WINDOWS\ccZbYo8B.s:6021   .debug_str:0000000000000a53 .LASF170
+C:\WINDOWS\ccZbYo8B.s:5861   .debug_str:000000000000074f .LASF171
+C:\WINDOWS\ccZbYo8B.s:5581   .debug_str:00000000000000ac .LASF172
+C:\WINDOWS\ccZbYo8B.s:5857   .debug_str:0000000000000739 .LASF173
+C:\WINDOWS\ccZbYo8B.s:5991   .debug_str:00000000000009bf .LASF174
+C:\WINDOWS\ccZbYo8B.s:5829   .debug_str:00000000000006bb .LASF175
+C:\WINDOWS\ccZbYo8B.s:5577   .debug_str:000000000000009f .LASF176
+C:\WINDOWS\ccZbYo8B.s:5549   .debug_str:0000000000000016 .LASF244
+C:\WINDOWS\ccZbYo8B.s:5651   .debug_str:00000000000002b8 .LASF178
+C:\WINDOWS\ccZbYo8B.s:5701   .debug_str:0000000000000405 .LASF179
+C:\WINDOWS\ccZbYo8B.s:5961   .debug_str:0000000000000932 .LASF180
+C:\WINDOWS\ccZbYo8B.s:5931   .debug_str:00000000000008ac .LASF181
+C:\WINDOWS\ccZbYo8B.s:5661   .debug_str:00000000000002ea .LASF245
+C:\WINDOWS\ccZbYo8B.s:112    .text.startup.main:0000000000000000 .LFB4
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 47
+
+
+C:\WINDOWS\ccZbYo8B.s:1184   .text.startup.main:0000000000000748 .LFE4
+C:\WINDOWS\ccZbYo8B.s:5293   .debug_loc:0000000000000000 .LLST1
+C:\WINDOWS\ccZbYo8B.s:5633   .debug_str:000000000000024e .LASF182
+C:\WINDOWS\ccZbYo8B.s:5971   .debug_str:000000000000096d .LASF183
+C:\WINDOWS\ccZbYo8B.s:5795   .debug_str:00000000000005fd .LASF184
+C:\WINDOWS\ccZbYo8B.s:5997   .debug_str:00000000000009d6 .LASF185
+C:\WINDOWS\ccZbYo8B.s:5611   .debug_str:0000000000000152 .LASF186
+C:\WINDOWS\ccZbYo8B.s:5863   .debug_str:000000000000075e .LASF187
+C:\WINDOWS\ccZbYo8B.s:5733   .debug_str:00000000000004c2 .LASF188
+C:\WINDOWS\ccZbYo8B.s:5563   .debug_str:000000000000004d .LASF189
+C:\WINDOWS\ccZbYo8B.s:5739   .debug_str:00000000000004eb .LASF190
+C:\WINDOWS\ccZbYo8B.s:5831   .debug_str:00000000000006c4 .LASF191
+C:\WINDOWS\ccZbYo8B.s:5306   .debug_loc:0000000000000021 .LLST2
+C:\WINDOWS\ccZbYo8B.s:5909   .debug_str:000000000000082e .LASF192
+C:\WINDOWS\ccZbYo8B.s:5313   .debug_loc:0000000000000034 .LLST3
+C:\WINDOWS\ccZbYo8B.s:5709   .debug_str:000000000000043a .LASF193
+C:\WINDOWS\ccZbYo8B.s:5545   .debug_str:0000000000000000 .LASF194
+C:\WINDOWS\ccZbYo8B.s:6019   .debug_str:0000000000000a4a .LASF195
+C:\WINDOWS\ccZbYo8B.s:5913   .debug_str:0000000000000841 .LASF196
+C:\WINDOWS\ccZbYo8B.s:5959   .debug_str:0000000000000929 .LASF197
+C:\WINDOWS\ccZbYo8B.s:5655   .debug_str:00000000000002ce .LASF198
+C:\WINDOWS\ccZbYo8B.s:6023   .debug_str:0000000000000a64 .LASF199
+C:\WINDOWS\ccZbYo8B.s:5635   .debug_str:0000000000000253 .LASF200
+C:\WINDOWS\ccZbYo8B.s:5325   .debug_loc:000000000000004d .LLST4
+C:\WINDOWS\ccZbYo8B.s:5365   .debug_loc:00000000000000b2 .LLST5
+C:\WINDOWS\ccZbYo8B.s:5408   .debug_loc:000000000000011a .LLST6
+C:\WINDOWS\ccZbYo8B.s:5419   .debug_loc:0000000000000138 .LLST7
+C:\WINDOWS\ccZbYo8B.s:805    .text.startup.main:00000000000004b4 .LVL80
+C:\WINDOWS\ccZbYo8B.s:5441   .debug_loc:000000000000016f .LLST8
+C:\WINDOWS\ccZbYo8B.s:845    .text.startup.main:00000000000004ee .LVL84
+C:\WINDOWS\ccZbYo8B.s:183    .text.startup.main:0000000000000060 .LVL13
+C:\WINDOWS\ccZbYo8B.s:190    .text.startup.main:0000000000000072 .LVL14
+C:\WINDOWS\ccZbYo8B.s:229    .text.startup.main:00000000000000b0 .LVL16
+C:\WINDOWS\ccZbYo8B.s:232    .text.startup.main:00000000000000b8 .LVL17
+C:\WINDOWS\ccZbYo8B.s:235    .text.startup.main:00000000000000c0 .LVL18
+C:\WINDOWS\ccZbYo8B.s:238    .text.startup.main:00000000000000c8 .LVL19
+C:\WINDOWS\ccZbYo8B.s:241    .text.startup.main:00000000000000d0 .LVL20
+C:\WINDOWS\ccZbYo8B.s:245    .text.startup.main:00000000000000da .LVL21
+C:\WINDOWS\ccZbYo8B.s:249    .text.startup.main:00000000000000e4 .LVL22
+C:\WINDOWS\ccZbYo8B.s:252    .text.startup.main:00000000000000ec .LVL23
+C:\WINDOWS\ccZbYo8B.s:257    .text.startup.main:00000000000000fa .LVL24
+C:\WINDOWS\ccZbYo8B.s:260    .text.startup.main:0000000000000102 .LVL25
+C:\WINDOWS\ccZbYo8B.s:267    .text.startup.main:000000000000010e .LVL26
+C:\WINDOWS\ccZbYo8B.s:273    .text.startup.main:0000000000000118 .LVL27
+C:\WINDOWS\ccZbYo8B.s:299    .text.startup.main:0000000000000142 .LVL29
+C:\WINDOWS\ccZbYo8B.s:305    .text.startup.main:0000000000000150 .LVL30
+C:\WINDOWS\ccZbYo8B.s:317    .text.startup.main:0000000000000166 .LVL31
+C:\WINDOWS\ccZbYo8B.s:325    .text.startup.main:0000000000000178 .LVL32
+C:\WINDOWS\ccZbYo8B.s:331    .text.startup.main:0000000000000182 .LVL34
+C:\WINDOWS\ccZbYo8B.s:344    .text.startup.main:000000000000019c .LVL35
+C:\WINDOWS\ccZbYo8B.s:354    .text.startup.main:00000000000001ae .LVL36
+C:\WINDOWS\ccZbYo8B.s:365    .text.startup.main:00000000000001c4 .LVL37
+C:\WINDOWS\ccZbYo8B.s:370    .text.startup.main:00000000000001d2 .LVL38
+C:\WINDOWS\ccZbYo8B.s:375    .text.startup.main:00000000000001e0 .LVL39
+C:\WINDOWS\ccZbYo8B.s:379    .text.startup.main:00000000000001ec .LVL40
+C:\WINDOWS\ccZbYo8B.s:383    .text.startup.main:00000000000001f8 .LVL41
+C:\WINDOWS\ccZbYo8B.s:387    .text.startup.main:0000000000000204 .LVL42
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 48
+
+
+C:\WINDOWS\ccZbYo8B.s:402    .text.startup.main:0000000000000224 .LVL43
+C:\WINDOWS\ccZbYo8B.s:412    .text.startup.main:000000000000023c .LVL44
+C:\WINDOWS\ccZbYo8B.s:420    .text.startup.main:0000000000000250 .LVL45
+C:\WINDOWS\ccZbYo8B.s:424    .text.startup.main:000000000000025a .LVL46
+C:\WINDOWS\ccZbYo8B.s:464    .text.startup.main:0000000000000284 .LVL54
+C:\WINDOWS\ccZbYo8B.s:472    .text.startup.main:0000000000000292 .LVL56
+C:\WINDOWS\ccZbYo8B.s:480    .text.startup.main:00000000000002a4 .LVL57
+C:\WINDOWS\ccZbYo8B.s:487    .text.startup.main:00000000000002b2 .LVL58
+C:\WINDOWS\ccZbYo8B.s:526    .text.startup.main:00000000000002f4 .LVL61
+C:\WINDOWS\ccZbYo8B.s:535    .text.startup.main:0000000000000304 .LVL63
+C:\WINDOWS\ccZbYo8B.s:540    .text.startup.main:0000000000000310 .LVL64
+C:\WINDOWS\ccZbYo8B.s:590    .text.startup.main:0000000000000358 .LVL66
+C:\WINDOWS\ccZbYo8B.s:595    .text.startup.main:0000000000000364 .LVL67
+C:\WINDOWS\ccZbYo8B.s:597    .text.startup.main:000000000000036c .LVL68
+C:\WINDOWS\ccZbYo8B.s:618    .text.startup.main:0000000000000390 .LVL69
+C:\WINDOWS\ccZbYo8B.s:623    .text.startup.main:0000000000000398 .LVL70
+C:\WINDOWS\ccZbYo8B.s:700    .text.startup.main:0000000000000416 .LVL71
+C:\WINDOWS\ccZbYo8B.s:714    .text.startup.main:0000000000000430 .LVL72
+C:\WINDOWS\ccZbYo8B.s:728    .text.startup.main:000000000000044e .LVL73
+C:\WINDOWS\ccZbYo8B.s:747    .text.startup.main:0000000000000476 .LVL74
+C:\WINDOWS\ccZbYo8B.s:856    .text.startup.main:00000000000004fe .LVL86
+C:\WINDOWS\ccZbYo8B.s:870    .text.startup.main:000000000000051c .LVL87
+C:\WINDOWS\ccZbYo8B.s:904    .text.startup.main:000000000000054a .LVL92
+C:\WINDOWS\ccZbYo8B.s:970    .text.startup.main:00000000000005b2 .LVL93
+C:\WINDOWS\ccZbYo8B.s:978    .text.startup.main:00000000000005c6 .LVL94
+C:\WINDOWS\ccZbYo8B.s:992    .text.startup.main:00000000000005e2 .LVL95
+C:\WINDOWS\ccZbYo8B.s:1004   .text.startup.main:00000000000005f8 .LVL96
+C:\WINDOWS\ccZbYo8B.s:1032   .text.startup.main:000000000000061a .LVL97
+C:\WINDOWS\ccZbYo8B.s:1039   .text.startup.main:0000000000000628 .LVL98
+C:\WINDOWS\ccZbYo8B.s:1044   .text.startup.main:0000000000000634 .LVL99
+C:\WINDOWS\ccZbYo8B.s:1053   .text.startup.main:0000000000000640 .LVL100
+C:\WINDOWS\ccZbYo8B.s:1063   .text.startup.main:0000000000000652 .LVL101
+C:\WINDOWS\ccZbYo8B.s:1073   .text.startup.main:0000000000000664 .LVL102
+C:\WINDOWS\ccZbYo8B.s:1087   .text.startup.main:000000000000067e .LVL103
+C:\WINDOWS\ccZbYo8B.s:1095   .text.startup.main:0000000000000690 .LVL104
+C:\WINDOWS\ccZbYo8B.s:1103   .text.startup.main:00000000000006a2 .LVL105
+C:\WINDOWS\ccZbYo8B.s:1111   .text.startup.main:00000000000006b4 .LVL106
+C:\WINDOWS\ccZbYo8B.s:1119   .text.startup.main:00000000000006c6 .LVL107
+C:\WINDOWS\ccZbYo8B.s:1127   .text.startup.main:00000000000006d8 .LVL108
+C:\WINDOWS\ccZbYo8B.s:1133   .text.startup.main:00000000000006e4 .LVL109
+C:\WINDOWS\ccZbYo8B.s:1140   .text.startup.main:00000000000006ee .LVL110
+C:\WINDOWS\ccZbYo8B.s:1150   .text.startup.main:0000000000000700 .LVL111
+C:\WINDOWS\ccZbYo8B.s:1160   .text.startup.main:0000000000000712 .LVL112
+C:\WINDOWS\ccZbYo8B.s:1169   .text.startup.main:0000000000000726 .LVL113
+C:\WINDOWS\ccZbYo8B.s:1174   .text.startup.main:0000000000000734 .LVL114
+C:\WINDOWS\ccZbYo8B.s:1179   .text.startup.main:0000000000000742 .LVL115
+C:\WINDOWS\ccZbYo8B.s:6041   .debug_str:0000000000000acb .LASF246
+C:\WINDOWS\ccZbYo8B.s:14     .text.rtcInit:0000000000000000 .LFB3
+C:\WINDOWS\ccZbYo8B.s:105    .text.rtcInit:0000000000000094 .LFE3
+C:\WINDOWS\ccZbYo8B.s:5462   .debug_loc:00000000000001a5 .LLST0
+C:\WINDOWS\ccZbYo8B.s:48     .text.rtcInit:0000000000000038 .LBB4
+C:\WINDOWS\ccZbYo8B.s:53     .text.rtcInit:0000000000000044 .LVL5
+C:\WINDOWS\ccZbYo8B.s:58     .text.rtcInit:0000000000000052 .LVL6
+C:\WINDOWS\ccZbYo8B.s:61     .text.rtcInit:000000000000005a .LVL7
+C:\WINDOWS\ccZbYo8B.s:64     .text.rtcInit:0000000000000062 .LVL8
+C:\WINDOWS\ccZbYo8B.s:69     .text.rtcInit:0000000000000070 .LVL9
+C:\WINDOWS\ccZbYo8B.s:72     .text.rtcInit:0000000000000078 .LVL10
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 49
+
+
+C:\WINDOWS\ccZbYo8B.s:76     .text.rtcInit:0000000000000082 .LVL11
+C:\WINDOWS\ccZbYo8B.s:91     .text.rtcInit:000000000000008e .LVL12
+C:\WINDOWS\ccZbYo8B.s:30     .text.rtcInit:0000000000000010 .LVL0
+C:\WINDOWS\ccZbYo8B.s:33     .text.rtcInit:0000000000000018 .LVL1
+C:\WINDOWS\ccZbYo8B.s:37     .text.rtcInit:0000000000000024 .LVL2
+C:\WINDOWS\ccZbYo8B.s:40     .text.rtcInit:000000000000002c .LVL3
+C:\WINDOWS\ccZbYo8B.s:45     .text.rtcInit:0000000000000036 .LVL4
+C:\WINDOWS\ccZbYo8B.s:5685   .debug_str:0000000000000366 .LASF201
+C:\WINDOWS\ccZbYo8B.s:5985   .debug_str:00000000000009a7 .LASF247
+C:\WINDOWS\ccZbYo8B.s:5623   .debug_str:000000000000020f .LASF248
+C:\WINDOWS\ccZbYo8B.s:5715   .debug_str:0000000000000458 .LASF202
+C:\WINDOWS\ccZbYo8B.s:5755   .debug_str:000000000000053b .LASF203
+C:\WINDOWS\ccZbYo8B.s:5725   .debug_str:0000000000000498 .LASF204
+C:\WINDOWS\ccZbYo8B.s:5771   .debug_str:000000000000058b .LASF205
+C:\WINDOWS\ccZbYo8B.s:5849   .debug_str:0000000000000715 .LASF206
+C:\WINDOWS\ccZbYo8B.s:5565   .debug_str:0000000000000058 .LASF207
+C:\WINDOWS\ccZbYo8B.s:5749   .debug_str:000000000000051f .LASF208
+C:\WINDOWS\ccZbYo8B.s:5691   .debug_str:00000000000003bf .LASF209
+C:\WINDOWS\ccZbYo8B.s:5557   .debug_str:0000000000000034 .LASF210
+C:\WINDOWS\ccZbYo8B.s:5889   .debug_str:00000000000007da .LASF211
+C:\WINDOWS\ccZbYo8B.s:5801   .debug_str:000000000000061a .LASF212
+C:\WINDOWS\ccZbYo8B.s:5603   .debug_str:0000000000000124 .LASF213
+C:\WINDOWS\ccZbYo8B.s:5859   .debug_str:0000000000000742 .LASF214
+C:\WINDOWS\ccZbYo8B.s:5735   .debug_str:00000000000004cc .LASF215
+C:\WINDOWS\ccZbYo8B.s:5741   .debug_str:00000000000004f1 .LASF216
+C:\WINDOWS\ccZbYo8B.s:6039   .debug_str:0000000000000ac5 .LASF217
+C:\WINDOWS\ccZbYo8B.s:5789   .debug_str:00000000000005dc .LASF218
+C:\WINDOWS\ccZbYo8B.s:5965   .debug_str:0000000000000945 .LASF219
+C:\WINDOWS\ccZbYo8B.s:5879   .debug_str:00000000000007a6 .LASF220
+C:\WINDOWS\ccZbYo8B.s:5625   .debug_str:0000000000000220 .LASF221
+C:\WINDOWS\ccZbYo8B.s:5619   .debug_str:00000000000001ec .LASF222
+C:\WINDOWS\ccZbYo8B.s:5787   .debug_str:00000000000005d5 .LASF223
+C:\WINDOWS\ccZbYo8B.s:5851   .debug_str:000000000000071d .LASF224
+C:\WINDOWS\ccZbYo8B.s:5781   .debug_str:00000000000005bf .LASF225
+C:\WINDOWS\ccZbYo8B.s:5627   .debug_str:0000000000000236 .LASF226
+C:\WINDOWS\ccZbYo8B.s:5643   .debug_str:000000000000028b .LASF227
+C:\WINDOWS\ccZbYo8B.s:5761   .debug_str:0000000000000559 .LASF228
+C:\WINDOWS\ccZbYo8B.s:5953   .debug_str:0000000000000902 .LASF229
+C:\WINDOWS\ccZbYo8B.s:5621   .debug_str:00000000000001f3 .LASF230
+C:\WINDOWS\ccZbYo8B.s:5783   .debug_str:00000000000005c6 .LASF231
+C:\WINDOWS\ccZbYo8B.s:5721   .debug_str:000000000000046b .LASF232
+C:\WINDOWS\ccZbYo8B.s:6025   .debug_str:0000000000000a69 .LASF233
+C:\WINDOWS\ccZbYo8B.s:5641   .debug_str:0000000000000274 .LASF234
+C:\WINDOWS\ccZbYo8B.s:5745   .debug_str:0000000000000506 .LASF235
+C:\WINDOWS\ccZbYo8B.s:5975   .debug_str:000000000000097b .LASF236
+C:\WINDOWS\ccZbYo8B.s:6011   .debug_str:0000000000000a19 .LASF237
+C:\WINDOWS\ccZbYo8B.s:5723   .debug_str:0000000000000480 .LASF238
+C:\WINDOWS\ccZbYo8B.s:5663   .debug_str:00000000000002ef .LASF239
+C:\WINDOWS\ccZbYo8B.s:5699   .debug_str:00000000000003f2 .LASF240
+C:\WINDOWS\ccZbYo8B.s:118    .text.startup.main:0000000000000002 .LCFI4
+C:\WINDOWS\ccZbYo8B.s:531    .text.startup.main:00000000000002fa .LVL62
+C:\WINDOWS\ccZbYo8B.s:544    .text.startup.main:0000000000000314 .LVL65
+C:\WINDOWS\ccZbYo8B.s:327    .text.startup.main:000000000000017a .LVL33
+C:\WINDOWS\ccZbYo8B.s:467    .text.startup.main:0000000000000286 .LVL55
+C:\WINDOWS\ccZbYo8B.s:225    .text.startup.main:00000000000000a8 .LVL15
+C:\WINDOWS\ccZbYo8B.s:286    .text.startup.main:0000000000000130 .LVL28
+C:\WINDOWS\ccZbYo8B.s:513    .text.startup.main:00000000000002de .LVL59
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 50
+
+
+C:\WINDOWS\ccZbYo8B.s:518    .text.startup.main:00000000000002e6 .LVL60
+C:\WINDOWS\ccZbYo8B.s:775    .text.startup.main:0000000000000488 .LVL77
+C:\WINDOWS\ccZbYo8B.s:852    .text.startup.main:00000000000004f6 .LVL85
+C:\WINDOWS\ccZbYo8B.s:884    .text.startup.main:000000000000052a .LVL90
+C:\WINDOWS\ccZbYo8B.s:892    .text.startup.main:0000000000000530 .LVL91
+C:\WINDOWS\ccZbYo8B.s:431    .text.startup.main:000000000000025e .LVL47
+C:\WINDOWS\ccZbYo8B.s:435    .text.startup.main:0000000000000262 .LVL48
+C:\WINDOWS\ccZbYo8B.s:439    .text.startup.main:0000000000000266 .LVL49
+C:\WINDOWS\ccZbYo8B.s:443    .text.startup.main:000000000000026a .LVL50
+C:\WINDOWS\ccZbYo8B.s:447    .text.startup.main:000000000000026e .LVL51
+C:\WINDOWS\ccZbYo8B.s:451    .text.startup.main:0000000000000272 .LVL52
+C:\WINDOWS\ccZbYo8B.s:460    .text.startup.main:000000000000027c .LVL53
+C:\WINDOWS\ccZbYo8B.s:752    .text.startup.main:0000000000000478 .LVL75
+C:\WINDOWS\ccZbYo8B.s:762    .text.startup.main:0000000000000480 .LVL76
+C:\WINDOWS\ccZbYo8B.s:872    .text.startup.main:000000000000051e .LVL88
+C:\WINDOWS\ccZbYo8B.s:785    .text.startup.main:000000000000048e .LVL78
+C:\WINDOWS\ccZbYo8B.s:802    .text.startup.main:00000000000004ac .LVL79
+C:\WINDOWS\ccZbYo8B.s:814    .text.startup.main:00000000000004bc .LVL81
+C:\WINDOWS\ccZbYo8B.s:822    .text.startup.main:00000000000004c2 .LVL82
+C:\WINDOWS\ccZbYo8B.s:842    .text.startup.main:00000000000004e6 .LVL83
+C:\WINDOWS\ccZbYo8B.s:21     .text.rtcInit:0000000000000002 .LCFI0
+C:\WINDOWS\ccZbYo8B.s:85     .text.rtcInit:0000000000000086 .LCFI1
+C:\WINDOWS\ccZbYo8B.s:93     .text.rtcInit:000000000000008e .LCFI2
+C:\WINDOWS\ccZbYo8B.s:101    .text.rtcInit:0000000000000092 .LCFI3
+C:\WINDOWS\ccZbYo8B.s:1260   .debug_info:0000000000000000 .Ldebug_info0
+C:\WINDOWS\ccZbYo8B.s:79     .text.rtcInit:0000000000000082 .LBE4
+C:\WINDOWS\ccZbYo8B.s:87     .text.rtcInit:0000000000000086 .LBB7
+C:\WINDOWS\ccZbYo8B.s:96     .text.rtcInit:000000000000008e .LBE7
+C:\WINDOWS\ccZbYo8B.s:426    .text.startup.main:000000000000025a .LBB8
+C:\WINDOWS\ccZbYo8B.s:453    .text.startup.main:0000000000000272 .LBE8
+C:\WINDOWS\ccZbYo8B.s:457    .text.startup.main:0000000000000278 .LBB9
+C:\WINDOWS\ccZbYo8B.s:461    .text.startup.main:000000000000027c .LBE9
+C:\WINDOWS\ccZbYo8B.s:753    .text.startup.main:0000000000000478 .LBB10
+C:\WINDOWS\ccZbYo8B.s:758    .text.startup.main:000000000000047e .LBE10
+C:\WINDOWS\ccZbYo8B.s:874    .text.startup.main:000000000000051e .LBB14
+C:\WINDOWS\ccZbYo8B.s:886    .text.startup.main:000000000000052a .LBE14
+C:\WINDOWS\ccZbYo8B.s:768    .text.startup.main:0000000000000484 .LBB11
+C:\WINDOWS\ccZbYo8B.s:771    .text.startup.main:0000000000000486 .LBE11
+C:\WINDOWS\ccZbYo8B.s:777    .text.startup.main:0000000000000488 .LBB12
+C:\WINDOWS\ccZbYo8B.s:808    .text.startup.main:00000000000004b8 .LBE12
+C:\WINDOWS\ccZbYo8B.s:809    .text.startup.main:00000000000004b8 .LBB13
+C:\WINDOWS\ccZbYo8B.s:848    .text.startup.main:00000000000004f2 .LBE13
+C:\WINDOWS\ccZbYo8B.s:887    .text.startup.main:000000000000052a .LBB15
+C:\WINDOWS\ccZbYo8B.s:894    .text.startup.main:0000000000000530 .LBE15
+
+UNDEFINED SYMBOLS
+rcu_periph_clock_enable
+pmu_backup_write_enable
+bkp_deinit
+rcu_osci_stab_wait
+rcu_rtc_clock_config
+rtc_register_sync_wait
+rtc_lwoff_wait
+rtc_prescaler_set
+rtc_flag_clear
+memcpy
+memset
+GAS LISTING C:\WINDOWS\ccZbYo8B.s 			page 51
+
+
+t5omsi
+colinit
+l88init
+keyinit
+ADC3powerUpInit
+Lcd_SetType
+Lcd_Init
+LCD_Clear
+u0init
+eclic_global_interrupt_enable
+LCD_WR_Queue
+adc_flag_get
+adc_inserted_data_read
+rtc_counter_get
+putch
+adc_flag_clear
+usart_flag_get
+usart_data_receive
+adc_regular_data_read
+l88mem
+t5expq
+colset
+l88row
+keyscan
+LCD_ShowStr
+strcpy
+LCD_ShowChar
+rtc_counter_set
+adc_software_trigger_enable
+putstr

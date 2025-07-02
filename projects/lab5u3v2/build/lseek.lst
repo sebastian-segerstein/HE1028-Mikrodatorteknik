@@ -1,0 +1,257 @@
+GAS LISTING C:\WINDOWS\ccyLyUo0.s 			page 1
+
+
+   1              		.file	"lseek.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p0_m2p0_a2p0_c2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.section	.text._lseek,"ax",@progbits
+  10              		.align	1
+  11              		.globl	_lseek
+  13              	_lseek:
+  14              	.LFB1:
+  15              		.file 1 "./../../firmware/RISCV/stubs/lseek.c"
+   1:./../../firmware/RISCV/stubs/lseek.c **** /* See LICENSE of license details. */
+   2:./../../firmware/RISCV/stubs/lseek.c **** 
+   3:./../../firmware/RISCV/stubs/lseek.c **** #include <errno.h>
+   4:./../../firmware/RISCV/stubs/lseek.c **** #include <unistd.h>
+   5:./../../firmware/RISCV/stubs/lseek.c **** #include <sys/types.h>
+   6:./../../firmware/RISCV/stubs/lseek.c **** #include "stub.h"
+   7:./../../firmware/RISCV/stubs/lseek.c **** 
+   8:./../../firmware/RISCV/stubs/lseek.c **** off_t _lseek(int fd, off_t ptr, int dir)
+   9:./../../firmware/RISCV/stubs/lseek.c **** {
+  16              		.loc 1 9 1
+  17              		.cfi_startproc
+  18              	.LVL0:
+  10:./../../firmware/RISCV/stubs/lseek.c ****   if (isatty(fd))
+  19              		.loc 1 10 3
+   9:./../../firmware/RISCV/stubs/lseek.c ****   if (isatty(fd))
+  20              		.loc 1 9 1 is_stmt 0
+  21 0000 4111     		addi	sp,sp,-16
+  22              	.LCFI0:
+  23              		.cfi_def_cfa_offset 16
+  24 0002 06C6     		sw	ra,12(sp)
+  25              		.cfi_offset 1, -4
+  26              		.loc 1 10 7
+  27 0004 97000000 		call	isatty
+  27      E7800000 
+  28              	.LVL1:
+  11:./../../firmware/RISCV/stubs/lseek.c ****     return 0;
+  12:./../../firmware/RISCV/stubs/lseek.c **** 
+  13:./../../firmware/RISCV/stubs/lseek.c ****   return _stub(EBADF);
+  14:./../../firmware/RISCV/stubs/lseek.c **** }
+  29              		.loc 1 14 1
+  30 000c B240     		lw	ra,12(sp)
+  31              		.cfi_restore 1
+  10:./../../firmware/RISCV/stubs/lseek.c ****     return 0;
+  32              		.loc 1 10 6
+  33 000e 13351500 		seqz	a0,a0
+  34              		.loc 1 14 1
+  35 0012 3305A040 		neg	a0,a0
+  36 0016 4101     		addi	sp,sp,16
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 0
+  39 0018 8280     		jr	ra
+  40              		.cfi_endproc
+  41              	.LFE1:
+GAS LISTING C:\WINDOWS\ccyLyUo0.s 			page 2
+
+
+  43              		.text
+  44              	.Letext0:
+  45              		.file 2 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\lib\\gcc\\riscv64-unknown-el
+  46              		.file 3 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  47              		.file 4 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  48              		.file 5 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  49              		.file 6 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  50              		.file 7 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  51              		.file 8 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  52              		.file 9 "./../../firmware/RISCV/stubs/stub.h"
+GAS LISTING C:\WINDOWS\ccyLyUo0.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 lseek.c
+C:\WINDOWS\ccyLyUo0.s:13     .text._lseek:0000000000000000 _lseek
+C:\WINDOWS\ccyLyUo0.s:17     .text._lseek:0000000000000000 .L0 
+C:\WINDOWS\ccyLyUo0.s:19     .text._lseek:0000000000000000 .L0 
+C:\WINDOWS\ccyLyUo0.s:20     .text._lseek:0000000000000000 .L0 
+C:\WINDOWS\ccyLyUo0.s:21     .text._lseek:0000000000000000 .L0 
+C:\WINDOWS\ccyLyUo0.s:23     .text._lseek:0000000000000002 .L0 
+C:\WINDOWS\ccyLyUo0.s:25     .text._lseek:0000000000000004 .L0 
+C:\WINDOWS\ccyLyUo0.s:27     .text._lseek:0000000000000004 .L0 
+C:\WINDOWS\ccyLyUo0.s:30     .text._lseek:000000000000000c .L0 
+C:\WINDOWS\ccyLyUo0.s:31     .text._lseek:000000000000000e .L0 
+C:\WINDOWS\ccyLyUo0.s:33     .text._lseek:000000000000000e .L0 
+C:\WINDOWS\ccyLyUo0.s:35     .text._lseek:0000000000000012 .L0 
+C:\WINDOWS\ccyLyUo0.s:38     .text._lseek:0000000000000018 .L0 
+C:\WINDOWS\ccyLyUo0.s:40     .text._lseek:000000000000001a .L0 
+C:\WINDOWS\ccyLyUo0.s:43     .text._lseek:000000000000001a .L0 
+                     .debug_frame:0000000000000000 .L0 
+C:\WINDOWS\ccyLyUo0.s:1600   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+C:\WINDOWS\ccyLyUo0.s:2441   .debug_str:000000000000047b .LASF130
+C:\WINDOWS\ccyLyUo0.s:2319   .debug_str:0000000000000201 .LASF131
+C:\WINDOWS\ccyLyUo0.s:2341   .debug_str:0000000000000286 .LASF132
+C:\WINDOWS\ccyLyUo0.s:2205   .debug_ranges:0000000000000000 .Ldebug_ranges0
+C:\WINDOWS\ccyLyUo0.s:2211   .debug_line:0000000000000000 .Ldebug_line0
+C:\WINDOWS\ccyLyUo0.s:2303   .debug_str:00000000000001b8 .LASF0
+C:\WINDOWS\ccyLyUo0.s:2321   .debug_str:0000000000000226 .LASF1
+C:\WINDOWS\ccyLyUo0.s:2245   .debug_str:00000000000000b1 .LASF2
+C:\WINDOWS\ccyLyUo0.s:2353   .debug_str:00000000000002f0 .LASF3
+C:\WINDOWS\ccyLyUo0.s:2335   .debug_str:0000000000000271 .LASF10
+C:\WINDOWS\ccyLyUo0.s:2247   .debug_str:00000000000000bf .LASF4
+C:\WINDOWS\ccyLyUo0.s:2373   .debug_str:0000000000000350 .LASF5
+C:\WINDOWS\ccyLyUo0.s:2379   .debug_str:000000000000036c .LASF6
+C:\WINDOWS\ccyLyUo0.s:2263   .debug_str:0000000000000104 .LASF7
+C:\WINDOWS\ccyLyUo0.s:2311   .debug_str:00000000000001dc .LASF8
+C:\WINDOWS\ccyLyUo0.s:2231   .debug_str:000000000000005a .LASF9
+C:\WINDOWS\ccyLyUo0.s:2367   .debug_str:000000000000032d .LASF11
+C:\WINDOWS\ccyLyUo0.s:2215   .debug_str:000000000000000c .LASF12
+C:\WINDOWS\ccyLyUo0.s:2425   .debug_str:000000000000043e .LASF13
+C:\WINDOWS\ccyLyUo0.s:2461   .debug_str:000000000000055b .LASF14
+C:\WINDOWS\ccyLyUo0.s:2331   .debug_str:0000000000000263 .LASF15
+C:\WINDOWS\ccyLyUo0.s:2305   .debug_str:00000000000001c5 .LASF16
+C:\WINDOWS\ccyLyUo0.s:2417   .debug_str:000000000000041c .LASF17
+C:\WINDOWS\ccyLyUo0.s:2419   .debug_str:0000000000000424 .LASF18
+C:\WINDOWS\ccyLyUo0.s:2389   .debug_str:0000000000000394 .LASF19
+C:\WINDOWS\ccyLyUo0.s:2447   .debug_str:0000000000000511 .LASF20
+C:\WINDOWS\ccyLyUo0.s:2371   .debug_str:000000000000033e .LASF21
+C:\WINDOWS\ccyLyUo0.s:2289   .debug_str:000000000000017b .LASF22
+C:\WINDOWS\ccyLyUo0.s:2293   .debug_str:000000000000018c .LASF27
+C:\WINDOWS\ccyLyUo0.s:2437   .debug_str:0000000000000468 .LASF23
+C:\WINDOWS\ccyLyUo0.s:2411   .debug_str:0000000000000407 .LASF24
+C:\WINDOWS\ccyLyUo0.s:2287   .debug_str:0000000000000175 .LASF25
+C:\WINDOWS\ccyLyUo0.s:2455   .debug_str:0000000000000546 .LASF26
+C:\WINDOWS\ccyLyUo0.s:2301   .debug_str:00000000000001b3 .LASF28
+C:\WINDOWS\ccyLyUo0.s:2243   .debug_str:00000000000000a8 .LASF29
+C:\WINDOWS\ccyLyUo0.s:2431   .debug_str:0000000000000452 .LASF30
+C:\WINDOWS\ccyLyUo0.s:2253   .debug_str:00000000000000d7 .LASF31
+C:\WINDOWS\ccyLyUo0.s:2485   .debug_str:00000000000005c6 .LASF32
+GAS LISTING C:\WINDOWS\ccyLyUo0.s 			page 4
+
+
+C:\WINDOWS\ccyLyUo0.s:2359   .debug_str:000000000000030a .LASF33
+C:\WINDOWS\ccyLyUo0.s:2347   .debug_str:00000000000002d6 .LASF34
+C:\WINDOWS\ccyLyUo0.s:2457   .debug_str:000000000000054b .LASF35
+C:\WINDOWS\ccyLyUo0.s:2381   .debug_str:0000000000000376 .LASF36
+C:\WINDOWS\ccyLyUo0.s:2471   .debug_str:0000000000000586 .LASF37
+C:\WINDOWS\ccyLyUo0.s:2257   .debug_str:00000000000000e6 .LASF38
+C:\WINDOWS\ccyLyUo0.s:2283   .debug_str:0000000000000168 .LASF39
+C:\WINDOWS\ccyLyUo0.s:2213   .debug_str:0000000000000000 .LASF40
+C:\WINDOWS\ccyLyUo0.s:2443   .debug_str:0000000000000503 .LASF41
+C:\WINDOWS\ccyLyUo0.s:2267   .debug_str:0000000000000114 .LASF42
+C:\WINDOWS\ccyLyUo0.s:2361   .debug_str:0000000000000313 .LASF43
+C:\WINDOWS\ccyLyUo0.s:2403   .debug_str:00000000000003d7 .LASF44
+C:\WINDOWS\ccyLyUo0.s:2285   .debug_str:0000000000000170 .LASF45
+C:\WINDOWS\ccyLyUo0.s:2383   .debug_str:0000000000000380 .LASF46
+C:\WINDOWS\ccyLyUo0.s:2251   .debug_str:00000000000000d1 .LASF47
+C:\WINDOWS\ccyLyUo0.s:2219   .debug_str:000000000000001b .LASF48
+C:\WINDOWS\ccyLyUo0.s:2391   .debug_str:000000000000039f .LASF49
+C:\WINDOWS\ccyLyUo0.s:2265   .debug_str:000000000000010d .LASF50
+C:\WINDOWS\ccyLyUo0.s:2313   .debug_str:00000000000001ee .LASF51
+C:\WINDOWS\ccyLyUo0.s:2233   .debug_str:0000000000000071 .LASF52
+C:\WINDOWS\ccyLyUo0.s:2259   .debug_str:00000000000000f4 .LASF53
+C:\WINDOWS\ccyLyUo0.s:2297   .debug_str:00000000000001a3 .LASF54
+C:\WINDOWS\ccyLyUo0.s:2345   .debug_str:00000000000002cf .LASF55
+C:\WINDOWS\ccyLyUo0.s:2421   .debug_str:000000000000042c .LASF56
+C:\WINDOWS\ccyLyUo0.s:2475   .debug_str:00000000000005a0 .LASF57
+C:\WINDOWS\ccyLyUo0.s:2249   .debug_str:00000000000000cb .LASF58
+C:\WINDOWS\ccyLyUo0.s:2467   .debug_str:0000000000000578 .LASF59
+C:\WINDOWS\ccyLyUo0.s:2271   .debug_str:0000000000000123 .LASF60
+C:\WINDOWS\ccyLyUo0.s:2277   .debug_str:0000000000000141 .LASF61
+C:\WINDOWS\ccyLyUo0.s:2225   .debug_str:0000000000000034 .LASF62
+C:\WINDOWS\ccyLyUo0.s:2337   .debug_str:0000000000000278 .LASF63
+C:\WINDOWS\ccyLyUo0.s:2395   .debug_str:00000000000003b1 .LASF64
+C:\WINDOWS\ccyLyUo0.s:2339   .debug_str:000000000000027e .LASF65
+C:\WINDOWS\ccyLyUo0.s:2413   .debug_str:000000000000040f .LASF66
+C:\WINDOWS\ccyLyUo0.s:2427   .debug_str:0000000000000446 .LASF67
+C:\WINDOWS\ccyLyUo0.s:2269   .debug_str:000000000000011c .LASF68
+C:\WINDOWS\ccyLyUo0.s:2307   .debug_str:00000000000001cc .LASF69
+C:\WINDOWS\ccyLyUo0.s:2291   .debug_str:0000000000000184 .LASF70
+C:\WINDOWS\ccyLyUo0.s:2401   .debug_str:00000000000003d2 .LASF71
+C:\WINDOWS\ccyLyUo0.s:2223   .debug_str:0000000000000029 .LASF72
+C:\WINDOWS\ccyLyUo0.s:2409   .debug_str:00000000000003ee .LASF73
+C:\WINDOWS\ccyLyUo0.s:2405   .debug_str:00000000000003dc .LASF74
+C:\WINDOWS\ccyLyUo0.s:2365   .debug_str:0000000000000322 .LASF75
+C:\WINDOWS\ccyLyUo0.s:2407   .debug_str:00000000000003e4 .LASF76
+C:\WINDOWS\ccyLyUo0.s:2329   .debug_str:000000000000025b .LASF77
+C:\WINDOWS\ccyLyUo0.s:2299   .debug_str:00000000000001a9 .LASF78
+C:\WINDOWS\ccyLyUo0.s:2483   .debug_str:00000000000005c1 .LASF79
+C:\WINDOWS\ccyLyUo0.s:2369   .debug_str:0000000000000334 .LASF80
+C:\WINDOWS\ccyLyUo0.s:2309   .debug_str:00000000000001d4 .LASF81
+C:\WINDOWS\ccyLyUo0.s:2275   .debug_str:0000000000000139 .LASF82
+C:\WINDOWS\ccyLyUo0.s:2375   .debug_str:000000000000035e .LASF83
+C:\WINDOWS\ccyLyUo0.s:2323   .debug_str:0000000000000239 .LASF84
+C:\WINDOWS\ccyLyUo0.s:2465   .debug_str:000000000000056e .LASF85
+C:\WINDOWS\ccyLyUo0.s:2261   .debug_str:00000000000000fc .LASF86
+C:\WINDOWS\ccyLyUo0.s:2255   .debug_str:00000000000000e1 .LASF87
+C:\WINDOWS\ccyLyUo0.s:2429   .debug_str:000000000000044d .LASF88
+C:\WINDOWS\ccyLyUo0.s:2387   .debug_str:000000000000038d .LASF89
+GAS LISTING C:\WINDOWS\ccyLyUo0.s 			page 5
+
+
+C:\WINDOWS\ccyLyUo0.s:2459   .debug_str:0000000000000555 .LASF90
+C:\WINDOWS\ccyLyUo0.s:2317   .debug_str:00000000000001fa .LASF91
+C:\WINDOWS\ccyLyUo0.s:2385   .debug_str:0000000000000387 .LASF92
+C:\WINDOWS\ccyLyUo0.s:2221   .debug_str:0000000000000021 .LASF93
+C:\WINDOWS\ccyLyUo0.s:2415   .debug_str:0000000000000416 .LASF94
+C:\WINDOWS\ccyLyUo0.s:2435   .debug_str:0000000000000462 .LASF95
+C:\WINDOWS\ccyLyUo0.s:2445   .debug_str:000000000000050c .LASF96
+C:\WINDOWS\ccyLyUo0.s:2453   .debug_str:0000000000000539 .LASF97
+C:\WINDOWS\ccyLyUo0.s:2439   .debug_str:000000000000046e .LASF98
+C:\WINDOWS\ccyLyUo0.s:2327   .debug_str:000000000000024e .LASF99
+C:\WINDOWS\ccyLyUo0.s:2473   .debug_str:0000000000000591 .LASF100
+C:\WINDOWS\ccyLyUo0.s:2295   .debug_str:0000000000000194 .LASF101
+C:\WINDOWS\ccyLyUo0.s:2397   .debug_str:00000000000003ba .LASF102
+C:\WINDOWS\ccyLyUo0.s:2477   .debug_str:00000000000005a7 .LASF103
+C:\WINDOWS\ccyLyUo0.s:2399   .debug_str:00000000000003c5 .LASF104
+C:\WINDOWS\ccyLyUo0.s:2481   .debug_str:00000000000005b3 .LASF105
+C:\WINDOWS\ccyLyUo0.s:2241   .debug_str:000000000000009a .LASF106
+C:\WINDOWS\ccyLyUo0.s:2463   .debug_str:0000000000000564 .LASF107
+C:\WINDOWS\ccyLyUo0.s:2325   .debug_str:0000000000000242 .LASF108
+C:\WINDOWS\ccyLyUo0.s:2449   .debug_str:0000000000000519 .LASF109
+C:\WINDOWS\ccyLyUo0.s:2281   .debug_str:000000000000015a .LASF110
+C:\WINDOWS\ccyLyUo0.s:2239   .debug_str:000000000000008b .LASF111
+C:\WINDOWS\ccyLyUo0.s:2279   .debug_str:0000000000000149 .LASF112
+C:\WINDOWS\ccyLyUo0.s:2227   .debug_str:000000000000003a .LASF113
+C:\WINDOWS\ccyLyUo0.s:2229   .debug_str:0000000000000049 .LASF114
+C:\WINDOWS\ccyLyUo0.s:2377   .debug_str:0000000000000363 .LASF115
+C:\WINDOWS\ccyLyUo0.s:2357   .debug_str:0000000000000303 .LASF116
+C:\WINDOWS\ccyLyUo0.s:2349   .debug_str:00000000000002e0 .LASF117
+C:\WINDOWS\ccyLyUo0.s:2469   .debug_str:000000000000057e .LASF118
+C:\WINDOWS\ccyLyUo0.s:2235   .debug_str:000000000000007a .LASF133
+C:\WINDOWS\ccyLyUo0.s:2423   .debug_str:0000000000000432 .LASF119
+C:\WINDOWS\ccyLyUo0.s:2451   .debug_str:0000000000000526 .LASF120
+C:\WINDOWS\ccyLyUo0.s:2273   .debug_str:000000000000012c .LASF121
+C:\WINDOWS\ccyLyUo0.s:2393   .debug_str:00000000000003a7 .LASF122
+C:\WINDOWS\ccyLyUo0.s:2315   .debug_str:00000000000001f4 .LASF123
+C:\WINDOWS\ccyLyUo0.s:2333   .debug_str:0000000000000269 .LASF124
+C:\WINDOWS\ccyLyUo0.s:2351   .debug_str:00000000000002e9 .LASF125
+C:\WINDOWS\ccyLyUo0.s:2355   .debug_str:00000000000002fc .LASF126
+C:\WINDOWS\ccyLyUo0.s:2433   .debug_str:000000000000045b .LASF127
+C:\WINDOWS\ccyLyUo0.s:2479   .debug_str:00000000000005ac .LASF128
+C:\WINDOWS\ccyLyUo0.s:2343   .debug_str:00000000000002c6 .LASF129
+C:\WINDOWS\ccyLyUo0.s:2363   .debug_str:000000000000031b .LASF134
+C:\WINDOWS\ccyLyUo0.s:14     .text._lseek:0000000000000000 .LFB1
+C:\WINDOWS\ccyLyUo0.s:41     .text._lseek:000000000000001a .LFE1
+C:\WINDOWS\ccyLyUo0.s:2132   .debug_loc:0000000000000000 .LLST0
+C:\WINDOWS\ccyLyUo0.s:2150   .debug_loc:000000000000002c .LLST1
+C:\WINDOWS\ccyLyUo0.s:2164   .debug_loc:000000000000004d .LLST2
+C:\WINDOWS\ccyLyUo0.s:2178   .debug_loc:000000000000006e .LLST3
+C:\WINDOWS\ccyLyUo0.s:28     .text._lseek:000000000000000c .LVL1
+C:\WINDOWS\ccyLyUo0.s:2237   .debug_str:0000000000000085 .LASF135
+C:\WINDOWS\ccyLyUo0.s:2217   .debug_str:0000000000000014 .LASF136
+C:\WINDOWS\ccyLyUo0.s:22     .text._lseek:0000000000000002 .LCFI0
+C:\WINDOWS\ccyLyUo0.s:37     .text._lseek:0000000000000018 .LCFI1
+C:\WINDOWS\ccyLyUo0.s:18     .text._lseek:0000000000000000 .LVL0
+C:\WINDOWS\ccyLyUo0.s:54     .debug_info:0000000000000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+GAS LISTING C:\WINDOWS\ccyLyUo0.s 			page 6
+
+
+isatty

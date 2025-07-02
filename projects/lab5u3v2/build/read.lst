@@ -1,0 +1,234 @@
+GAS LISTING C:\WINDOWS\ccIciryb.s 			page 1
+
+
+   1              		.file	"read.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p0_m2p0_a2p0_c2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.section	.text._read,"ax",@progbits
+  10              		.align	1
+  11              		.globl	_read
+  13              	_read:
+  14              	.LFB1:
+  15              		.file 1 "./../../firmware/RISCV/stubs/read.c"
+   1:./../../firmware/RISCV/stubs/read.c **** /* See LICENSE of license details. */
+   2:./../../firmware/RISCV/stubs/read.c **** 
+   3:./../../firmware/RISCV/stubs/read.c **** #include <stdint.h>
+   4:./../../firmware/RISCV/stubs/read.c **** #include <errno.h>
+   5:./../../firmware/RISCV/stubs/read.c **** #include <unistd.h>
+   6:./../../firmware/RISCV/stubs/read.c **** #include <sys/types.h>
+   7:./../../firmware/RISCV/stubs/read.c **** 
+   8:./../../firmware/RISCV/stubs/read.c **** #include "stub.h"
+   9:./../../firmware/RISCV/stubs/read.c **** 
+  10:./../../firmware/RISCV/stubs/read.c **** ssize_t _read(int fd, void* ptr, size_t len)
+  11:./../../firmware/RISCV/stubs/read.c **** {
+  16              		.loc 1 11 1
+  17              		.cfi_startproc
+  18              	.LVL0:
+  12:./../../firmware/RISCV/stubs/read.c ****   return _stub(EBADF);
+  19              		.loc 1 12 3
+  20              		.file 2 "./../../firmware/RISCV/stubs/stub.h"
+   1:./../../firmware/RISCV/stubs/stub.h **** /* See LICENSE of license details. */
+   2:./../../firmware/RISCV/stubs/stub.h **** #ifndef _NUCLEI_SYS_STUB_H
+   3:./../../firmware/RISCV/stubs/stub.h **** #define _NUCLEI_SYS_STUB_H
+   4:./../../firmware/RISCV/stubs/stub.h **** 
+   5:./../../firmware/RISCV/stubs/stub.h **** #include <stdint.h>
+   6:./../../firmware/RISCV/stubs/stub.h **** #if   defined (__GNUC__)
+   7:./../../firmware/RISCV/stubs/stub.h **** #include <unistd.h>
+   8:./../../firmware/RISCV/stubs/stub.h **** #endif
+   9:./../../firmware/RISCV/stubs/stub.h **** 
+  10:./../../firmware/RISCV/stubs/stub.h **** void write_hex(int fd, unsigned long int hex);
+  11:./../../firmware/RISCV/stubs/stub.h **** 
+  12:./../../firmware/RISCV/stubs/stub.h **** static inline int _stub(int err)
+  13:./../../firmware/RISCV/stubs/stub.h **** {
+  14:./../../firmware/RISCV/stubs/stub.h ****   return -1;
+  21              		.loc 2 14 3
+  13:./../../firmware/RISCV/stubs/read.c **** }
+  22              		.loc 1 13 1 is_stmt 0
+  23 0000 7D55     		li	a0,-1
+  24              	.LVL1:
+  25 0002 8280     		ret
+  26              		.cfi_endproc
+  27              	.LFE1:
+  29              		.text
+  30              	.Letext0:
+  31              		.file 3 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\lib\\gcc\\riscv64-unknown-el
+  32              		.file 4 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+GAS LISTING C:\WINDOWS\ccIciryb.s 			page 2
+
+
+  33              		.file 5 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  34              		.file 6 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  35              		.file 7 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  36              		.file 8 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+  37              		.file 9 "c:\\users\\sebastian\\documents\\mikrodatorteknik\\compiler\\riscv64-unknown-elf\\include
+GAS LISTING C:\WINDOWS\ccIciryb.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 read.c
+C:\WINDOWS\ccIciryb.s:13     .text._read:0000000000000000 _read
+C:\WINDOWS\ccIciryb.s:17     .text._read:0000000000000000 .L0 
+C:\WINDOWS\ccIciryb.s:19     .text._read:0000000000000000 .L0 
+C:\WINDOWS\ccIciryb.s:21     .text._read:0000000000000000 .L0 
+C:\WINDOWS\ccIciryb.s:22     .text._read:0000000000000000 .L0 
+C:\WINDOWS\ccIciryb.s:23     .text._read:0000000000000000 .L0 
+C:\WINDOWS\ccIciryb.s:26     .text._read:0000000000000004 .L0 
+C:\WINDOWS\ccIciryb.s:29     .text._read:0000000000000004 .L0 
+                     .debug_frame:0000000000000000 .L0 
+C:\WINDOWS\ccIciryb.s:1569   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+C:\WINDOWS\ccIciryb.s:2338   .debug_str:000000000000046d .LASF130
+C:\WINDOWS\ccIciryb.s:2142   .debug_str:000000000000009a .LASF131
+C:\WINDOWS\ccIciryb.s:2240   .debug_str:000000000000027f .LASF132
+C:\WINDOWS\ccIciryb.s:2106   .debug_ranges:0000000000000000 .Ldebug_ranges0
+C:\WINDOWS\ccIciryb.s:2112   .debug_line:0000000000000000 .Ldebug_line0
+C:\WINDOWS\ccIciryb.s:2150   .debug_str:00000000000000e3 .LASF0
+C:\WINDOWS\ccIciryb.s:2270   .debug_str:0000000000000342 .LASF1
+C:\WINDOWS\ccIciryb.s:2276   .debug_str:000000000000035e .LASF2
+C:\WINDOWS\ccIciryb.s:2220   .debug_str:000000000000021f .LASF3
+C:\WINDOWS\ccIciryb.s:2166   .debug_str:0000000000000128 .LASF4
+C:\WINDOWS\ccIciryb.s:2214   .debug_str:0000000000000200 .LASF5
+C:\WINDOWS\ccIciryb.s:2148   .debug_str:00000000000000d5 .LASF6
+C:\WINDOWS\ccIciryb.s:2132   .debug_str:000000000000005a .LASF7
+C:\WINDOWS\ccIciryb.s:2206   .debug_str:00000000000001dc .LASF8
+C:\WINDOWS\ccIciryb.s:2118   .debug_str:0000000000000012 .LASF10
+C:\WINDOWS\ccIciryb.s:2252   .debug_str:00000000000002e9 .LASF9
+C:\WINDOWS\ccIciryb.s:2234   .debug_str:000000000000026a .LASF11
+C:\WINDOWS\ccIciryb.s:2264   .debug_str:000000000000031f .LASF12
+C:\WINDOWS\ccIciryb.s:2322   .debug_str:0000000000000430 .LASF13
+C:\WINDOWS\ccIciryb.s:2358   .debug_str:000000000000054d .LASF14
+C:\WINDOWS\ccIciryb.s:2230   .debug_str:000000000000025c .LASF15
+C:\WINDOWS\ccIciryb.s:2208   .debug_str:00000000000001e9 .LASF16
+C:\WINDOWS\ccIciryb.s:2314   .debug_str:000000000000040e .LASF17
+C:\WINDOWS\ccIciryb.s:2316   .debug_str:0000000000000416 .LASF18
+C:\WINDOWS\ccIciryb.s:2286   .debug_str:0000000000000386 .LASF19
+C:\WINDOWS\ccIciryb.s:2344   .debug_str:0000000000000503 .LASF20
+C:\WINDOWS\ccIciryb.s:2268   .debug_str:0000000000000330 .LASF21
+C:\WINDOWS\ccIciryb.s:2192   .debug_str:000000000000019f .LASF22
+C:\WINDOWS\ccIciryb.s:2196   .debug_str:00000000000001b0 .LASF27
+C:\WINDOWS\ccIciryb.s:2334   .debug_str:000000000000045a .LASF23
+C:\WINDOWS\ccIciryb.s:2308   .debug_str:00000000000003f9 .LASF24
+C:\WINDOWS\ccIciryb.s:2190   .debug_str:0000000000000199 .LASF25
+C:\WINDOWS\ccIciryb.s:2352   .debug_str:0000000000000538 .LASF26
+C:\WINDOWS\ccIciryb.s:2204   .debug_str:00000000000001d7 .LASF28
+C:\WINDOWS\ccIciryb.s:2146   .debug_str:00000000000000cc .LASF29
+C:\WINDOWS\ccIciryb.s:2328   .debug_str:0000000000000444 .LASF30
+C:\WINDOWS\ccIciryb.s:2156   .debug_str:00000000000000fb .LASF31
+C:\WINDOWS\ccIciryb.s:2382   .debug_str:00000000000005b8 .LASF32
+C:\WINDOWS\ccIciryb.s:2258   .debug_str:0000000000000303 .LASF33
+C:\WINDOWS\ccIciryb.s:2246   .debug_str:00000000000002cf .LASF34
+C:\WINDOWS\ccIciryb.s:2354   .debug_str:000000000000053d .LASF35
+C:\WINDOWS\ccIciryb.s:2278   .debug_str:0000000000000368 .LASF36
+C:\WINDOWS\ccIciryb.s:2368   .debug_str:0000000000000578 .LASF37
+C:\WINDOWS\ccIciryb.s:2160   .debug_str:000000000000010a .LASF38
+C:\WINDOWS\ccIciryb.s:2186   .debug_str:000000000000018c .LASF39
+GAS LISTING C:\WINDOWS\ccIciryb.s 			page 4
+
+
+C:\WINDOWS\ccIciryb.s:2114   .debug_str:0000000000000000 .LASF40
+C:\WINDOWS\ccIciryb.s:2340   .debug_str:00000000000004f5 .LASF41
+C:\WINDOWS\ccIciryb.s:2170   .debug_str:0000000000000138 .LASF42
+C:\WINDOWS\ccIciryb.s:2260   .debug_str:000000000000030c .LASF43
+C:\WINDOWS\ccIciryb.s:2300   .debug_str:00000000000003c9 .LASF44
+C:\WINDOWS\ccIciryb.s:2188   .debug_str:0000000000000194 .LASF45
+C:\WINDOWS\ccIciryb.s:2280   .debug_str:0000000000000372 .LASF46
+C:\WINDOWS\ccIciryb.s:2154   .debug_str:00000000000000f5 .LASF47
+C:\WINDOWS\ccIciryb.s:2116   .debug_str:000000000000000c .LASF48
+C:\WINDOWS\ccIciryb.s:2288   .debug_str:0000000000000391 .LASF49
+C:\WINDOWS\ccIciryb.s:2168   .debug_str:0000000000000131 .LASF50
+C:\WINDOWS\ccIciryb.s:2216   .debug_str:0000000000000212 .LASF51
+C:\WINDOWS\ccIciryb.s:2134   .debug_str:0000000000000071 .LASF52
+C:\WINDOWS\ccIciryb.s:2162   .debug_str:0000000000000118 .LASF53
+C:\WINDOWS\ccIciryb.s:2200   .debug_str:00000000000001c7 .LASF54
+C:\WINDOWS\ccIciryb.s:2244   .debug_str:00000000000002c8 .LASF55
+C:\WINDOWS\ccIciryb.s:2318   .debug_str:000000000000041e .LASF56
+C:\WINDOWS\ccIciryb.s:2372   .debug_str:0000000000000592 .LASF57
+C:\WINDOWS\ccIciryb.s:2152   .debug_str:00000000000000ef .LASF58
+C:\WINDOWS\ccIciryb.s:2364   .debug_str:000000000000056a .LASF59
+C:\WINDOWS\ccIciryb.s:2174   .debug_str:0000000000000147 .LASF60
+C:\WINDOWS\ccIciryb.s:2180   .debug_str:0000000000000165 .LASF61
+C:\WINDOWS\ccIciryb.s:2126   .debug_str:0000000000000034 .LASF62
+C:\WINDOWS\ccIciryb.s:2236   .debug_str:0000000000000271 .LASF63
+C:\WINDOWS\ccIciryb.s:2292   .debug_str:00000000000003a3 .LASF64
+C:\WINDOWS\ccIciryb.s:2238   .debug_str:0000000000000277 .LASF65
+C:\WINDOWS\ccIciryb.s:2310   .debug_str:0000000000000401 .LASF66
+C:\WINDOWS\ccIciryb.s:2324   .debug_str:0000000000000438 .LASF67
+C:\WINDOWS\ccIciryb.s:2172   .debug_str:0000000000000140 .LASF68
+C:\WINDOWS\ccIciryb.s:2210   .debug_str:00000000000001f0 .LASF69
+C:\WINDOWS\ccIciryb.s:2194   .debug_str:00000000000001a8 .LASF70
+C:\WINDOWS\ccIciryb.s:2298   .debug_str:00000000000003c4 .LASF71
+C:\WINDOWS\ccIciryb.s:2122   .debug_str:0000000000000021 .LASF72
+C:\WINDOWS\ccIciryb.s:2306   .debug_str:00000000000003e0 .LASF73
+C:\WINDOWS\ccIciryb.s:2302   .debug_str:00000000000003ce .LASF74
+C:\WINDOWS\ccIciryb.s:2262   .debug_str:0000000000000314 .LASF75
+C:\WINDOWS\ccIciryb.s:2304   .debug_str:00000000000003d6 .LASF76
+C:\WINDOWS\ccIciryb.s:2228   .debug_str:0000000000000254 .LASF77
+C:\WINDOWS\ccIciryb.s:2202   .debug_str:00000000000001cd .LASF78
+C:\WINDOWS\ccIciryb.s:2380   .debug_str:00000000000005b3 .LASF79
+C:\WINDOWS\ccIciryb.s:2266   .debug_str:0000000000000326 .LASF80
+C:\WINDOWS\ccIciryb.s:2212   .debug_str:00000000000001f8 .LASF81
+C:\WINDOWS\ccIciryb.s:2178   .debug_str:000000000000015d .LASF82
+C:\WINDOWS\ccIciryb.s:2272   .debug_str:0000000000000350 .LASF83
+C:\WINDOWS\ccIciryb.s:2222   .debug_str:0000000000000232 .LASF84
+C:\WINDOWS\ccIciryb.s:2362   .debug_str:0000000000000560 .LASF85
+C:\WINDOWS\ccIciryb.s:2164   .debug_str:0000000000000120 .LASF86
+C:\WINDOWS\ccIciryb.s:2158   .debug_str:0000000000000105 .LASF87
+C:\WINDOWS\ccIciryb.s:2326   .debug_str:000000000000043f .LASF88
+C:\WINDOWS\ccIciryb.s:2284   .debug_str:000000000000037f .LASF89
+C:\WINDOWS\ccIciryb.s:2356   .debug_str:0000000000000547 .LASF90
+C:\WINDOWS\ccIciryb.s:2218   .debug_str:0000000000000218 .LASF91
+C:\WINDOWS\ccIciryb.s:2282   .debug_str:0000000000000379 .LASF92
+C:\WINDOWS\ccIciryb.s:2120   .debug_str:0000000000000019 .LASF93
+C:\WINDOWS\ccIciryb.s:2312   .debug_str:0000000000000408 .LASF94
+C:\WINDOWS\ccIciryb.s:2332   .debug_str:0000000000000454 .LASF95
+C:\WINDOWS\ccIciryb.s:2342   .debug_str:00000000000004fe .LASF96
+GAS LISTING C:\WINDOWS\ccIciryb.s 			page 5
+
+
+C:\WINDOWS\ccIciryb.s:2350   .debug_str:000000000000052b .LASF97
+C:\WINDOWS\ccIciryb.s:2336   .debug_str:0000000000000460 .LASF98
+C:\WINDOWS\ccIciryb.s:2226   .debug_str:0000000000000247 .LASF99
+C:\WINDOWS\ccIciryb.s:2370   .debug_str:0000000000000583 .LASF100
+C:\WINDOWS\ccIciryb.s:2198   .debug_str:00000000000001b8 .LASF101
+C:\WINDOWS\ccIciryb.s:2294   .debug_str:00000000000003ac .LASF102
+C:\WINDOWS\ccIciryb.s:2374   .debug_str:0000000000000599 .LASF103
+C:\WINDOWS\ccIciryb.s:2296   .debug_str:00000000000003b7 .LASF104
+C:\WINDOWS\ccIciryb.s:2378   .debug_str:00000000000005a5 .LASF105
+C:\WINDOWS\ccIciryb.s:2144   .debug_str:00000000000000be .LASF106
+C:\WINDOWS\ccIciryb.s:2360   .debug_str:0000000000000556 .LASF107
+C:\WINDOWS\ccIciryb.s:2224   .debug_str:000000000000023b .LASF108
+C:\WINDOWS\ccIciryb.s:2346   .debug_str:000000000000050b .LASF109
+C:\WINDOWS\ccIciryb.s:2184   .debug_str:000000000000017e .LASF110
+C:\WINDOWS\ccIciryb.s:2140   .debug_str:000000000000008b .LASF111
+C:\WINDOWS\ccIciryb.s:2182   .debug_str:000000000000016d .LASF112
+C:\WINDOWS\ccIciryb.s:2128   .debug_str:000000000000003a .LASF113
+C:\WINDOWS\ccIciryb.s:2130   .debug_str:0000000000000049 .LASF114
+C:\WINDOWS\ccIciryb.s:2274   .debug_str:0000000000000355 .LASF115
+C:\WINDOWS\ccIciryb.s:2256   .debug_str:00000000000002fc .LASF116
+C:\WINDOWS\ccIciryb.s:2248   .debug_str:00000000000002d9 .LASF117
+C:\WINDOWS\ccIciryb.s:2366   .debug_str:0000000000000570 .LASF118
+C:\WINDOWS\ccIciryb.s:2136   .debug_str:000000000000007a .LASF133
+C:\WINDOWS\ccIciryb.s:2320   .debug_str:0000000000000424 .LASF119
+C:\WINDOWS\ccIciryb.s:2348   .debug_str:0000000000000518 .LASF120
+C:\WINDOWS\ccIciryb.s:2176   .debug_str:0000000000000150 .LASF121
+C:\WINDOWS\ccIciryb.s:2290   .debug_str:0000000000000399 .LASF122
+C:\WINDOWS\ccIciryb.s:2124   .debug_str:000000000000002c .LASF123
+C:\WINDOWS\ccIciryb.s:2232   .debug_str:0000000000000262 .LASF124
+C:\WINDOWS\ccIciryb.s:2250   .debug_str:00000000000002e2 .LASF125
+C:\WINDOWS\ccIciryb.s:2254   .debug_str:00000000000002f5 .LASF126
+C:\WINDOWS\ccIciryb.s:2330   .debug_str:000000000000044d .LASF127
+C:\WINDOWS\ccIciryb.s:2376   .debug_str:000000000000059e .LASF128
+C:\WINDOWS\ccIciryb.s:2242   .debug_str:00000000000002bf .LASF129
+C:\WINDOWS\ccIciryb.s:14     .text._read:0000000000000000 .LFB1
+C:\WINDOWS\ccIciryb.s:27     .text._read:0000000000000004 .LFE1
+C:\WINDOWS\ccIciryb.s:2079   .debug_loc:0000000000000000 .LLST0
+C:\WINDOWS\ccIciryb.s:2138   .debug_str:0000000000000085 .LASF134
+C:\WINDOWS\ccIciryb.s:18     .text._read:0000000000000000 .LVL0
+C:\WINDOWS\ccIciryb.s:24     .text._read:0000000000000002 .LVL1
+C:\WINDOWS\ccIciryb.s:39     .debug_info:0000000000000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS

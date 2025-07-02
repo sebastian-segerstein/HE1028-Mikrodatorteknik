@@ -1,0 +1,3205 @@
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 1
+
+
+   1              		.file	"main.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p0_m2p0_a2p0_c2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.section	.text.rtcInit,"ax",@progbits
+  10              		.align	1
+  11              		.globl	rtcInit
+  13              	rtcInit:
+  14              	.LFB3:
+  15              		.file 1 "main.c"
+   1:main.c        **** #include "gd32vf103.h"
+   2:main.c        **** #include "drivers.h"
+   3:main.c        **** #include "adc.h"
+   4:main.c        **** #include "lcd.h"
+   5:main.c        **** #include "usart.h"
+   6:main.c        **** #include <string.h>
+   7:main.c        **** #define EI 1
+   8:main.c        **** #define DI 0
+   9:main.c        **** 
+  10:main.c        **** void rtcInit(void){
+  16              		.loc 1 10 19
+  17              		.cfi_startproc
+  11:main.c        ****    // enable power managemenet unit - perhaps enabled by default
+  12:main.c        ****    rcu_periph_clock_enable(RCU_PMU);
+  18              		.loc 1 12 4
+  10:main.c        ****    // enable power managemenet unit - perhaps enabled by default
+  19              		.loc 1 10 19 is_stmt 0
+  20 0000 4111     		addi	sp,sp,-16
+  21              	.LCFI0:
+  22              		.cfi_def_cfa_offset 16
+  23              		.loc 1 12 4
+  24 0002 1305C071 		li	a0,1820
+  10:main.c        ****    // enable power managemenet unit - perhaps enabled by default
+  25              		.loc 1 10 19
+  26 0006 06C6     		sw	ra,12(sp)
+  27              		.cfi_offset 1, -4
+  28              		.loc 1 12 4
+  29 0008 97000000 		call	rcu_periph_clock_enable
+  29      E7800000 
+  30              	.LVL0:
+  13:main.c        ****    // enable write access to the registers in the backup domain
+  14:main.c        ****    pmu_backup_write_enable();
+  31              		.loc 1 14 4 is_stmt 1
+  32 0010 97000000 		call	pmu_backup_write_enable
+  32      E7800000 
+  33              	.LVL1:
+  15:main.c        ****    // enable backup domain
+  16:main.c        ****    rcu_periph_clock_enable(RCU_BKPI);
+  34              		.loc 1 16 4
+  35 0018 1305B071 		li	a0,1819
+  36 001c 97000000 		call	rcu_periph_clock_enable
+  36      E7800000 
+  37              	.LVL2:
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 2
+
+
+  17:main.c        ****    // reset backup domain registers
+  18:main.c        ****    bkp_deinit();
+  38              		.loc 1 18 4
+  39 0024 97000000 		call	bkp_deinit
+  39      E7800000 
+  40              	.LVL3:
+  19:main.c        ****    // set the results of a previous calibration procedure
+  20:main.c        ****    // bkp_rtc_calibration_value_set(x);
+  21:main.c        **** 
+  22:main.c        ****    // setup RTC
+  23:main.c        ****    // enable external low speed XO
+  24:main.c        ****    //rcu_osci_on(RCU_LXTAL);
+  25:main.c        ****    if (rcu_osci_stab_wait(RCU_HXTAL)) {
+  41              		.loc 1 25 4
+  42              		.loc 1 25 8 is_stmt 0
+  43 002c 4145     		li	a0,16
+  44 002e 97000000 		call	rcu_osci_stab_wait
+  44      E7800000 
+  45              	.LVL4:
+  46              		.loc 1 25 7
+  47 0036 21CD     		beq	a0,zero,.L1
+  48              	.LBB4:
+  49              	.LBB5:
+  26:main.c        **** 	 // use external low speed oscillaotr, i.e. 32.768 kHz
+  27:main.c        **** 	 rcu_rtc_clock_config(RCU_RTCSRC_HXTAL_DIV_128);
+  50              		.loc 1 27 3 is_stmt 1
+  51 0038 13050030 		li	a0,768
+  52 003c 97000000 		call	rcu_rtc_clock_config
+  52      E7800000 
+  53              	.LVL5:
+  28:main.c        **** 	 rcu_periph_clock_enable(RCU_RTC);
+  54              		.loc 1 28 3
+  55 0044 0565     		li	a0,4096
+  56 0046 1305F580 		addi	a0,a0,-2033
+  57 004a 97000000 		call	rcu_periph_clock_enable
+  57      E7800000 
+  58              	.LVL6:
+  29:main.c        **** 	 // wait until shadow registers are synced from the backup domain
+  30:main.c        **** 	 // over the APB bus
+  31:main.c        **** 	 rtc_register_sync_wait();
+  59              		.loc 1 31 3
+  60 0052 97000000 		call	rtc_register_sync_wait
+  60      E7800000 
+  61              	.LVL7:
+  32:main.c        **** 	 // wait until shadow register changes are synced over APB
+  33:main.c        **** 	 // to the backup doamin
+  34:main.c        **** 	 rtc_lwoff_wait();
+  62              		.loc 1 34 3
+  63 005a 97000000 		call	rtc_lwoff_wait
+  63      E7800000 
+  64              	.LVL8:
+  35:main.c        **** 	 // prescale to 1 second
+  36:main.c        **** 	 rtc_prescaler_set(62500 - 1);
+  65              		.loc 1 36 3
+  66 0062 3D65     		li	a0,61440
+  67 0064 13053542 		addi	a0,a0,1059
+  68 0068 97000000 		call	rtc_prescaler_set
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 3
+
+
+  68      E7800000 
+  69              	.LVL9:
+  37:main.c        **** 	 rtc_lwoff_wait();
+  70              		.loc 1 37 3
+  71 0070 97000000 		call	rtc_lwoff_wait
+  71      E7800000 
+  72              	.LVL10:
+  38:main.c        **** 	 rtc_flag_clear(RTC_INT_FLAG_SECOND);
+  73              		.loc 1 38 3
+  74 0078 0545     		li	a0,1
+  75 007a 97000000 		call	rtc_flag_clear
+  75      E7800000 
+  76              	.LVL11:
+  39:main.c        **** 	 //rtc_interrupt_enable(RTC_INT_SECOND);
+  40:main.c        **** 	 rtc_lwoff_wait();
+  77              		.loc 1 40 3
+  78              	.LBE5:
+  79              	.LBE4:
+  41:main.c        ****    }
+  42:main.c        **** }
+  80              		.loc 1 42 1 is_stmt 0
+  81 0082 B240     		lw	ra,12(sp)
+  82              		.cfi_remember_state
+  83              		.cfi_restore 1
+  84 0084 4101     		addi	sp,sp,16
+  85              	.LCFI1:
+  86              		.cfi_def_cfa_offset 0
+  87              	.LBB7:
+  88              	.LBB6:
+  40:main.c        ****    }
+  89              		.loc 1 40 3
+  90 0086 17030000 		tail	rtc_lwoff_wait
+  90      67000300 
+  91              	.LVL12:
+  92              	.L1:
+  93              	.LCFI2:
+  94              		.cfi_restore_state
+  95              	.LBE6:
+  96              	.LBE7:
+  97              		.loc 1 42 1
+  98 008e B240     		lw	ra,12(sp)
+  99              		.cfi_restore 1
+ 100 0090 4101     		addi	sp,sp,16
+ 101              	.LCFI3:
+ 102              		.cfi_def_cfa_offset 0
+ 103 0092 8280     		jr	ra
+ 104              		.cfi_endproc
+ 105              	.LFE3:
+ 107              		.section	.text.updateLCD,"ax",@progbits
+ 108              		.align	1
+ 109              		.globl	updateLCD
+ 111              	updateLCD:
+ 112              	.LFB4:
+  43:main.c        **** 
+  44:main.c        **** void updateLCD(int *messagesOnDisplay, char newMessage[], char message1[], char message2[], char me
+  45:main.c        **** {
+ 113              		.loc 1 45 1 is_stmt 1
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 4
+
+
+ 114              		.cfi_startproc
+ 115              	.LVL13:
+  46:main.c        **** 	LCD_Clear(RED);
+ 116              		.loc 1 46 2
+  45:main.c        **** 	LCD_Clear(RED);
+ 117              		.loc 1 45 1 is_stmt 0
+ 118 0000 0111     		addi	sp,sp,-32
+ 119              	.LCFI4:
+ 120              		.cfi_def_cfa_offset 32
+ 121 0002 56C2     		sw	s5,4(sp)
+ 122              		.cfi_offset 21, -28
+ 123 0004 AA8A     		mv	s5,a0
+ 124              		.loc 1 46 2
+ 125 0006 4165     		li	a0,65536
+ 126              	.LVL14:
+ 127 0008 13050580 		addi	a0,a0,-2048
+  45:main.c        **** 	LCD_Clear(RED);
+ 128              		.loc 1 45 1
+ 129 000c 22CC     		sw	s0,24(sp)
+ 130 000e 26CA     		sw	s1,20(sp)
+ 131 0010 4AC8     		sw	s2,16(sp)
+ 132 0012 4EC6     		sw	s3,12(sp)
+ 133 0014 52C4     		sw	s4,8(sp)
+ 134              		.cfi_offset 8, -8
+ 135              		.cfi_offset 9, -12
+ 136              		.cfi_offset 18, -16
+ 137              		.cfi_offset 19, -20
+ 138              		.cfi_offset 20, -24
+ 139 0016 BA89     		mv	s3,a4
+ 140 0018 3E8A     		mv	s4,a5
+ 141 001a 06CE     		sw	ra,28(sp)
+ 142              		.cfi_offset 1, -4
+  45:main.c        **** 	LCD_Clear(RED);
+ 143              		.loc 1 45 1
+ 144 001c 2E84     		mv	s0,a1
+ 145 001e B284     		mv	s1,a2
+ 146 0020 3689     		mv	s2,a3
+ 147              		.loc 1 46 2
+ 148 0022 97000000 		call	LCD_Clear
+ 148      E7800000 
+ 149              	.LVL15:
+  47:main.c        **** 
+  48:main.c        **** 	if (*messagesOnDisplay < 4)
+ 150              		.loc 1 48 2 is_stmt 1
+ 151              		.loc 1 48 6 is_stmt 0
+ 152 002a 83A70A00 		lw	a5,0(s5)
+ 153              		.loc 1 48 5
+ 154 002e 0D47     		li	a4,3
+ 155 0030 6349F70A 		bgt	a5,a4,.L5
+  49:main.c        **** 	{
+  50:main.c        **** 		// Use the *messagesOnDisplay as an index to determine which message to update
+  51:main.c        **** 		switch (*messagesOnDisplay)
+ 156              		.loc 1 51 3 is_stmt 1
+ 157 0034 8546     		li	a3,1
+ 158 0036 638ED708 		beq	a5,a3,.L6
+ 159 003a 63CBF606 		bgt	a5,a3,.L7
+ 160 003e D1C3     		beq	a5,zero,.L8
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 5
+
+
+ 161              	.L9:
+  52:main.c        **** 		{
+  53:main.c        **** 		case 0:
+  54:main.c        **** 			memcpy(message4, newMessage, 17);
+  55:main.c        **** 			break;
+  56:main.c        **** 		case 1:
+  57:main.c        **** 			memcpy(message3, newMessage, 17);
+  58:main.c        **** 			break;
+  59:main.c        **** 		case 2:
+  60:main.c        **** 			memcpy(message2, newMessage, 17);
+  61:main.c        **** 			break;
+  62:main.c        **** 		case 3:
+  63:main.c        **** 			memcpy(message1, newMessage, 17);
+  64:main.c        **** 			break;
+  65:main.c        **** 		}
+  66:main.c        **** 		(*messagesOnDisplay)++;
+ 162              		.loc 1 66 3
+ 163              		.loc 1 66 23 is_stmt 0
+ 164 0040 83A70A00 		lw	a5,0(s5)
+ 165 0044 8507     		addi	a5,a5,1
+ 166 0046 23A0FA00 		sw	a5,0(s5)
+ 167              	.L12:
+  67:main.c        **** 	}
+  68:main.c        **** 	else
+  69:main.c        **** 	{
+  70:main.c        **** 		memcpy(message4, message3, 17);
+  71:main.c        **** 		memcpy(message3, message2, 17);
+  72:main.c        **** 		memcpy(message2, message1, 17);
+  73:main.c        **** 		memcpy(message1, newMessage, 17);
+  74:main.c        **** 	}
+  75:main.c        **** 	LCD_ShowStr(10, 10, message4, WHITE, TRANSPARENT);
+ 168              		.loc 1 75 2 is_stmt 1
+ 169 004a 4164     		li	s0,65536
+ 170              	.LVL16:
+ 171 004c 9306F4FF 		addi	a3,s0,-1
+ 172 0050 5286     		mv	a2,s4
+ 173 0052 0547     		li	a4,1
+ 174 0054 A945     		li	a1,10
+ 175 0056 2945     		li	a0,10
+ 176 0058 97000000 		call	LCD_ShowStr
+ 176      E7800000 
+ 177              	.LVL17:
+  76:main.c        **** 	LCD_ShowStr(10, 30, message3, WHITE, TRANSPARENT);
+ 178              		.loc 1 76 2
+ 179 0060 9306F4FF 		addi	a3,s0,-1
+ 180 0064 4E86     		mv	a2,s3
+ 181 0066 0547     		li	a4,1
+ 182 0068 F945     		li	a1,30
+ 183 006a 2945     		li	a0,10
+ 184 006c 97000000 		call	LCD_ShowStr
+ 184      E7800000 
+ 185              	.LVL18:
+  77:main.c        **** 	LCD_ShowStr(10, 50, message2, WHITE, TRANSPARENT);
+ 186              		.loc 1 77 2
+ 187 0074 9306F4FF 		addi	a3,s0,-1
+ 188 0078 4A86     		mv	a2,s2
+ 189 007a 0547     		li	a4,1
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 6
+
+
+ 190 007c 93052003 		li	a1,50
+ 191 0080 2945     		li	a0,10
+ 192 0082 97000000 		call	LCD_ShowStr
+ 192      E7800000 
+ 193              	.LVL19:
+  78:main.c        **** 	LCD_ShowStr(10, 70, message1, WHITE, TRANSPARENT);
+ 194              		.loc 1 78 2
+ 195 008a 9306F4FF 		addi	a3,s0,-1
+  79:main.c        **** }
+ 196              		.loc 1 79 1 is_stmt 0
+ 197 008e 6244     		lw	s0,24(sp)
+ 198              		.cfi_remember_state
+ 199              		.cfi_restore 8
+ 200 0090 F240     		lw	ra,28(sp)
+ 201              		.cfi_restore 1
+ 202 0092 4249     		lw	s2,16(sp)
+ 203              		.cfi_restore 18
+ 204              	.LVL20:
+ 205 0094 B249     		lw	s3,12(sp)
+ 206              		.cfi_restore 19
+ 207              	.LVL21:
+ 208 0096 224A     		lw	s4,8(sp)
+ 209              		.cfi_restore 20
+ 210              	.LVL22:
+ 211 0098 924A     		lw	s5,4(sp)
+ 212              		.cfi_restore 21
+ 213              	.LVL23:
+  78:main.c        **** 	LCD_ShowStr(10, 70, message1, WHITE, TRANSPARENT);
+ 214              		.loc 1 78 2
+ 215 009a 2686     		mv	a2,s1
+ 216              		.loc 1 79 1
+ 217 009c D244     		lw	s1,20(sp)
+ 218              		.cfi_restore 9
+ 219              	.LVL24:
+  78:main.c        **** 	LCD_ShowStr(10, 70, message1, WHITE, TRANSPARENT);
+ 220              		.loc 1 78 2
+ 221 009e 0547     		li	a4,1
+ 222              		.loc 1 79 1
+  78:main.c        **** 	LCD_ShowStr(10, 70, message1, WHITE, TRANSPARENT);
+ 223              		.loc 1 78 2
+ 224 00a0 93056004 		li	a1,70
+ 225 00a4 2945     		li	a0,10
+ 226              		.loc 1 79 1
+ 227 00a6 0561     		addi	sp,sp,32
+ 228              	.LCFI5:
+ 229              		.cfi_def_cfa_offset 0
+  78:main.c        **** 	LCD_ShowStr(10, 70, message1, WHITE, TRANSPARENT);
+ 230              		.loc 1 78 2
+ 231 00a8 17030000 		tail	LCD_ShowStr
+ 231      67000300 
+ 232              	.LVL25:
+ 233              	.L7:
+ 234              	.LCFI6:
+ 235              		.cfi_restore_state
+  51:main.c        **** 		{
+ 236              		.loc 1 51 3
+ 237 00b0 8946     		li	a3,2
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 7
+
+
+ 238 00b2 6384D702 		beq	a5,a3,.L10
+ 239 00b6 E395E7F8 		bne	a5,a4,.L9
+  63:main.c        **** 			break;
+ 240              		.loc 1 63 4 is_stmt 1
+ 241 00ba 4546     		li	a2,17
+ 242 00bc A285     		mv	a1,s0
+ 243 00be 2685     		mv	a0,s1
+ 244 00c0 21A0     		j	.L14
+ 245              	.L8:
+  54:main.c        **** 			break;
+ 246              		.loc 1 54 4
+ 247 00c2 4546     		li	a2,17
+ 248 00c4 A285     		mv	a1,s0
+ 249 00c6 5285     		mv	a0,s4
+ 250              	.L14:
+  63:main.c        **** 			break;
+ 251              		.loc 1 63 4 is_stmt 0
+ 252 00c8 97000000 		call	memcpy
+ 252      E7800000 
+ 253              	.LVL26:
+  64:main.c        **** 		}
+ 254              		.loc 1 64 4 is_stmt 1
+ 255 00d0 85BF     		j	.L9
+ 256              	.L6:
+  57:main.c        **** 			break;
+ 257              		.loc 1 57 4
+ 258 00d2 4546     		li	a2,17
+ 259 00d4 A285     		mv	a1,s0
+ 260 00d6 4E85     		mv	a0,s3
+ 261 00d8 C5BF     		j	.L14
+ 262              	.L10:
+  60:main.c        **** 			break;
+ 263              		.loc 1 60 4
+ 264 00da 4546     		li	a2,17
+ 265 00dc A285     		mv	a1,s0
+ 266 00de 4A85     		mv	a0,s2
+ 267 00e0 E5B7     		j	.L14
+ 268              	.L5:
+  70:main.c        **** 		memcpy(message3, message2, 17);
+ 269              		.loc 1 70 3
+ 270 00e2 CE85     		mv	a1,s3
+ 271 00e4 4546     		li	a2,17
+ 272 00e6 5285     		mv	a0,s4
+ 273 00e8 97000000 		call	memcpy
+ 273      E7800000 
+ 274              	.LVL27:
+  71:main.c        **** 		memcpy(message2, message1, 17);
+ 275              		.loc 1 71 3
+ 276 00f0 CA85     		mv	a1,s2
+ 277 00f2 4546     		li	a2,17
+ 278 00f4 4E85     		mv	a0,s3
+ 279 00f6 97000000 		call	memcpy
+ 279      E7800000 
+ 280              	.LVL28:
+  72:main.c        **** 		memcpy(message1, newMessage, 17);
+ 281              		.loc 1 72 3
+ 282 00fe A685     		mv	a1,s1
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 8
+
+
+ 283 0100 4546     		li	a2,17
+ 284 0102 4A85     		mv	a0,s2
+ 285 0104 97000000 		call	memcpy
+ 285      E7800000 
+ 286              	.LVL29:
+  73:main.c        **** 	}
+ 287              		.loc 1 73 3
+ 288 010c 4546     		li	a2,17
+ 289 010e A285     		mv	a1,s0
+ 290 0110 2685     		mv	a0,s1
+ 291 0112 97000000 		call	memcpy
+ 291      E7800000 
+ 292              	.LVL30:
+ 293 011a 05BF     		j	.L12
+ 294              		.cfi_endproc
+ 295              	.LFE4:
+ 297              		.section	.text.startup.main,"ax",@progbits
+ 298              		.align	1
+ 299              		.globl	main
+ 301              	main:
+ 302              	.LFB5:
+  80:main.c        **** 
+  81:main.c        **** 
+  82:main.c        **** int main(void){
+ 303              		.loc 1 82 15
+ 304              		.cfi_startproc
+  83:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 305              		.loc 1 83 2
+  82:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 306              		.loc 1 82 15 is_stmt 0
+ 307 0000 4971     		addi	sp,sp,-368
+ 308              	.LCFI7:
+ 309              		.cfi_def_cfa_offset 368
+ 310              		.loc 1 83 15
+ 311 0002 02C6     		sw	zero,12(sp)
+ 312              		.loc 1 83 21
+ 313 0004 02C8     		sw	zero,16(sp)
+ 314              		.loc 1 83 31
+ 315 0006 FD57     		li	a5,-1
+ 316 0008 3ECC     		sw	a5,24(sp)
+ 317              		.loc 1 83 40
+ 318 000a 02CE     		sw	zero,28(sp)
+ 319              		.loc 1 83 45
+ 320 000c 02D0     		sw	zero,32(sp)
+ 321              		.loc 1 83 68
+ 322 000e 8547     		li	a5,1
+ 323              		.loc 1 83 53
+ 324 0010 02D2     		sw	zero,36(sp)
+ 325              		.loc 1 83 68
+ 326 0012 3ED4     		sw	a5,40(sp)
+ 327              		.loc 1 83 81
+ 328 0014 02D6     		sw	zero,44(sp)
+ 329              		.loc 1 83 97
+ 330 0016 02D8     		sw	zero,48(sp)
+ 331              		.loc 1 83 105
+ 332 0018 02DA     		sw	zero,52(sp)
+ 333              		.loc 1 83 113
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 9
+
+
+ 334 001a 02DC     		sw	zero,56(sp)
+  84:main.c        **** 	int lookUpTbl[16]={1,4,7,14,2,5,8,0,3,6,9,15,10,11,12,13};
+ 335              		.loc 1 84 6
+ 336 001c B7050000 		lui	a1,%hi(.LANCHOR0)
+  82:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 337              		.loc 1 82 15
+ 338 0020 23248116 		sw	s0,360(sp)
+  83:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 339              		.loc 1 83 121
+ 340 0024 02DE     		sw	zero,60(sp)
+ 341              		.cfi_offset 8, -8
+ 342              		.loc 1 84 6
+ 343 0026 13840500 		addi	s0,a1,%lo(.LANCHOR0)
+ 344 002a 13060004 		li	a2,64
+ 345 002e 93850500 		addi	a1,a1,%lo(.LANCHOR0)
+ 346 0032 8801     		addi	a0,sp,192
+  82:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 347              		.loc 1 82 15
+ 348 0034 23261116 		sw	ra,364(sp)
+ 349 0038 23229116 		sw	s1,356(sp)
+ 350 003c 23202117 		sw	s2,352(sp)
+ 351 0040 232C4115 		sw	s4,344(sp)
+ 352 0044 232A5115 		sw	s5,340(sp)
+ 353 0048 23286115 		sw	s6,336(sp)
+ 354 004c 232E3115 		sw	s3,348(sp)
+ 355 0050 23267115 		sw	s7,332(sp)
+ 356              		.cfi_offset 1, -4
+ 357              		.cfi_offset 9, -12
+ 358              		.cfi_offset 18, -16
+ 359              		.cfi_offset 20, -24
+ 360              		.cfi_offset 21, -28
+ 361              		.cfi_offset 22, -32
+ 362              		.cfi_offset 19, -20
+ 363              		.cfi_offset 23, -36
+  83:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0, recvCount = 0, correct = 1, state = 0, rtc, hh 
+ 364              		.loc 1 83 135
+ 365 0054 82C0     		sw	zero,64(sp)
+ 366              		.loc 1 84 2 is_stmt 1
+ 367              		.loc 1 84 6 is_stmt 0
+ 368 0056 97000000 		call	memcpy
+ 368      E7800000 
+ 369              	.LVL31:
+  85:main.c        **** 	int lookUpTblK[16]={13, 15, 0, 14, 12, 9, 8, 7, 11, 6, 5, 4, 10, 3, 2, 1};
+ 370              		.loc 1 85 2 is_stmt 1
+ 371              		.loc 1 85 6 is_stmt 0
+ 372 005e 13060004 		li	a2,64
+ 373 0062 93050404 		addi	a1,s0,64
+ 374 0066 0802     		addi	a0,sp,256
+ 375 0068 97000000 		call	memcpy
+ 375      E7800000 
+ 376              	.LVL32:
+  86:main.c        **** 	int dac=0, speed=-100;
+ 377              		.loc 1 86 2 is_stmt 1
+  87:main.c        **** 	int adcr, tmpr;
+ 378              		.loc 1 87 2
+  88:main.c        **** 	volatile char recieved, tmprSend[7] = {0}, recievedTime[6] = {0}, message1[17] = {0}, message2[17]
+ 379              		.loc 1 88 2
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 10
+
+
+ 380              		.loc 1 88 26 is_stmt 0
+ 381 0070 82C6     		sw	zero,76(sp)
+ 382 0072 23180104 		sh	zero,80(sp)
+ 383 0076 23090104 		sb	zero,82(sp)
+ 384              		.loc 1 88 45
+ 385 007a 82C2     		sw	zero,68(sp)
+ 386 007c 23140104 		sh	zero,72(sp)
+ 387              		.loc 1 88 68
+ 388 0080 82CE     		sw	zero,92(sp)
+ 389 0082 82D0     		sw	zero,96(sp)
+ 390 0084 82D2     		sw	zero,100(sp)
+ 391 0086 82D4     		sw	zero,104(sp)
+ 392 0088 23060106 		sb	zero,108(sp)
+ 393              		.loc 1 88 88
+ 394 008c 82D8     		sw	zero,112(sp)
+ 395 008e 82DA     		sw	zero,116(sp)
+ 396 0090 82DC     		sw	zero,120(sp)
+ 397 0092 82DE     		sw	zero,124(sp)
+ 398 0094 23000108 		sb	zero,128(sp)
+ 399              		.loc 1 88 108
+ 400 0098 02C3     		sw	zero,132(sp)
+ 401 009a 02C5     		sw	zero,136(sp)
+ 402 009c 02C7     		sw	zero,140(sp)
+ 403 009e 02C9     		sw	zero,144(sp)
+ 404 00a0 230A0108 		sb	zero,148(sp)
+ 405              		.loc 1 88 128
+ 406 00a4 02CD     		sw	zero,152(sp)
+ 407 00a6 02CF     		sw	zero,156(sp)
+ 408 00a8 02D1     		sw	zero,160(sp)
+ 409 00aa 02D3     		sw	zero,164(sp)
+ 410 00ac 2304010A 		sb	zero,168(sp)
+ 411              		.loc 1 88 148
+ 412 00b0 02D7     		sw	zero,172(sp)
+ 413 00b2 02D9     		sw	zero,176(sp)
+ 414 00b4 02DB     		sw	zero,180(sp)
+ 415 00b6 02DD     		sw	zero,184(sp)
+  89:main.c        **** 	char digits[10][10]={"Zero ","One  ","Two  ","Three","Four ","Five ","Six  ","Seven","Eight","Nine
+  90:main.c        **** 	char time[7]={0};
+  91:main.c        **** 	int timeReceived = 0;
+  92:main.c        **** 	volatile int res;
+  93:main.c        **** 
+  94:main.c        **** 	memset(newMessage, 32, 17);
+ 416              		.loc 1 94 2
+ 417 00b8 4546     		li	a2,17
+ 418 00ba 93050002 		li	a1,32
+  88:main.c        **** 	volatile char recieved, tmprSend[7] = {0}, recievedTime[6] = {0}, message1[17] = {0}, message2[17]
+ 419              		.loc 1 88 148
+ 420 00be 230E010A 		sb	zero,188(sp)
+  89:main.c        **** 	char digits[10][10]={"Zero ","One  ","Two  ","Three","Four ","Five ","Six  ","Seven","Eight","Nine
+ 421              		.loc 1 89 2 is_stmt 1
+  90:main.c        **** 	int timeReceived = 0;
+ 422              		.loc 1 90 2
+  90:main.c        **** 	int timeReceived = 0;
+ 423              		.loc 1 90 7 is_stmt 0
+ 424 00c2 82CA     		sw	zero,84(sp)
+ 425 00c4 231C0104 		sh	zero,88(sp)
+ 426              		.loc 1 94 2
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 11
+
+
+ 427 00c8 6811     		addi	a0,sp,172
+  90:main.c        **** 	int timeReceived = 0;
+ 428              		.loc 1 90 7
+ 429 00ca 230D0104 		sb	zero,90(sp)
+  91:main.c        **** 	volatile int res;
+ 430              		.loc 1 91 2 is_stmt 1
+ 431              	.LVL33:
+  92:main.c        **** 
+ 432              		.loc 1 92 2
+ 433              		.loc 1 94 2
+ 434 00ce 97000000 		call	memset
+ 434      E7800000 
+ 435              	.LVL34:
+  95:main.c        **** 	memset(message1, 32, 17);
+ 436              		.loc 1 95 2
+ 437 00d6 4546     		li	a2,17
+ 438 00d8 93050002 		li	a1,32
+ 439 00dc E808     		addi	a0,sp,92
+ 440 00de 97000000 		call	memset
+ 440      E7800000 
+ 441              	.LVL35:
+  96:main.c        **** 	memset(message2, 32, 17);
+ 442              		.loc 1 96 2
+ 443 00e6 4546     		li	a2,17
+ 444 00e8 93050002 		li	a1,32
+ 445 00ec 8818     		addi	a0,sp,112
+ 446 00ee 97000000 		call	memset
+ 446      E7800000 
+ 447              	.LVL36:
+  97:main.c        **** 	memset(message3, 32, 17);
+ 448              		.loc 1 97 2
+ 449 00f6 4546     		li	a2,17
+ 450 00f8 93050002 		li	a1,32
+ 451 00fc 4801     		addi	a0,sp,132
+ 452 00fe 97000000 		call	memset
+ 452      E7800000 
+ 453              	.LVL37:
+  98:main.c        **** 	memset(message4, 32, 17);
+ 454              		.loc 1 98 2
+ 455 0106 4546     		li	a2,17
+ 456 0108 93050002 		li	a1,32
+ 457 010c 2809     		addi	a0,sp,152
+ 458 010e 97000000 		call	memset
+ 458      E7800000 
+ 459              	.LVL38:
+  99:main.c        **** 
+ 100:main.c        **** 	t5omsi();                               // Initialize timer5 1kHz
+ 460              		.loc 1 100 2
+ 461 0116 97000000 		call	t5omsi
+ 461      E7800000 
+ 462              	.LVL39:
+ 101:main.c        **** 	colinit();                              // Initialize column toolbox
+ 463              		.loc 1 101 2
+ 464 011e 97000000 		call	colinit
+ 464      E7800000 
+ 465              	.LVL40:
+ 102:main.c        **** 	l88init();                              // Initialize 8*8 led toolbox
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 12
+
+
+ 466              		.loc 1 102 2
+ 467 0126 97000000 		call	l88init
+ 467      E7800000 
+ 468              	.LVL41:
+ 103:main.c        **** 	keyinit();                              // Initialize keyboard toolbox
+ 469              		.loc 1 103 2
+ 470 012e 97000000 		call	keyinit
+ 470      E7800000 
+ 471              	.LVL42:
+ 104:main.c        **** 	ADC3powerUpInit(1);                     // Initialize ADC0, Ch3
+ 472              		.loc 1 104 2
+ 473 0136 0545     		li	a0,1
+ 474 0138 97000000 		call	ADC3powerUpInit
+ 474      E7800000 
+ 475              	.LVL43:
+ 105:main.c        **** 	Lcd_SetType(LCD_INVERTED);//NORMAL);                // or use LCD_INVERTED!
+ 476              		.loc 1 105 2
+ 477 0140 0545     		li	a0,1
+ 478 0142 97000000 		call	Lcd_SetType
+ 478      E7800000 
+ 479              	.LVL44:
+ 106:main.c        **** 	Lcd_Init();
+ 480              		.loc 1 106 2
+ 481 014a 97000000 		call	Lcd_Init
+ 481      E7800000 
+ 482              	.LVL45:
+ 107:main.c        **** 	LCD_Clear(RED);
+ 483              		.loc 1 107 2
+ 484 0152 4165     		li	a0,65536
+ 485 0154 13050580 		addi	a0,a0,-2048
+ 486 0158 97000000 		call	LCD_Clear
+ 486      E7800000 
+ 487              	.LVL46:
+ 108:main.c        **** 	//LCD_ShowStr(10, 10, "Lab #5", WHITE, TRANSPARENT);
+ 109:main.c        **** 	rtcInit();                              // Initialize RTC
+ 488              		.loc 1 109 2
+ 489 0160 97000000 		call	rtcInit
+ 489      E7800000 
+ 490              	.LVL47:
+ 110:main.c        **** 	//rtc_counter_set(3600+60+1);
+ 111:main.c        **** 	u0init(EI);                             // Initialize USART0 toolbox
+ 491              		.loc 1 111 2
+ 492 0168 0545     		li	a0,1
+ 112:main.c        **** 
+ 113:main.c        **** 	eclic_global_interrupt_enable();        // !!! INTERRUPT ENABLED !!!
+ 114:main.c        **** 
+ 115:main.c        **** 	while (1) {
+ 116:main.c        **** 		//updateLCD(message1);
+ 117:main.c        **** 		idle++;                             // Manage Async events
+ 118:main.c        **** 		LCD_WR_Queue();                     // Manage LCD com queue!
+ 119:main.c        **** 		//u0_TX_Queue();                      // Manage U(S)ART TX Queue!
+ 120:main.c        **** 		if (adc_flag_get(ADC0,ADC_FLAG_EOC)==SET) // ...ADC done?
+ 493              		.loc 1 120 7 is_stmt 0
+ 494 016a B7240140 		li	s1,1073815552
+ 121:main.c        **** 		{
+ 122:main.c        **** 			if (adc_flag_get(ADC0,ADC_FLAG_EOIC)==SET)
+ 123:main.c        **** 			{ //...ch3 or ch16?
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 13
+
+
+ 124:main.c        **** 				putstr("ID+");
+ 125:main.c        **** 				tmpr = adc_inserted_data_read(ADC0, ADC_INSERTED_CHANNEL_0);
+ 126:main.c        **** 				hh = rtc_counter_get() / 3600;
+ 495              		.loc 1 126 28
+ 496 016e 0569     		li	s2,4096
+ 127:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 128:main.c        **** 				ss = rtc_counter_get() % 60;
+ 129:main.c        **** 				putch(((((0x680-tmpr)/5)+25) / 100) + 48);
+ 130:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 131:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 132:main.c        **** 				putch(10);
+ 133:main.c        **** 				putch(hh / 10);
+ 134:main.c        **** 				putch(hh % 10);
+ 135:main.c        **** 				putch(mm / 10);
+ 136:main.c        **** 				putch(mm % 10);
+ 137:main.c        **** 				putch(ss / 10);
+ 138:main.c        **** 				putch(ss % 10);
+ 139:main.c        **** 				for (int i = 0; i < 7; i++)
+ 140:main.c        **** 					tmprSend[i] = 0;
+ 141:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 142:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOIC);
+ 143:main.c        **** 			}
+ 144:main.c        **** 			else
+ 145:main.c        **** 			{
+ 146:main.c        **** 				adcr = adc_regular_data_read(ADC0); // ......get data
+ 147:main.c        **** 				l88mem(4,adcr>>8);                  // ......move data
+ 148:main.c        **** 				l88mem(5,adcr);                     // ......(view each ms)
+ 149:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC); // ......clear IF
+ 150:main.c        **** 			}
+ 151:main.c        **** 		}
+ 152:main.c        **** 		if (usart_flag_get(USART0, USART_FLAG_RBNE)) // USART0 RX?
+ 497              		.loc 1 152 7
+ 498 0170 374A0140 		li	s4,1073823744
+ 111:main.c        **** 
+ 499              		.loc 1 111 2
+ 500 0174 97000000 		call	u0init
+ 500      E7800000 
+ 501              	.LVL48:
+ 113:main.c        **** 
+ 502              		.loc 1 113 2 is_stmt 1
+ 120:main.c        **** 		{
+ 503              		.loc 1 120 7 is_stmt 0
+ 504 017c 93840440 		addi	s1,s1,1024
+ 113:main.c        **** 
+ 505              		.loc 1 113 2
+ 506 0180 97000000 		call	eclic_global_interrupt_enable
+ 506      E7800000 
+ 507              	.LVL49:
+ 124:main.c        **** 				tmpr = adc_inserted_data_read(ADC0, ADC_INSERTED_CHANNEL_0);
+ 508              		.loc 1 124 5
+ 509 0188 B70A0000 		lui	s5,%hi(.LC3)
+ 126:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 510              		.loc 1 126 28
+ 511 018c 130909E1 		addi	s2,s2,-496
+ 512              		.loc 1 152 7
+ 513 0190 130A0A80 		addi	s4,s4,-2048
+ 153:main.c        **** 		{
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 14
+
+
+ 154:main.c        **** 			recieved = usart_data_receive(USART0);
+ 155:main.c        **** 
+ 156:main.c        **** 			switch (state)
+ 157:main.c        **** 			{
+ 158:main.c        **** 			case 0:
+ 159:main.c        **** 				if (recieved != 73) {
+ 160:main.c        **** 					correct = 0;
+ 161:main.c        **** 				}
+ 162:main.c        **** 				state++;
+ 163:main.c        **** 				newMessage[7 + recvCount] = recieved;
+ 164:main.c        **** 				break;
+ 165:main.c        **** 			case 1:
+ 166:main.c        **** 				if (recieved != 68) {
+ 167:main.c        **** 					correct = 0;
+ 168:main.c        **** 				}
+ 169:main.c        **** 				state++;
+ 170:main.c        **** 				newMessage[7 + recvCount] = recieved;
+ 171:main.c        **** 				break;
+ 172:main.c        **** 			case 2:
+ 173:main.c        **** 				if (recieved != 43 && recieved != 45) {
+ 174:main.c        **** 					correct = 0;
+ 175:main.c        **** 				}
+ 176:main.c        **** 				state++;
+ 177:main.c        **** 				newMessage[7 + recvCount] = recieved;
+ 178:main.c        **** 				break;
+ 179:main.c        **** 			default:
+ 180:main.c        **** 				if (recieved == 10) {
+ 181:main.c        **** 					if (correct) {
+ 182:main.c        **** 						newMessage[7 + recvCount + 1] = 'O';
+ 183:main.c        **** 						newMessage[7 + recvCount + 2] = 'K';
+ 184:main.c        **** 						newMessage[7 + recvCount + 3] = '!';
+ 185:main.c        **** 					}
+ 186:main.c        **** 					else {
+ 187:main.c        **** 						newMessage[7 + recvCount + 1] = 'E';
+ 188:main.c        **** 						newMessage[7 + recvCount + 2] = 'R';
+ 189:main.c        **** 						newMessage[7 + recvCount + 3] = 'R';
+ 190:main.c        **** 					}
+ 191:main.c        **** 					break;
+ 192:main.c        **** 				}
+ 193:main.c        **** 				if (recvCount > 2 && recvCount < 6)
+ 194:main.c        **** 				{
+ 195:main.c        **** 					newMessage[recvCount + 7] = recieved;
+ 196:main.c        **** 				}
+ 197:main.c        **** 				else if (recvCount > 6 && recvCount < 13)
+ 198:main.c        **** 				{
+ 199:main.c        **** 					newMessage[recvCount - 7] = recieved + 48;
+ 200:main.c        **** 				}
+ 201:main.c        **** 			}
+ 202:main.c        **** 			recvCount++;
+ 203:main.c        **** 		}
+ 204:main.c        **** 
+ 205:main.c        **** 		if (recvCount == 13)
+ 206:main.c        **** 		{
+ 207:main.c        **** 			recvCount = 0;
+ 208:main.c        **** 			correct = 1;
+ 209:main.c        **** 			state = 0;
+ 210:main.c        **** 			updateLCD(&messagesOnDisplay, newMessage, message1, message2, message3, message4);
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 15
+
+
+ 211:main.c        **** 		}
+ 212:main.c        **** 
+ 213:main.c        **** 		if (t5expq()) {                     // Manage periodic tasks
+ 214:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+ 215:main.c        **** 			ms++;                           // ...One second heart beat
+ 216:main.c        **** 			if (ms==1000)
+ 217:main.c        **** 			{
+ 218:main.c        **** 				ms=0;
+ 219:main.c        **** 				l88mem(0,s++);
+ 220:main.c        **** 				//LCD_ShowStr(10, 30, digits[s%10], WHITE, OPAQUE);
+ 221:main.c        **** 				//LCD_ShowChar(10, 50, 0x7E, OPAQUE, WHITE);
+ 222:main.c        **** 			}
+ 223:main.c        **** 			if ((key = keyscan()) >= 0)       // ...Any key pressed?
+ 224:main.c        **** 			{
+ 225:main.c        **** 				switch (lookUpTblK[key])
+ 226:main.c        **** 				{
+ 227:main.c        **** 				case 10:
+ 228:main.c        **** 					adc_software_trigger_enable(ADC0, //Trigger another ADC conversion!
+ 229:main.c        **** 													ADC_REGULAR_CHANNEL);
+ 230:main.c        **** 					break;
+ 231:main.c        **** 				case 11:
+ 232:main.c        **** 					putstr("ID-000\n");
+ 514              		.loc 1 232 6
+ 515 0194 370B0000 		lui	s6,%hi(.LC4)
+ 516              	.L30:
+ 115:main.c        **** 		//updateLCD(message1);
+ 517              		.loc 1 115 2 is_stmt 1
+ 117:main.c        **** 		LCD_WR_Queue();                     // Manage LCD com queue!
+ 518              		.loc 1 117 3
+ 117:main.c        **** 		LCD_WR_Queue();                     // Manage LCD com queue!
+ 519              		.loc 1 117 7 is_stmt 0
+ 520 0198 8257     		lw	a5,32(sp)
+ 521 019a 8507     		addi	a5,a5,1
+ 522 019c 3ED0     		sw	a5,32(sp)
+ 118:main.c        **** 		//u0_TX_Queue();                      // Manage U(S)ART TX Queue!
+ 523              		.loc 1 118 3 is_stmt 1
+ 524 019e 97000000 		call	LCD_WR_Queue
+ 524      E7800000 
+ 525              	.LVL50:
+ 120:main.c        **** 		{
+ 526              		.loc 1 120 3
+ 120:main.c        **** 		{
+ 527              		.loc 1 120 7 is_stmt 0
+ 528 01a6 8945     		li	a1,2
+ 529 01a8 2685     		mv	a0,s1
+ 530 01aa 97000000 		call	adc_flag_get
+ 530      E7800000 
+ 531              	.LVL51:
+ 120:main.c        **** 		{
+ 532              		.loc 1 120 6
+ 533 01b2 8547     		li	a5,1
+ 120:main.c        **** 		{
+ 534              		.loc 1 120 7
+ 535 01b4 2A84     		mv	s0,a0
+ 120:main.c        **** 		{
+ 536              		.loc 1 120 6
+ 537 01b6 6310F516 		bne	a0,a5,.L16
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 16
+
+
+ 122:main.c        **** 			{ //...ch3 or ch16?
+ 538              		.loc 1 122 4 is_stmt 1
+ 122:main.c        **** 			{ //...ch3 or ch16?
+ 539              		.loc 1 122 8 is_stmt 0
+ 540 01ba 9145     		li	a1,4
+ 541 01bc 2685     		mv	a0,s1
+ 542 01be 97000000 		call	adc_flag_get
+ 542      E7800000 
+ 543              	.LVL52:
+ 122:main.c        **** 			{ //...ch3 or ch16?
+ 544              		.loc 1 122 7
+ 545 01c6 6311851A 		bne	a0,s0,.L17
+ 124:main.c        **** 				tmpr = adc_inserted_data_read(ADC0, ADC_INSERTED_CHANNEL_0);
+ 546              		.loc 1 124 5 is_stmt 1
+ 547 01ca 13850A00 		addi	a0,s5,%lo(.LC3)
+ 548 01ce 97000000 		call	putstr
+ 548      E7800000 
+ 549              	.LVL53:
+ 125:main.c        **** 				hh = rtc_counter_get() / 3600;
+ 550              		.loc 1 125 5
+ 125:main.c        **** 				hh = rtc_counter_get() / 3600;
+ 551              		.loc 1 125 12 is_stmt 0
+ 552 01d6 8145     		li	a1,0
+ 553 01d8 2685     		mv	a0,s1
+ 554 01da 97000000 		call	adc_inserted_data_read
+ 554      E7800000 
+ 555              	.LVL54:
+ 556 01e2 AA8B     		mv	s7,a0
+ 557              	.LVL55:
+ 126:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 558              		.loc 1 126 5 is_stmt 1
+ 126:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 559              		.loc 1 126 10 is_stmt 0
+ 560 01e4 97000000 		call	rtc_counter_get
+ 560      E7800000 
+ 561              	.LVL56:
+ 126:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 562              		.loc 1 126 28
+ 563 01ec 33552503 		divu	a0,a0,s2
+ 127:main.c        **** 				ss = rtc_counter_get() % 60;
+ 564              		.loc 1 127 37
+ 565 01f0 9309C003 		li	s3,60
+ 129:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 566              		.loc 1 129 20
+ 567 01f4 13040068 		li	s0,1664
+ 568 01f8 33047441 		sub	s0,s0,s7
+ 126:main.c        **** 				mm = (rtc_counter_get() % 3600) / 60;
+ 569              		.loc 1 126 8
+ 570 01fc 2AD8     		sw	a0,48(sp)
+ 127:main.c        **** 				ss = rtc_counter_get() % 60;
+ 571              		.loc 1 127 5 is_stmt 1
+ 127:main.c        **** 				ss = rtc_counter_get() % 60;
+ 572              		.loc 1 127 11 is_stmt 0
+ 573 01fe 97000000 		call	rtc_counter_get
+ 573      E7800000 
+ 574              	.LVL57:
+ 127:main.c        **** 				ss = rtc_counter_get() % 60;
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 17
+
+
+ 575              		.loc 1 127 29
+ 576 0206 33752503 		remu	a0,a0,s2
+ 127:main.c        **** 				ss = rtc_counter_get() % 60;
+ 577              		.loc 1 127 37
+ 578 020a 33553503 		divu	a0,a0,s3
+ 127:main.c        **** 				ss = rtc_counter_get() % 60;
+ 579              		.loc 1 127 8
+ 580 020e 2ADA     		sw	a0,52(sp)
+ 128:main.c        **** 				putch(((((0x680-tmpr)/5)+25) / 100) + 48);
+ 581              		.loc 1 128 5 is_stmt 1
+ 128:main.c        **** 				putch(((((0x680-tmpr)/5)+25) / 100) + 48);
+ 582              		.loc 1 128 10 is_stmt 0
+ 583 0210 97000000 		call	rtc_counter_get
+ 583      E7800000 
+ 584              	.LVL58:
+ 128:main.c        **** 				putch(((((0x680-tmpr)/5)+25) / 100) + 48);
+ 585              		.loc 1 128 28
+ 586 0218 33753503 		remu	a0,a0,s3
+ 130:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 587              		.loc 1 130 34
+ 588 021c A949     		li	s3,10
+ 128:main.c        **** 				putch(((((0x680-tmpr)/5)+25) / 100) + 48);
+ 589              		.loc 1 128 8
+ 590 021e 2ADC     		sw	a0,56(sp)
+ 129:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 591              		.loc 1 129 5 is_stmt 1
+ 129:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 592              		.loc 1 129 26 is_stmt 0
+ 593 0220 1545     		li	a0,5
+ 594 0222 3344A402 		div	s0,s0,a0
+ 129:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 595              		.loc 1 129 34
+ 596 0226 13054006 		li	a0,100
+ 129:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 597              		.loc 1 129 29
+ 598 022a 6504     		addi	s0,s0,25
+ 129:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 599              		.loc 1 129 34
+ 600 022c 3345A402 		div	a0,s0,a0
+ 129:main.c        **** 				putch((((((0x680-tmpr)/5)+25)/10) % 10) + 48);
+ 601              		.loc 1 129 5
+ 602 0230 13050503 		addi	a0,a0,48
+ 603 0234 1375F50F 		andi	a0,a0,0xff
+ 604 0238 97000000 		call	putch
+ 604      E7800000 
+ 605              	.LVL59:
+ 130:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 606              		.loc 1 130 5 is_stmt 1
+ 130:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 607              		.loc 1 130 34 is_stmt 0
+ 608 0240 33453403 		div	a0,s0,s3
+ 130:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 609              		.loc 1 130 39
+ 610 0244 33653503 		rem	a0,a0,s3
+ 130:main.c        **** 				putch(((((0x680-tmpr)/5)+25) % 10) + 48);
+ 611              		.loc 1 130 5
+ 612 0248 13050503 		addi	a0,a0,48
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 18
+
+
+ 613 024c 1375F50F 		andi	a0,a0,0xff
+ 614 0250 97000000 		call	putch
+ 614      E7800000 
+ 615              	.LVL60:
+ 131:main.c        **** 				putch(10);
+ 616              		.loc 1 131 5 is_stmt 1
+ 131:main.c        **** 				putch(10);
+ 617              		.loc 1 131 34 is_stmt 0
+ 618 0258 33653403 		rem	a0,s0,s3
+ 131:main.c        **** 				putch(10);
+ 619              		.loc 1 131 5
+ 620 025c 13050503 		addi	a0,a0,48
+ 621 0260 1375F50F 		andi	a0,a0,0xff
+ 622 0264 97000000 		call	putch
+ 622      E7800000 
+ 623              	.LVL61:
+ 132:main.c        **** 				putch(hh / 10);
+ 624              		.loc 1 132 5 is_stmt 1
+ 625 026c 2945     		li	a0,10
+ 626 026e 97000000 		call	putch
+ 626      E7800000 
+ 627              	.LVL62:
+ 133:main.c        **** 				putch(hh % 10);
+ 628              		.loc 1 133 5
+ 133:main.c        **** 				putch(hh % 10);
+ 629              		.loc 1 133 14 is_stmt 0
+ 630 0276 4255     		lw	a0,48(sp)
+ 631 0278 33453503 		div	a0,a0,s3
+ 133:main.c        **** 				putch(hh % 10);
+ 632              		.loc 1 133 5
+ 633 027c 1375F50F 		andi	a0,a0,0xff
+ 634 0280 97000000 		call	putch
+ 634      E7800000 
+ 635              	.LVL63:
+ 134:main.c        **** 				putch(mm / 10);
+ 636              		.loc 1 134 5 is_stmt 1
+ 134:main.c        **** 				putch(mm / 10);
+ 637              		.loc 1 134 14 is_stmt 0
+ 638 0288 4255     		lw	a0,48(sp)
+ 639 028a 33653503 		rem	a0,a0,s3
+ 134:main.c        **** 				putch(mm / 10);
+ 640              		.loc 1 134 5
+ 641 028e 1375F50F 		andi	a0,a0,0xff
+ 642 0292 97000000 		call	putch
+ 642      E7800000 
+ 643              	.LVL64:
+ 135:main.c        **** 				putch(mm % 10);
+ 644              		.loc 1 135 5 is_stmt 1
+ 135:main.c        **** 				putch(mm % 10);
+ 645              		.loc 1 135 14 is_stmt 0
+ 646 029a 5255     		lw	a0,52(sp)
+ 647 029c 33453503 		div	a0,a0,s3
+ 135:main.c        **** 				putch(mm % 10);
+ 648              		.loc 1 135 5
+ 649 02a0 1375F50F 		andi	a0,a0,0xff
+ 650 02a4 97000000 		call	putch
+ 650      E7800000 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 19
+
+
+ 651              	.LVL65:
+ 136:main.c        **** 				putch(ss / 10);
+ 652              		.loc 1 136 5 is_stmt 1
+ 136:main.c        **** 				putch(ss / 10);
+ 653              		.loc 1 136 14 is_stmt 0
+ 654 02ac 5255     		lw	a0,52(sp)
+ 655 02ae 33653503 		rem	a0,a0,s3
+ 136:main.c        **** 				putch(ss / 10);
+ 656              		.loc 1 136 5
+ 657 02b2 1375F50F 		andi	a0,a0,0xff
+ 658 02b6 97000000 		call	putch
+ 658      E7800000 
+ 659              	.LVL66:
+ 137:main.c        **** 				putch(ss % 10);
+ 660              		.loc 1 137 5 is_stmt 1
+ 137:main.c        **** 				putch(ss % 10);
+ 661              		.loc 1 137 14 is_stmt 0
+ 662 02be 6255     		lw	a0,56(sp)
+ 663 02c0 33453503 		div	a0,a0,s3
+ 137:main.c        **** 				putch(ss % 10);
+ 664              		.loc 1 137 5
+ 665 02c4 1375F50F 		andi	a0,a0,0xff
+ 666 02c8 97000000 		call	putch
+ 666      E7800000 
+ 667              	.LVL67:
+ 138:main.c        **** 				for (int i = 0; i < 7; i++)
+ 668              		.loc 1 138 5 is_stmt 1
+ 138:main.c        **** 				for (int i = 0; i < 7; i++)
+ 669              		.loc 1 138 14 is_stmt 0
+ 670 02d0 6255     		lw	a0,56(sp)
+ 671 02d2 33653503 		rem	a0,a0,s3
+ 138:main.c        **** 				for (int i = 0; i < 7; i++)
+ 672              		.loc 1 138 5
+ 673 02d6 1375F50F 		andi	a0,a0,0xff
+ 674 02da 97000000 		call	putch
+ 674      E7800000 
+ 675              	.LVL68:
+ 139:main.c        **** 					tmprSend[i] = 0;
+ 676              		.loc 1 139 5 is_stmt 1
+ 677              	.LBB8:
+ 139:main.c        **** 					tmprSend[i] = 0;
+ 678              		.loc 1 139 10
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 679              		.loc 1 140 6
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 680              		.loc 1 140 18 is_stmt 0
+ 681 02e2 23060104 		sb	zero,76(sp)
+ 682              	.LVL69:
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 683              		.loc 1 140 6 is_stmt 1
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 684              		.loc 1 140 18 is_stmt 0
+ 685 02e6 A3060104 		sb	zero,77(sp)
+ 686              	.LVL70:
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 687              		.loc 1 140 6 is_stmt 1
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 20
+
+
+ 688              		.loc 1 140 18 is_stmt 0
+ 689 02ea 23070104 		sb	zero,78(sp)
+ 690              	.LVL71:
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 691              		.loc 1 140 6 is_stmt 1
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 692              		.loc 1 140 18 is_stmt 0
+ 693 02ee A3070104 		sb	zero,79(sp)
+ 694              	.LVL72:
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 695              		.loc 1 140 6 is_stmt 1
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 696              		.loc 1 140 18 is_stmt 0
+ 697 02f2 23080104 		sb	zero,80(sp)
+ 698              	.LVL73:
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 699              		.loc 1 140 6 is_stmt 1
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 700              		.loc 1 140 18 is_stmt 0
+ 701 02f6 A3080104 		sb	zero,81(sp)
+ 702              	.LVL74:
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 703              		.loc 1 140 6 is_stmt 1
+ 704              	.LBE8:
+ 141:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOIC);
+ 705              		.loc 1 141 5 is_stmt 0
+ 706 02fa 8945     		li	a1,2
+ 707 02fc 2685     		mv	a0,s1
+ 708              	.LBB9:
+ 140:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC);
+ 709              		.loc 1 140 18
+ 710 02fe 23090104 		sb	zero,82(sp)
+ 711              	.LVL75:
+ 712              	.LBE9:
+ 141:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOIC);
+ 713              		.loc 1 141 5 is_stmt 1
+ 714 0302 97000000 		call	adc_flag_clear
+ 714      E7800000 
+ 715              	.LVL76:
+ 142:main.c        **** 			}
+ 716              		.loc 1 142 5
+ 717 030a 9145     		li	a1,4
+ 718              	.LVL77:
+ 719              	.L47:
+ 149:main.c        **** 			}
+ 720              		.loc 1 149 5 is_stmt 0
+ 721 030c 2685     		mv	a0,s1
+ 722 030e 97000000 		call	adc_flag_clear
+ 722      E7800000 
+ 723              	.LVL78:
+ 724              	.L16:
+ 152:main.c        **** 		{
+ 725              		.loc 1 152 3 is_stmt 1
+ 152:main.c        **** 		{
+ 726              		.loc 1 152 7 is_stmt 0
+ 727 0316 9545     		li	a1,5
+ 728 0318 5285     		mv	a0,s4
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 21
+
+
+ 729 031a 97000000 		call	usart_flag_get
+ 729      E7800000 
+ 730              	.LVL79:
+ 152:main.c        **** 		{
+ 731              		.loc 1 152 6
+ 732 0322 71C9     		beq	a0,zero,.L18
+ 154:main.c        **** 
+ 733              		.loc 1 154 4 is_stmt 1
+ 154:main.c        **** 
+ 734              		.loc 1 154 15 is_stmt 0
+ 735 0324 5285     		mv	a0,s4
+ 736 0326 97000000 		call	usart_data_receive
+ 736      E7800000 
+ 737              	.LVL80:
+ 154:main.c        **** 
+ 738              		.loc 1 154 13
+ 739 032e 1375F50F 		andi	a0,a0,0xff
+ 740 0332 A305A100 		sb	a0,11(sp)
+ 156:main.c        **** 			{
+ 741              		.loc 1 156 4 is_stmt 1
+ 742 0336 B257     		lw	a5,44(sp)
+ 743 0338 0547     		li	a4,1
+ 744 033a 638CE704 		beq	a5,a4,.L19
+ 745 033e 0947     		li	a4,2
+ 746 0340 638EE704 		beq	a5,a4,.L20
+ 747 0344 BDE7     		bne	a5,zero,.L21
+ 159:main.c        **** 					correct = 0;
+ 748              		.loc 1 159 5
+ 159:main.c        **** 					correct = 0;
+ 749              		.loc 1 159 18 is_stmt 0
+ 750 0346 8347B100 		lbu	a5,11(sp)
+ 159:main.c        **** 					correct = 0;
+ 751              		.loc 1 159 8
+ 752 034a 13079004 		li	a4,73
+ 753              	.L55:
+ 173:main.c        **** 					correct = 0;
+ 754              		.loc 1 173 24 discriminator 1
+ 755 034e 6303F700 		beq	a4,a5,.L25
+ 174:main.c        **** 				}
+ 756              		.loc 1 174 6 is_stmt 1
+ 174:main.c        **** 				}
+ 757              		.loc 1 174 14 is_stmt 0
+ 758 0352 02D4     		sw	zero,40(sp)
+ 759              	.L25:
+ 176:main.c        **** 				newMessage[7 + recvCount] = recieved;
+ 760              		.loc 1 176 5 is_stmt 1
+ 176:main.c        **** 				newMessage[7 + recvCount] = recieved;
+ 761              		.loc 1 176 10 is_stmt 0
+ 762 0354 B257     		lw	a5,44(sp)
+ 763 0356 8507     		addi	a5,a5,1
+ 764 0358 3ED6     		sw	a5,44(sp)
+ 177:main.c        **** 				break;
+ 765              		.loc 1 177 5 is_stmt 1
+ 766              	.L52:
+ 195:main.c        **** 				}
+ 767              		.loc 1 195 6
+ 195:main.c        **** 				}
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 22
+
+
+ 768              		.loc 1 195 27 is_stmt 0
+ 769 035a 9257     		lw	a5,36(sp)
+ 195:main.c        **** 				}
+ 770              		.loc 1 195 32
+ 771 035c 0347B100 		lbu	a4,11(sp)
+ 195:main.c        **** 				}
+ 772              		.loc 1 195 27
+ 773 0360 9D07     		addi	a5,a5,7
+ 774              	.L48:
+ 199:main.c        **** 				}
+ 775              		.loc 1 199 43
+ 776 0362 1377F70F 		andi	a4,a4,0xff
+ 777 0366 8DA2     		j	.L50
+ 778              	.L17:
+ 146:main.c        **** 				l88mem(4,adcr>>8);                  // ......move data
+ 779              		.loc 1 146 5 is_stmt 1
+ 146:main.c        **** 				l88mem(4,adcr>>8);                  // ......move data
+ 780              		.loc 1 146 12 is_stmt 0
+ 781 0368 2685     		mv	a0,s1
+ 782 036a 97000000 		call	adc_regular_data_read
+ 782      E7800000 
+ 783              	.LVL81:
+ 147:main.c        **** 				l88mem(5,adcr);                     // ......(view each ms)
+ 784              		.loc 1 147 5
+ 785 0372 93558540 		srai	a1,a0,8
+ 146:main.c        **** 				l88mem(4,adcr>>8);                  // ......move data
+ 786              		.loc 1 146 12
+ 787 0376 2A84     		mv	s0,a0
+ 788              	.LVL82:
+ 147:main.c        **** 				l88mem(5,adcr);                     // ......(view each ms)
+ 789              		.loc 1 147 5 is_stmt 1
+ 790 0378 1145     		li	a0,4
+ 791 037a 97000000 		call	l88mem
+ 791      E7800000 
+ 792              	.LVL83:
+ 148:main.c        **** 				adc_flag_clear(ADC0, ADC_FLAG_EOC); // ......clear IF
+ 793              		.loc 1 148 5
+ 794 0382 A285     		mv	a1,s0
+ 795 0384 1545     		li	a0,5
+ 796 0386 97000000 		call	l88mem
+ 796      E7800000 
+ 797              	.LVL84:
+ 149:main.c        **** 			}
+ 798              		.loc 1 149 5
+ 799 038e 8945     		li	a1,2
+ 800 0390 B5BF     		j	.L47
+ 801              	.LVL85:
+ 802              	.L19:
+ 166:main.c        **** 					correct = 0;
+ 803              		.loc 1 166 5
+ 166:main.c        **** 					correct = 0;
+ 804              		.loc 1 166 18 is_stmt 0
+ 805 0392 8347B100 		lbu	a5,11(sp)
+ 166:main.c        **** 					correct = 0;
+ 806              		.loc 1 166 8
+ 807 0396 13074004 		li	a4,68
+ 808 039a 55BF     		j	.L55
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 23
+
+
+ 809              	.L20:
+ 173:main.c        **** 					correct = 0;
+ 810              		.loc 1 173 5 is_stmt 1
+ 173:main.c        **** 					correct = 0;
+ 811              		.loc 1 173 18 is_stmt 0
+ 812 039c 8347B100 		lbu	a5,11(sp)
+ 173:main.c        **** 					correct = 0;
+ 813              		.loc 1 173 8
+ 814 03a0 1307B002 		li	a4,43
+ 815 03a4 E308F7FA 		beq	a4,a5,.L25
+ 173:main.c        **** 					correct = 0;
+ 816              		.loc 1 173 36 discriminator 1
+ 817 03a8 8347B100 		lbu	a5,11(sp)
+ 173:main.c        **** 					correct = 0;
+ 818              		.loc 1 173 24 discriminator 1
+ 819 03ac 1307D002 		li	a4,45
+ 820 03b0 79BF     		j	.L55
+ 821              	.L21:
+ 180:main.c        **** 					if (correct) {
+ 822              		.loc 1 180 5 is_stmt 1
+ 180:main.c        **** 					if (correct) {
+ 823              		.loc 1 180 18 is_stmt 0
+ 824 03b2 8347B100 		lbu	a5,11(sp)
+ 180:main.c        **** 					if (correct) {
+ 825              		.loc 1 180 8
+ 826 03b6 A946     		li	a3,10
+ 827 03b8 639BF610 		bne	a3,a5,.L26
+ 181:main.c        **** 						newMessage[7 + recvCount + 1] = 'O';
+ 828              		.loc 1 181 6 is_stmt 1
+ 181:main.c        **** 						newMessage[7 + recvCount + 1] = 'O';
+ 829              		.loc 1 181 10 is_stmt 0
+ 830 03bc A257     		lw	a5,40(sp)
+ 181:main.c        **** 						newMessage[7 + recvCount + 1] = 'O';
+ 831              		.loc 1 181 9
+ 832 03be FDC3     		beq	a5,zero,.L27
+ 182:main.c        **** 						newMessage[7 + recvCount + 2] = 'K';
+ 833              		.loc 1 182 7 is_stmt 1
+ 182:main.c        **** 						newMessage[7 + recvCount + 2] = 'K';
+ 834              		.loc 1 182 32 is_stmt 0
+ 835 03c0 9257     		lw	a5,36(sp)
+ 182:main.c        **** 						newMessage[7 + recvCount + 2] = 'K';
+ 836              		.loc 1 182 37
+ 837 03c2 9802     		addi	a4,sp,320
+ 182:main.c        **** 						newMessage[7 + recvCount + 2] = 'K';
+ 838              		.loc 1 182 32
+ 839 03c4 A107     		addi	a5,a5,8
+ 182:main.c        **** 						newMessage[7 + recvCount + 2] = 'K';
+ 840              		.loc 1 182 37
+ 841 03c6 BA97     		add	a5,a4,a5
+ 842 03c8 1307F004 		li	a4,79
+ 843 03cc 2386E7F6 		sb	a4,-148(a5)
+ 183:main.c        **** 						newMessage[7 + recvCount + 3] = '!';
+ 844              		.loc 1 183 7 is_stmt 1
+ 183:main.c        **** 						newMessage[7 + recvCount + 3] = '!';
+ 845              		.loc 1 183 32 is_stmt 0
+ 846 03d0 9257     		lw	a5,36(sp)
+ 183:main.c        **** 						newMessage[7 + recvCount + 3] = '!';
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 24
+
+
+ 847              		.loc 1 183 37
+ 848 03d2 9802     		addi	a4,sp,320
+ 183:main.c        **** 						newMessage[7 + recvCount + 3] = '!';
+ 849              		.loc 1 183 32
+ 850 03d4 A507     		addi	a5,a5,9
+ 183:main.c        **** 						newMessage[7 + recvCount + 3] = '!';
+ 851              		.loc 1 183 37
+ 852 03d6 BA97     		add	a5,a4,a5
+ 853 03d8 1307B004 		li	a4,75
+ 854 03dc 2386E7F6 		sb	a4,-148(a5)
+ 184:main.c        **** 					}
+ 855              		.loc 1 184 7 is_stmt 1
+ 184:main.c        **** 					}
+ 856              		.loc 1 184 32 is_stmt 0
+ 857 03e0 9257     		lw	a5,36(sp)
+ 184:main.c        **** 					}
+ 858              		.loc 1 184 37
+ 859 03e2 9802     		addi	a4,sp,320
+ 184:main.c        **** 					}
+ 860              		.loc 1 184 32
+ 861 03e4 A907     		addi	a5,a5,10
+ 184:main.c        **** 					}
+ 862              		.loc 1 184 37
+ 863 03e6 BA97     		add	a5,a4,a5
+ 864 03e8 13071002 		li	a4,33
+ 865              	.L49:
+ 199:main.c        **** 				}
+ 866              		.loc 1 199 32
+ 867 03ec 2386E7F6 		sb	a4,-148(a5)
+ 868              	.L23:
+ 202:main.c        **** 		}
+ 869              		.loc 1 202 4 is_stmt 1
+ 202:main.c        **** 		}
+ 870              		.loc 1 202 13 is_stmt 0
+ 871 03f0 9257     		lw	a5,36(sp)
+ 872 03f2 8507     		addi	a5,a5,1
+ 873 03f4 3ED2     		sw	a5,36(sp)
+ 874              	.L18:
+ 205:main.c        **** 		{
+ 875              		.loc 1 205 3 is_stmt 1
+ 205:main.c        **** 		{
+ 876              		.loc 1 205 17 is_stmt 0
+ 877 03f6 1257     		lw	a4,36(sp)
+ 205:main.c        **** 		{
+ 878              		.loc 1 205 6
+ 879 03f8 B547     		li	a5,13
+ 880 03fa 6310F702 		bne	a4,a5,.L29
+ 207:main.c        **** 			correct = 1;
+ 881              		.loc 1 207 4 is_stmt 1
+ 207:main.c        **** 			correct = 1;
+ 882              		.loc 1 207 14 is_stmt 0
+ 883 03fe 02D2     		sw	zero,36(sp)
+ 208:main.c        **** 			state = 0;
+ 884              		.loc 1 208 4 is_stmt 1
+ 208:main.c        **** 			state = 0;
+ 885              		.loc 1 208 12 is_stmt 0
+ 886 0400 8547     		li	a5,1
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 25
+
+
+ 887 0402 3ED4     		sw	a5,40(sp)
+ 209:main.c        **** 			updateLCD(&messagesOnDisplay, newMessage, message1, message2, message3, message4);
+ 888              		.loc 1 209 4 is_stmt 1
+ 210:main.c        **** 		}
+ 889              		.loc 1 210 4 is_stmt 0
+ 890 0404 5801     		addi	a4,sp,132
+ 891 0406 3C09     		addi	a5,sp,152
+ 892 0408 9418     		addi	a3,sp,112
+ 893 040a F008     		addi	a2,sp,92
+ 894 040c 6C11     		addi	a1,sp,172
+ 895 040e 8800     		addi	a0,sp,64
+ 209:main.c        **** 			updateLCD(&messagesOnDisplay, newMessage, message1, message2, message3, message4);
+ 896              		.loc 1 209 10
+ 897 0410 02D6     		sw	zero,44(sp)
+ 210:main.c        **** 		}
+ 898              		.loc 1 210 4 is_stmt 1
+ 899 0412 97000000 		call	updateLCD
+ 899      E7800000 
+ 900              	.LVL86:
+ 901              	.L29:
+ 213:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+ 902              		.loc 1 213 3
+ 213:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+ 903              		.loc 1 213 7 is_stmt 0
+ 904 041a 97000000 		call	t5expq
+ 904      E7800000 
+ 905              	.LVL87:
+ 213:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+ 906              		.loc 1 213 6
+ 907 0422 E30B05D6 		beq	a0,zero,.L30
+ 214:main.c        **** 			ms++;                           // ...One second heart beat
+ 908              		.loc 1 214 4 is_stmt 1
+ 909 0426 97000000 		call	colset
+ 909      E7800000 
+ 910              	.LVL88:
+ 911 042e 97000000 		call	l88row
+ 911      E7800000 
+ 912              	.LVL89:
+ 215:main.c        **** 			if (ms==1000)
+ 913              		.loc 1 215 4
+ 215:main.c        **** 			if (ms==1000)
+ 914              		.loc 1 215 6 is_stmt 0
+ 915 0436 B247     		lw	a5,12(sp)
+ 916 0438 8507     		addi	a5,a5,1
+ 917 043a 3EC6     		sw	a5,12(sp)
+ 216:main.c        **** 			{
+ 918              		.loc 1 216 4 is_stmt 1
+ 216:main.c        **** 			{
+ 919              		.loc 1 216 10 is_stmt 0
+ 920 043c 3247     		lw	a4,12(sp)
+ 216:main.c        **** 			{
+ 921              		.loc 1 216 7
+ 922 043e 9307803E 		li	a5,1000
+ 923 0442 631CF700 		bne	a4,a5,.L31
+ 218:main.c        **** 				l88mem(0,s++);
+ 924              		.loc 1 218 5 is_stmt 1
+ 218:main.c        **** 				l88mem(0,s++);
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 26
+
+
+ 925              		.loc 1 218 7 is_stmt 0
+ 926 0446 02C6     		sw	zero,12(sp)
+ 219:main.c        **** 				//LCD_ShowStr(10, 30, digits[s%10], WHITE, OPAQUE);
+ 927              		.loc 1 219 5 is_stmt 1
+ 928 0448 C245     		lw	a1,16(sp)
+ 929 044a 0145     		li	a0,0
+ 930 044c 93871500 		addi	a5,a1,1
+ 931 0450 3EC8     		sw	a5,16(sp)
+ 932 0452 97000000 		call	l88mem
+ 932      E7800000 
+ 933              	.LVL90:
+ 934              	.L31:
+ 223:main.c        **** 			{
+ 935              		.loc 1 223 4
+ 223:main.c        **** 			{
+ 936              		.loc 1 223 15 is_stmt 0
+ 937 045a 97000000 		call	keyscan
+ 937      E7800000 
+ 938              	.LVL91:
+ 223:main.c        **** 			{
+ 939              		.loc 1 223 13
+ 940 0462 2ACA     		sw	a0,20(sp)
+ 223:main.c        **** 			{
+ 941              		.loc 1 223 7
+ 942 0464 63470518 		blt	a0,zero,.L32
+ 225:main.c        **** 				{
+ 943              		.loc 1 225 5 is_stmt 1
+ 225:main.c        **** 				{
+ 944              		.loc 1 225 23 is_stmt 0
+ 945 0468 D247     		lw	a5,20(sp)
+ 946 046a 9802     		addi	a4,sp,320
+ 947 046c 8A07     		slli	a5,a5,2
+ 948 046e BA97     		add	a5,a4,a5
+ 949 0470 83A707FC 		lw	a5,-64(a5)
+ 225:main.c        **** 				{
+ 950              		.loc 1 225 5
+ 951 0474 2D47     		li	a4,11
+ 952 0476 638DE718 		beq	a5,a4,.L33
+ 953 047a 6340F708 		bgt	a5,a4,.L34
+ 954 047e 2947     		li	a4,10
+ 955 0480 6382E714 		beq	a5,a4,.L35
+ 956              	.L36:
+ 233:main.c        **** 					hh = rtc_counter_get() / 3600;
+ 234:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 235:main.c        **** 					ss = rtc_counter_get() % 60;
+ 236:main.c        **** 					putch(hh / 10);
+ 237:main.c        **** 					putch(hh % 10);
+ 238:main.c        **** 					putch(mm / 10);
+ 239:main.c        **** 					putch(mm % 10);
+ 240:main.c        **** 					putch(ss / 10);
+ 241:main.c        **** 					putch(ss % 10);
+ 242:main.c        **** 					break;
+ 243:main.c        **** 				case 12:
+ 244:main.c        **** 					putstr("ID*000\n");
+ 245:main.c        **** 					hh = rtc_counter_get() / 3600;
+ 246:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 247:main.c        **** 					ss = rtc_counter_get() % 60;
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 27
+
+
+ 248:main.c        **** 					putch(hh / 10);
+ 249:main.c        **** 					putch(hh % 10);
+ 250:main.c        **** 					putch(mm / 10);
+ 251:main.c        **** 					putch(mm % 10);
+ 252:main.c        **** 					putch(ss / 10);
+ 253:main.c        **** 					putch(ss % 10);
+ 254:main.c        **** 					break;
+ 255:main.c        **** 				case 13:
+ 256:main.c        **** 					LCD_Clear(RED);
+ 257:main.c        **** 					hh = (time[0] - 48) * 10 + (time[1] - 48);
+ 258:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 259:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 260:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 261:main.c        **** 					strcpy(newMessage, time);
+ 262:main.c        **** 					strcat(newMessage, " ");
+ 263:main.c        **** 					strcat(newMessage, "SET");
+ 264:main.c        **** 					updateLCD(&messagesOnDisplay, newMessage, message1, message2, message3, message4);
+ 265:main.c        **** 					timeSend = 0;
+ 266:main.c        **** 					break;
+ 267:main.c        **** 				default:
+ 268:main.c        **** 						time[timeSend] = lookUpTblK[key] + 48;
+ 957              		.loc 1 268 7 is_stmt 1
+ 958              		.loc 1 268 34 is_stmt 0
+ 959 0484 D247     		lw	a5,20(sp)
+ 960              		.loc 1 268 22
+ 961 0486 9402     		addi	a3,sp,320
+ 962              		.loc 1 268 11
+ 963 0488 7257     		lw	a4,60(sp)
+ 964              		.loc 1 268 34
+ 965 048a 8A07     		slli	a5,a5,2
+ 966 048c B697     		add	a5,a3,a5
+ 967              		.loc 1 268 40
+ 968 048e 83A707FC 		lw	a5,-64(a5)
+ 969              		.loc 1 268 22
+ 970 0492 3697     		add	a4,a3,a4
+ 971              		.loc 1 268 40
+ 972 0494 93870703 		addi	a5,a5,48
+ 973              		.loc 1 268 22
+ 974 0498 230AF7F0 		sb	a5,-236(a4)
+ 269:main.c        **** 						timeSend++;
+ 975              		.loc 1 269 7 is_stmt 1
+ 976              		.loc 1 269 15 is_stmt 0
+ 977 049c F257     		lw	a5,60(sp)
+ 978 049e 8507     		addi	a5,a5,1
+ 979 04a0 3EDE     		sw	a5,60(sp)
+ 270:main.c        **** 					break;
+ 980              		.loc 1 270 6 is_stmt 1
+ 981 04a2 3DA2     		j	.L39
+ 982              	.L27:
+ 187:main.c        **** 						newMessage[7 + recvCount + 2] = 'R';
+ 983              		.loc 1 187 7
+ 187:main.c        **** 						newMessage[7 + recvCount + 2] = 'R';
+ 984              		.loc 1 187 32 is_stmt 0
+ 985 04a4 9257     		lw	a5,36(sp)
+ 187:main.c        **** 						newMessage[7 + recvCount + 2] = 'R';
+ 986              		.loc 1 187 37
+ 987 04a6 9802     		addi	a4,sp,320
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 28
+
+
+ 187:main.c        **** 						newMessage[7 + recvCount + 2] = 'R';
+ 988              		.loc 1 187 32
+ 989 04a8 A107     		addi	a5,a5,8
+ 187:main.c        **** 						newMessage[7 + recvCount + 2] = 'R';
+ 990              		.loc 1 187 37
+ 991 04aa BA97     		add	a5,a4,a5
+ 992 04ac 13075004 		li	a4,69
+ 993 04b0 2386E7F6 		sb	a4,-148(a5)
+ 188:main.c        **** 						newMessage[7 + recvCount + 3] = 'R';
+ 994              		.loc 1 188 7 is_stmt 1
+ 188:main.c        **** 						newMessage[7 + recvCount + 3] = 'R';
+ 995              		.loc 1 188 32 is_stmt 0
+ 996 04b4 9257     		lw	a5,36(sp)
+ 188:main.c        **** 						newMessage[7 + recvCount + 3] = 'R';
+ 997              		.loc 1 188 37
+ 998 04b6 9802     		addi	a4,sp,320
+ 188:main.c        **** 						newMessage[7 + recvCount + 3] = 'R';
+ 999              		.loc 1 188 32
+ 1000 04b8 A507     		addi	a5,a5,9
+ 188:main.c        **** 						newMessage[7 + recvCount + 3] = 'R';
+ 1001              		.loc 1 188 37
+ 1002 04ba BA97     		add	a5,a4,a5
+ 1003 04bc 13072005 		li	a4,82
+ 1004 04c0 2386E7F6 		sb	a4,-148(a5)
+ 189:main.c        **** 					}
+ 1005              		.loc 1 189 7 is_stmt 1
+ 189:main.c        **** 					}
+ 1006              		.loc 1 189 32 is_stmt 0
+ 1007 04c4 9257     		lw	a5,36(sp)
+ 1008 04c6 A907     		addi	a5,a5,10
+ 1009              	.L50:
+ 199:main.c        **** 				}
+ 1010              		.loc 1 199 32
+ 1011 04c8 9402     		addi	a3,sp,320
+ 1012 04ca B697     		add	a5,a3,a5
+ 1013 04cc 05B7     		j	.L49
+ 1014              	.L26:
+ 193:main.c        **** 				{
+ 1015              		.loc 1 193 5 is_stmt 1
+ 193:main.c        **** 				{
+ 1016              		.loc 1 193 19 is_stmt 0
+ 1017 04ce 9257     		lw	a5,36(sp)
+ 193:main.c        **** 				{
+ 1018              		.loc 1 193 8
+ 1019 04d0 6356F700 		ble	a5,a4,.L28
+ 193:main.c        **** 				{
+ 1020              		.loc 1 193 36 discriminator 1
+ 1021 04d4 1257     		lw	a4,36(sp)
+ 193:main.c        **** 				{
+ 1022              		.loc 1 193 23 discriminator 1
+ 1023 04d6 9547     		li	a5,5
+ 1024 04d8 E3D1E7E8 		ble	a4,a5,.L52
+ 1025              	.L28:
+ 197:main.c        **** 				{
+ 1026              		.loc 1 197 10 is_stmt 1
+ 197:main.c        **** 				{
+ 1027              		.loc 1 197 24 is_stmt 0
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 29
+
+
+ 1028 04dc 1257     		lw	a4,36(sp)
+ 197:main.c        **** 				{
+ 1029              		.loc 1 197 13
+ 1030 04de 9947     		li	a5,6
+ 1031 04e0 E3D8E7F0 		ble	a4,a5,.L23
+ 197:main.c        **** 				{
+ 1032              		.loc 1 197 41 discriminator 1
+ 1033 04e4 1257     		lw	a4,36(sp)
+ 197:main.c        **** 				{
+ 1034              		.loc 1 197 28 discriminator 1
+ 1035 04e6 B147     		li	a5,12
+ 1036 04e8 E3C4E7F0 		bgt	a4,a5,.L23
+ 199:main.c        **** 				}
+ 1037              		.loc 1 199 6 is_stmt 1
+ 199:main.c        **** 				}
+ 1038              		.loc 1 199 43 is_stmt 0
+ 1039 04ec 0347B100 		lbu	a4,11(sp)
+ 199:main.c        **** 				}
+ 1040              		.loc 1 199 27
+ 1041 04f0 9257     		lw	a5,36(sp)
+ 199:main.c        **** 				}
+ 1042              		.loc 1 199 43
+ 1043 04f2 13070703 		addi	a4,a4,48
+ 199:main.c        **** 				}
+ 1044              		.loc 1 199 27
+ 1045 04f6 E517     		addi	a5,a5,-7
+ 1046 04f8 ADB5     		j	.L48
+ 1047              	.L34:
+ 225:main.c        **** 				{
+ 1048              		.loc 1 225 5
+ 1049 04fa 3147     		li	a4,12
+ 1050 04fc 6381E71C 		beq	a5,a4,.L37
+ 1051 0500 3547     		li	a4,13
+ 1052 0502 E391E7F8 		bne	a5,a4,.L36
+ 256:main.c        **** 					hh = (time[0] - 48) * 10 + (time[1] - 48);
+ 1053              		.loc 1 256 6 is_stmt 1
+ 1054 0506 4165     		li	a0,65536
+ 1055 0508 13050580 		addi	a0,a0,-2048
+ 1056 050c 97000000 		call	LCD_Clear
+ 1056      E7800000 
+ 1057              	.LVL92:
+ 257:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 1058              		.loc 1 257 6
+ 257:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 1059              		.loc 1 257 16 is_stmt 0
+ 1060 0514 03474105 		lbu	a4,84(sp)
+ 257:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 1061              		.loc 1 257 26
+ 1062 0518 A946     		li	a3,10
+ 257:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 1063              		.loc 1 257 38
+ 1064 051a 83475105 		lbu	a5,85(sp)
+ 257:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 1065              		.loc 1 257 20
+ 1066 051e 130707FD 		addi	a4,a4,-48
+ 257:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 1067              		.loc 1 257 26
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 30
+
+
+ 1068 0522 3307D702 		mul	a4,a4,a3
+ 257:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 1069              		.loc 1 257 42
+ 1070 0526 938707FD 		addi	a5,a5,-48
+ 257:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 1071              		.loc 1 257 31
+ 1072 052a 3E97     		add	a4,a4,a5
+ 257:main.c        **** 					mm = (time[2] - 48) * 10 + (time[3] - 48);
+ 1073              		.loc 1 257 9
+ 1074 052c 3AD8     		sw	a4,48(sp)
+ 258:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 1075              		.loc 1 258 6 is_stmt 1
+ 258:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 1076              		.loc 1 258 16 is_stmt 0
+ 1077 052e 03476105 		lbu	a4,86(sp)
+ 258:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 1078              		.loc 1 258 38
+ 1079 0532 83477105 		lbu	a5,87(sp)
+ 258:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 1080              		.loc 1 258 20
+ 1081 0536 130707FD 		addi	a4,a4,-48
+ 258:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 1082              		.loc 1 258 26
+ 1083 053a 3307D702 		mul	a4,a4,a3
+ 258:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 1084              		.loc 1 258 42
+ 1085 053e 938707FD 		addi	a5,a5,-48
+ 258:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 1086              		.loc 1 258 31
+ 1087 0542 3E97     		add	a4,a4,a5
+ 259:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 1088              		.loc 1 259 16
+ 1089 0544 83478105 		lbu	a5,88(sp)
+ 258:main.c        **** 					ss = (time[4] - 48) * 10 + (time[5] - 48);
+ 1090              		.loc 1 258 9
+ 1091 0548 3ADA     		sw	a4,52(sp)
+ 259:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 1092              		.loc 1 259 6 is_stmt 1
+ 259:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 1093              		.loc 1 259 38 is_stmt 0
+ 1094 054a 03479105 		lbu	a4,89(sp)
+ 259:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 1095              		.loc 1 259 20
+ 1096 054e 938707FD 		addi	a5,a5,-48
+ 259:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 1097              		.loc 1 259 26
+ 1098 0552 B387D702 		mul	a5,a5,a3
+ 259:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 1099              		.loc 1 259 42
+ 1100 0556 130707FD 		addi	a4,a4,-48
+ 260:main.c        **** 					strcpy(newMessage, time);
+ 1101              		.loc 1 260 34
+ 1102 055a 9306C003 		li	a3,60
+ 259:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+ 1103              		.loc 1 259 31
+ 1104 055e BA97     		add	a5,a5,a4
+ 259:main.c        **** 					rtc_counter_set(hh*3600 + mm*60 + ss);
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 31
+
+
+ 1105              		.loc 1 259 9
+ 1106 0560 3EDC     		sw	a5,56(sp)
+ 260:main.c        **** 					strcpy(newMessage, time);
+ 1107              		.loc 1 260 6 is_stmt 1
+ 260:main.c        **** 					strcpy(newMessage, time);
+ 1108              		.loc 1 260 24 is_stmt 0
+ 1109 0562 C257     		lw	a5,48(sp)
+ 260:main.c        **** 					strcpy(newMessage, time);
+ 1110              		.loc 1 260 34
+ 1111 0564 5257     		lw	a4,52(sp)
+ 260:main.c        **** 					strcpy(newMessage, time);
+ 1112              		.loc 1 260 38
+ 1113 0566 6255     		lw	a0,56(sp)
+ 260:main.c        **** 					strcpy(newMessage, time);
+ 1114              		.loc 1 260 24
+ 1115 0568 B3872703 		mul	a5,a5,s2
+ 260:main.c        **** 					strcpy(newMessage, time);
+ 1116              		.loc 1 260 34
+ 1117 056c 3307D702 		mul	a4,a4,a3
+ 260:main.c        **** 					strcpy(newMessage, time);
+ 1118              		.loc 1 260 30
+ 1119 0570 BA97     		add	a5,a5,a4
+ 260:main.c        **** 					strcpy(newMessage, time);
+ 1120              		.loc 1 260 6
+ 1121 0572 3E95     		add	a0,a5,a0
+ 1122 0574 97000000 		call	rtc_counter_set
+ 1122      E7800000 
+ 1123              	.LVL93:
+ 261:main.c        **** 					strcat(newMessage, " ");
+ 1124              		.loc 1 261 6 is_stmt 1
+ 1125 057c CC08     		addi	a1,sp,84
+ 1126 057e 6811     		addi	a0,sp,172
+ 1127 0580 97000000 		call	strcpy
+ 1127      E7800000 
+ 1128              	.LVL94:
+ 262:main.c        **** 					strcat(newMessage, "SET");
+ 1129              		.loc 1 262 6
+ 1130 0588 B7050000 		lui	a1,%hi(.LC6)
+ 1131 058c 93850500 		addi	a1,a1,%lo(.LC6)
+ 1132 0590 6811     		addi	a0,sp,172
+ 1133 0592 97000000 		call	strcat
+ 1133      E7800000 
+ 1134              	.LVL95:
+ 263:main.c        **** 					updateLCD(&messagesOnDisplay, newMessage, message1, message2, message3, message4);
+ 1135              		.loc 1 263 6
+ 1136 059a B7050000 		lui	a1,%hi(.LC7)
+ 1137 059e 93850500 		addi	a1,a1,%lo(.LC7)
+ 1138 05a2 6811     		addi	a0,sp,172
+ 1139 05a4 97000000 		call	strcat
+ 1139      E7800000 
+ 1140              	.LVL96:
+ 264:main.c        **** 					timeSend = 0;
+ 1141              		.loc 1 264 6
+ 1142 05ac 3C09     		addi	a5,sp,152
+ 1143 05ae 5801     		addi	a4,sp,132
+ 1144 05b0 9418     		addi	a3,sp,112
+ 1145 05b2 F008     		addi	a2,sp,92
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 32
+
+
+ 1146 05b4 6C11     		addi	a1,sp,172
+ 1147 05b6 8800     		addi	a0,sp,64
+ 1148 05b8 97000000 		call	updateLCD
+ 1148      E7800000 
+ 1149              	.LVL97:
+ 265:main.c        **** 					break;
+ 1150              		.loc 1 265 6
+ 265:main.c        **** 					break;
+ 1151              		.loc 1 265 15 is_stmt 0
+ 1152 05c0 02DE     		sw	zero,60(sp)
+ 266:main.c        **** 				default:
+ 1153              		.loc 1 266 6 is_stmt 1
+ 1154 05c2 39A0     		j	.L39
+ 1155              	.L35:
+ 228:main.c        **** 													ADC_REGULAR_CHANNEL);
+ 1156              		.loc 1 228 6
+ 1157 05c4 8545     		li	a1,1
+ 1158 05c6 2685     		mv	a0,s1
+ 1159 05c8 97000000 		call	adc_software_trigger_enable
+ 1159      E7800000 
+ 1160              	.LVL98:
+ 230:main.c        **** 				case 11:
+ 1161              		.loc 1 230 6
+ 1162              	.L39:
+ 271:main.c        **** 				}
+ 272:main.c        **** 				c++;
+ 1163              		.loc 1 272 5
+ 1164              		.loc 1 272 6 is_stmt 0
+ 1165 05d0 F247     		lw	a5,28(sp)
+ 273:main.c        **** 				l88mem(1,lookUpTbl[key]+(c<<4));
+ 1166              		.loc 1 273 23
+ 1167 05d2 9402     		addi	a3,sp,320
+ 1168              		.loc 1 273 5
+ 1169 05d4 0545     		li	a0,1
+ 272:main.c        **** 				l88mem(1,lookUpTbl[key]+(c<<4));
+ 1170              		.loc 1 272 6
+ 1171 05d6 8507     		addi	a5,a5,1
+ 1172 05d8 3ECE     		sw	a5,28(sp)
+ 1173              		.loc 1 273 5 is_stmt 1
+ 1174              		.loc 1 273 23 is_stmt 0
+ 1175 05da D247     		lw	a5,20(sp)
+ 1176              		.loc 1 273 31
+ 1177 05dc 7247     		lw	a4,28(sp)
+ 1178              		.loc 1 273 23
+ 1179 05de 8A07     		slli	a5,a5,2
+ 1180 05e0 B697     		add	a5,a3,a5
+ 1181              		.loc 1 273 5
+ 1182 05e2 83A507F8 		lw	a1,-128(a5)
+ 1183              		.loc 1 273 31
+ 1184 05e6 1207     		slli	a4,a4,4
+ 1185              		.loc 1 273 5
+ 1186 05e8 BA95     		add	a1,a4,a1
+ 1187 05ea 97000000 		call	l88mem
+ 1187      E7800000 
+ 1188              	.LVL99:
+ 1189              	.L32:
+ 274:main.c        **** 			}
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 33
+
+
+ 275:main.c        **** 			l88mem(2,idle>>8);              // ...Performance monitor
+ 1190              		.loc 1 275 4 is_stmt 1
+ 1191 05f2 8255     		lw	a1,32(sp)
+ 1192 05f4 0945     		li	a0,2
+ 1193 05f6 A185     		srai	a1,a1,8
+ 1194 05f8 97000000 		call	l88mem
+ 1194      E7800000 
+ 1195              	.LVL100:
+ 276:main.c        **** 			l88mem(3,idle); idle=0;
+ 1196              		.loc 1 276 4
+ 1197 0600 8255     		lw	a1,32(sp)
+ 1198 0602 0D45     		li	a0,3
+ 1199 0604 97000000 		call	l88mem
+ 1199      E7800000 
+ 1200              	.LVL101:
+ 1201              		.loc 1 276 20
+ 1202              		.loc 1 276 24 is_stmt 0
+ 1203 060c 02D0     		sw	zero,32(sp)
+ 1204 060e 69B6     		j	.L30
+ 1205              	.L33:
+ 232:main.c        **** 					hh = rtc_counter_get() / 3600;
+ 1206              		.loc 1 232 6 is_stmt 1
+ 1207 0610 13050B00 		addi	a0,s6,%lo(.LC4)
+ 1208              	.L51:
+ 244:main.c        **** 					hh = rtc_counter_get() / 3600;
+ 1209              		.loc 1 244 6 is_stmt 0
+ 1210 0614 97000000 		call	putstr
+ 1210      E7800000 
+ 1211              	.LVL102:
+ 245:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1212              		.loc 1 245 6 is_stmt 1
+ 245:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1213              		.loc 1 245 11 is_stmt 0
+ 1214 061c 97000000 		call	rtc_counter_get
+ 1214      E7800000 
+ 1215              	.LVL103:
+ 245:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1216              		.loc 1 245 29
+ 1217 0624 33552503 		divu	a0,a0,s2
+ 246:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1218              		.loc 1 246 38
+ 1219 0628 1304C003 		li	s0,60
+ 245:main.c        **** 					mm = (rtc_counter_get() % 3600) / 60;
+ 1220              		.loc 1 245 9
+ 1221 062c 2AD8     		sw	a0,48(sp)
+ 246:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1222              		.loc 1 246 6 is_stmt 1
+ 246:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1223              		.loc 1 246 12 is_stmt 0
+ 1224 062e 97000000 		call	rtc_counter_get
+ 1224      E7800000 
+ 1225              	.LVL104:
+ 246:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1226              		.loc 1 246 30
+ 1227 0636 33752503 		remu	a0,a0,s2
+ 246:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1228              		.loc 1 246 38
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 34
+
+
+ 1229 063a 33558502 		divu	a0,a0,s0
+ 246:main.c        **** 					ss = rtc_counter_get() % 60;
+ 1230              		.loc 1 246 9
+ 1231 063e 2ADA     		sw	a0,52(sp)
+ 247:main.c        **** 					putch(hh / 10);
+ 1232              		.loc 1 247 6 is_stmt 1
+ 247:main.c        **** 					putch(hh / 10);
+ 1233              		.loc 1 247 11 is_stmt 0
+ 1234 0640 97000000 		call	rtc_counter_get
+ 1234      E7800000 
+ 1235              	.LVL105:
+ 247:main.c        **** 					putch(hh / 10);
+ 1236              		.loc 1 247 29
+ 1237 0648 33758502 		remu	a0,a0,s0
+ 248:main.c        **** 					putch(hh % 10);
+ 1238              		.loc 1 248 15
+ 1239 064c 2944     		li	s0,10
+ 247:main.c        **** 					putch(hh / 10);
+ 1240              		.loc 1 247 9
+ 1241 064e 2ADC     		sw	a0,56(sp)
+ 248:main.c        **** 					putch(hh % 10);
+ 1242              		.loc 1 248 6 is_stmt 1
+ 248:main.c        **** 					putch(hh % 10);
+ 1243              		.loc 1 248 15 is_stmt 0
+ 1244 0650 4255     		lw	a0,48(sp)
+ 1245 0652 33458502 		div	a0,a0,s0
+ 248:main.c        **** 					putch(hh % 10);
+ 1246              		.loc 1 248 6
+ 1247 0656 1375F50F 		andi	a0,a0,0xff
+ 1248 065a 97000000 		call	putch
+ 1248      E7800000 
+ 1249              	.LVL106:
+ 249:main.c        **** 					putch(mm / 10);
+ 1250              		.loc 1 249 6 is_stmt 1
+ 249:main.c        **** 					putch(mm / 10);
+ 1251              		.loc 1 249 15 is_stmt 0
+ 1252 0662 4255     		lw	a0,48(sp)
+ 1253 0664 33658502 		rem	a0,a0,s0
+ 249:main.c        **** 					putch(mm / 10);
+ 1254              		.loc 1 249 6
+ 1255 0668 1375F50F 		andi	a0,a0,0xff
+ 1256 066c 97000000 		call	putch
+ 1256      E7800000 
+ 1257              	.LVL107:
+ 250:main.c        **** 					putch(mm % 10);
+ 1258              		.loc 1 250 6 is_stmt 1
+ 250:main.c        **** 					putch(mm % 10);
+ 1259              		.loc 1 250 15 is_stmt 0
+ 1260 0674 5255     		lw	a0,52(sp)
+ 1261 0676 33458502 		div	a0,a0,s0
+ 250:main.c        **** 					putch(mm % 10);
+ 1262              		.loc 1 250 6
+ 1263 067a 1375F50F 		andi	a0,a0,0xff
+ 1264 067e 97000000 		call	putch
+ 1264      E7800000 
+ 1265              	.LVL108:
+ 251:main.c        **** 					putch(ss / 10);
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 35
+
+
+ 1266              		.loc 1 251 6 is_stmt 1
+ 251:main.c        **** 					putch(ss / 10);
+ 1267              		.loc 1 251 15 is_stmt 0
+ 1268 0686 5255     		lw	a0,52(sp)
+ 1269 0688 33658502 		rem	a0,a0,s0
+ 251:main.c        **** 					putch(ss / 10);
+ 1270              		.loc 1 251 6
+ 1271 068c 1375F50F 		andi	a0,a0,0xff
+ 1272 0690 97000000 		call	putch
+ 1272      E7800000 
+ 1273              	.LVL109:
+ 252:main.c        **** 					putch(ss % 10);
+ 1274              		.loc 1 252 6 is_stmt 1
+ 252:main.c        **** 					putch(ss % 10);
+ 1275              		.loc 1 252 15 is_stmt 0
+ 1276 0698 6255     		lw	a0,56(sp)
+ 1277 069a 33458502 		div	a0,a0,s0
+ 252:main.c        **** 					putch(ss % 10);
+ 1278              		.loc 1 252 6
+ 1279 069e 1375F50F 		andi	a0,a0,0xff
+ 1280 06a2 97000000 		call	putch
+ 1280      E7800000 
+ 1281              	.LVL110:
+ 253:main.c        **** 					break;
+ 1282              		.loc 1 253 6 is_stmt 1
+ 253:main.c        **** 					break;
+ 1283              		.loc 1 253 15 is_stmt 0
+ 1284 06aa 6255     		lw	a0,56(sp)
+ 1285 06ac 33658502 		rem	a0,a0,s0
+ 253:main.c        **** 					break;
+ 1286              		.loc 1 253 6
+ 1287 06b0 1375F50F 		andi	a0,a0,0xff
+ 1288 06b4 97000000 		call	putch
+ 1288      E7800000 
+ 1289              	.LVL111:
+ 254:main.c        **** 				case 13:
+ 1290              		.loc 1 254 6 is_stmt 1
+ 1291 06bc 11BF     		j	.L39
+ 1292              	.L37:
+ 244:main.c        **** 					hh = rtc_counter_get() / 3600;
+ 1293              		.loc 1 244 6
+ 1294 06be 37050000 		lui	a0,%hi(.LC5)
+ 1295 06c2 13050500 		addi	a0,a0,%lo(.LC5)
+ 1296 06c6 B9B7     		j	.L51
+ 1297              		.cfi_endproc
+ 1298              	.LFE5:
+ 1300              		.section	.rodata
+ 1301              		.align	2
+ 1302              		.set	.LANCHOR0,. + 0
+ 1303              	.LC0:
+ 1304 0000 01000000 		.word	1
+ 1305 0004 04000000 		.word	4
+ 1306 0008 07000000 		.word	7
+ 1307 000c 0E000000 		.word	14
+ 1308 0010 02000000 		.word	2
+ 1309 0014 05000000 		.word	5
+ 1310 0018 08000000 		.word	8
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 36
+
+
+ 1311 001c 00000000 		.word	0
+ 1312 0020 03000000 		.word	3
+ 1313 0024 06000000 		.word	6
+ 1314 0028 09000000 		.word	9
+ 1315 002c 0F000000 		.word	15
+ 1316 0030 0A000000 		.word	10
+ 1317 0034 0B000000 		.word	11
+ 1318 0038 0C000000 		.word	12
+ 1319 003c 0D000000 		.word	13
+ 1320              	.LC1:
+ 1321 0040 0D000000 		.word	13
+ 1322 0044 0F000000 		.word	15
+ 1323 0048 00000000 		.word	0
+ 1324 004c 0E000000 		.word	14
+ 1325 0050 0C000000 		.word	12
+ 1326 0054 09000000 		.word	9
+ 1327 0058 08000000 		.word	8
+ 1328 005c 07000000 		.word	7
+ 1329 0060 0B000000 		.word	11
+ 1330 0064 06000000 		.word	6
+ 1331 0068 05000000 		.word	5
+ 1332 006c 04000000 		.word	4
+ 1333 0070 0A000000 		.word	10
+ 1334 0074 03000000 		.word	3
+ 1335 0078 02000000 		.word	2
+ 1336 007c 01000000 		.word	1
+ 1337              		.section	.rodata.main.str1.4,"aMS",@progbits,1
+ 1338              		.align	2
+ 1339              	.LC3:
+ 1340 0000 49442B00 		.string	"ID+"
+ 1341              	.LC4:
+ 1342 0004 49442D30 		.string	"ID-000\n"
+ 1342      30300A00 
+ 1343              	.LC5:
+ 1344 000c 49442A30 		.string	"ID*000\n"
+ 1344      30300A00 
+ 1345              	.LC6:
+ 1346 0014 2000     		.string	" "
+ 1347 0016 0000     		.zero	2
+ 1348              	.LC7:
+ 1349 0018 53455400 		.string	"SET"
+ 1350              		.text
+ 1351              	.Letext0:
+ 1352              		.file 2 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 1353              		.file 3 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 1354              		.file 4 "./../../firmware/GD32VF103_standard_peripheral/gd32vf103.h"
+ 1355              		.file 5 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_rcu.h"
+ 1356              		.file 6 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_usart.h"
+ 1357              		.file 7 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\li
+ 1358              		.file 8 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 1359              		.file 9 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 1360              		.file 10 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\r
+ 1361              		.file 11 "./../../firmware/GD32VF103_standard_peripheral/system_gd32vf103.h"
+ 1362              		.file 12 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\r
+ 1363              		.file 13 "lcd.h"
+ 1364              		.file 14 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\r
+ 1365              		.file 15 "drivers.h"
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 37
+
+
+ 1366              		.file 16 "adc.h"
+ 1367              		.file 17 "usart.h"
+ 1368              		.file 18 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_eclic.h"
+ 1369              		.file 19 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_adc.h"
+ 1370              		.file 20 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_rtc.h"
+ 1371              		.file 21 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_pmu.h"
+ 1372              		.file 22 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_bkp.h"
+ 1373              		.file 23 "<built-in>"
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 38
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:13     .text.rtcInit:0000000000000000 rtcInit
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:17     .text.rtcInit:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:18     .text.rtcInit:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:19     .text.rtcInit:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:20     .text.rtcInit:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:22     .text.rtcInit:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:24     .text.rtcInit:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:26     .text.rtcInit:0000000000000006 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:27     .text.rtcInit:0000000000000008 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:29     .text.rtcInit:0000000000000008 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:32     .text.rtcInit:0000000000000010 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:35     .text.rtcInit:0000000000000018 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:39     .text.rtcInit:0000000000000024 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:42     .text.rtcInit:000000000000002c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:43     .text.rtcInit:000000000000002c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:47     .text.rtcInit:0000000000000036 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:51     .text.rtcInit:0000000000000038 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:55     .text.rtcInit:0000000000000044 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:60     .text.rtcInit:0000000000000052 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:63     .text.rtcInit:000000000000005a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:66     .text.rtcInit:0000000000000062 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:71     .text.rtcInit:0000000000000070 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:74     .text.rtcInit:0000000000000078 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:80     .text.rtcInit:0000000000000082 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:81     .text.rtcInit:0000000000000082 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:82     .text.rtcInit:0000000000000084 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:83     .text.rtcInit:0000000000000084 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:86     .text.rtcInit:0000000000000086 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:90     .text.rtcInit:0000000000000086 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:94     .text.rtcInit:000000000000008e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:98     .text.rtcInit:000000000000008e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:99     .text.rtcInit:0000000000000090 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:102    .text.rtcInit:0000000000000092 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:104    .text.rtcInit:0000000000000094 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:111    .text.updateLCD:0000000000000000 updateLCD
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:114    .text.updateLCD:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:116    .text.updateLCD:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:117    .text.updateLCD:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:118    .text.updateLCD:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:120    .text.updateLCD:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:122    .text.updateLCD:0000000000000004 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:125    .text.updateLCD:0000000000000006 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:129    .text.updateLCD:000000000000000c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:134    .text.updateLCD:0000000000000016 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:135    .text.updateLCD:0000000000000016 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:136    .text.updateLCD:0000000000000016 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:137    .text.updateLCD:0000000000000016 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:138    .text.updateLCD:0000000000000016 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:142    .text.updateLCD:000000000000001c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:144    .text.updateLCD:000000000000001c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:148    .text.updateLCD:0000000000000022 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:151    .text.updateLCD:000000000000002a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:152    .text.updateLCD:000000000000002a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:154    .text.updateLCD:000000000000002e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:157    .text.updateLCD:0000000000000034 .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 39
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:163    .text.updateLCD:0000000000000040 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:164    .text.updateLCD:0000000000000040 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:169    .text.updateLCD:000000000000004a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:179    .text.updateLCD:0000000000000060 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:187    .text.updateLCD:0000000000000074 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:195    .text.updateLCD:000000000000008a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:197    .text.updateLCD:000000000000008e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:198    .text.updateLCD:0000000000000090 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:199    .text.updateLCD:0000000000000090 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:201    .text.updateLCD:0000000000000092 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:203    .text.updateLCD:0000000000000094 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:206    .text.updateLCD:0000000000000096 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:209    .text.updateLCD:0000000000000098 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:212    .text.updateLCD:000000000000009a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:215    .text.updateLCD:000000000000009a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:217    .text.updateLCD:000000000000009c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:218    .text.updateLCD:000000000000009e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:221    .text.updateLCD:000000000000009e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:223    .text.updateLCD:00000000000000a0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:224    .text.updateLCD:00000000000000a0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:227    .text.updateLCD:00000000000000a6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:229    .text.updateLCD:00000000000000a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:231    .text.updateLCD:00000000000000a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:235    .text.updateLCD:00000000000000b0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:237    .text.updateLCD:00000000000000b0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:241    .text.updateLCD:00000000000000ba .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:247    .text.updateLCD:00000000000000c2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:252    .text.updateLCD:00000000000000c8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:255    .text.updateLCD:00000000000000d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:258    .text.updateLCD:00000000000000d2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:264    .text.updateLCD:00000000000000da .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:270    .text.updateLCD:00000000000000e2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:276    .text.updateLCD:00000000000000f0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:282    .text.updateLCD:00000000000000fe .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:288    .text.updateLCD:000000000000010c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:294    .text.updateLCD:000000000000011c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:301    .text.startup.main:0000000000000000 main
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:304    .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:305    .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:306    .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:307    .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:309    .text.startup.main:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:311    .text.startup.main:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:313    .text.startup.main:0000000000000004 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:315    .text.startup.main:0000000000000006 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:318    .text.startup.main:000000000000000a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:320    .text.startup.main:000000000000000c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:322    .text.startup.main:000000000000000e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:324    .text.startup.main:0000000000000010 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:326    .text.startup.main:0000000000000012 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:328    .text.startup.main:0000000000000014 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:330    .text.startup.main:0000000000000016 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:332    .text.startup.main:0000000000000018 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:334    .text.startup.main:000000000000001a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:336    .text.startup.main:000000000000001c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:338    .text.startup.main:0000000000000020 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:340    .text.startup.main:0000000000000024 .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 40
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:341    .text.startup.main:0000000000000026 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:343    .text.startup.main:0000000000000026 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:348    .text.startup.main:0000000000000034 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:356    .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:357    .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:358    .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:359    .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:360    .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:361    .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:362    .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:363    .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:365    .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:367    .text.startup.main:0000000000000056 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:368    .text.startup.main:0000000000000056 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:371    .text.startup.main:000000000000005e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:372    .text.startup.main:000000000000005e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:378    .text.startup.main:0000000000000070 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:379    .text.startup.main:0000000000000070 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:380    .text.startup.main:0000000000000070 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:381    .text.startup.main:0000000000000070 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:385    .text.startup.main:000000000000007a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:388    .text.startup.main:0000000000000080 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:394    .text.startup.main:000000000000008c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:400    .text.startup.main:0000000000000098 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:406    .text.startup.main:00000000000000a4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:412    .text.startup.main:00000000000000b0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:417    .text.startup.main:00000000000000b8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:420    .text.startup.main:00000000000000be .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:422    .text.startup.main:00000000000000c2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:423    .text.startup.main:00000000000000c2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:424    .text.startup.main:00000000000000c2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:427    .text.startup.main:00000000000000c8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:429    .text.startup.main:00000000000000ca .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:432    .text.startup.main:00000000000000ce .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:433    .text.startup.main:00000000000000ce .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:434    .text.startup.main:00000000000000ce .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:437    .text.startup.main:00000000000000d6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:443    .text.startup.main:00000000000000e6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:449    .text.startup.main:00000000000000f6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:455    .text.startup.main:0000000000000106 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:461    .text.startup.main:0000000000000116 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:464    .text.startup.main:000000000000011e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:467    .text.startup.main:0000000000000126 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:470    .text.startup.main:000000000000012e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:473    .text.startup.main:0000000000000136 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:477    .text.startup.main:0000000000000140 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:481    .text.startup.main:000000000000014a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:484    .text.startup.main:0000000000000152 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:489    .text.startup.main:0000000000000160 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:492    .text.startup.main:0000000000000168 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:494    .text.startup.main:000000000000016a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:496    .text.startup.main:000000000000016e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:498    .text.startup.main:0000000000000170 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:500    .text.startup.main:0000000000000174 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:503    .text.startup.main:000000000000017c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:504    .text.startup.main:000000000000017c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:506    .text.startup.main:0000000000000180 .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 41
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:509    .text.startup.main:0000000000000188 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:511    .text.startup.main:000000000000018c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:513    .text.startup.main:0000000000000190 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:515    .text.startup.main:0000000000000194 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:518    .text.startup.main:0000000000000198 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:519    .text.startup.main:0000000000000198 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:520    .text.startup.main:0000000000000198 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:524    .text.startup.main:000000000000019e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:527    .text.startup.main:00000000000001a6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:528    .text.startup.main:00000000000001a6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:533    .text.startup.main:00000000000001b2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:535    .text.startup.main:00000000000001b4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:537    .text.startup.main:00000000000001b6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:539    .text.startup.main:00000000000001ba .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:540    .text.startup.main:00000000000001ba .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:545    .text.startup.main:00000000000001c6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:547    .text.startup.main:00000000000001ca .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:551    .text.startup.main:00000000000001d6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:552    .text.startup.main:00000000000001d6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:559    .text.startup.main:00000000000001e4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:560    .text.startup.main:00000000000001e4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:563    .text.startup.main:00000000000001ec .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:565    .text.startup.main:00000000000001f0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:567    .text.startup.main:00000000000001f4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:570    .text.startup.main:00000000000001fc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:572    .text.startup.main:00000000000001fe .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:573    .text.startup.main:00000000000001fe .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:576    .text.startup.main:0000000000000206 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:578    .text.startup.main:000000000000020a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:580    .text.startup.main:000000000000020e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:582    .text.startup.main:0000000000000210 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:583    .text.startup.main:0000000000000210 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:586    .text.startup.main:0000000000000218 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:588    .text.startup.main:000000000000021c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:590    .text.startup.main:000000000000021e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:592    .text.startup.main:0000000000000220 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:593    .text.startup.main:0000000000000220 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:596    .text.startup.main:0000000000000226 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:598    .text.startup.main:000000000000022a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:600    .text.startup.main:000000000000022c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:602    .text.startup.main:0000000000000230 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:607    .text.startup.main:0000000000000240 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:608    .text.startup.main:0000000000000240 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:610    .text.startup.main:0000000000000244 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:612    .text.startup.main:0000000000000248 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:617    .text.startup.main:0000000000000258 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:618    .text.startup.main:0000000000000258 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:620    .text.startup.main:000000000000025c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:625    .text.startup.main:000000000000026c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:629    .text.startup.main:0000000000000276 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:630    .text.startup.main:0000000000000276 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:633    .text.startup.main:000000000000027c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:637    .text.startup.main:0000000000000288 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:638    .text.startup.main:0000000000000288 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:641    .text.startup.main:000000000000028e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:645    .text.startup.main:000000000000029a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:646    .text.startup.main:000000000000029a .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 42
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:649    .text.startup.main:00000000000002a0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:653    .text.startup.main:00000000000002ac .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:654    .text.startup.main:00000000000002ac .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:657    .text.startup.main:00000000000002b2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:661    .text.startup.main:00000000000002be .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:662    .text.startup.main:00000000000002be .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:665    .text.startup.main:00000000000002c4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:669    .text.startup.main:00000000000002d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:670    .text.startup.main:00000000000002d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:673    .text.startup.main:00000000000002d6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:678    .text.startup.main:00000000000002e2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:679    .text.startup.main:00000000000002e2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:680    .text.startup.main:00000000000002e2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:681    .text.startup.main:00000000000002e2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:684    .text.startup.main:00000000000002e6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:685    .text.startup.main:00000000000002e6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:688    .text.startup.main:00000000000002ea .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:689    .text.startup.main:00000000000002ea .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:692    .text.startup.main:00000000000002ee .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:693    .text.startup.main:00000000000002ee .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:696    .text.startup.main:00000000000002f2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:697    .text.startup.main:00000000000002f2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:700    .text.startup.main:00000000000002f6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:701    .text.startup.main:00000000000002f6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:705    .text.startup.main:00000000000002fa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:706    .text.startup.main:00000000000002fa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:710    .text.startup.main:00000000000002fe .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:714    .text.startup.main:0000000000000302 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:717    .text.startup.main:000000000000030a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:721    .text.startup.main:000000000000030c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:726    .text.startup.main:0000000000000316 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:727    .text.startup.main:0000000000000316 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:732    .text.startup.main:0000000000000322 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:734    .text.startup.main:0000000000000324 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:735    .text.startup.main:0000000000000324 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:739    .text.startup.main:000000000000032e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:742    .text.startup.main:0000000000000336 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:749    .text.startup.main:0000000000000346 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:750    .text.startup.main:0000000000000346 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:752    .text.startup.main:000000000000034a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:755    .text.startup.main:000000000000034e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:757    .text.startup.main:0000000000000352 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:758    .text.startup.main:0000000000000352 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:761    .text.startup.main:0000000000000354 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:762    .text.startup.main:0000000000000354 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:767    .text.startup.main:000000000000035a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:768    .text.startup.main:000000000000035a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:769    .text.startup.main:000000000000035a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:771    .text.startup.main:000000000000035c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:773    .text.startup.main:0000000000000360 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:776    .text.startup.main:0000000000000362 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:780    .text.startup.main:0000000000000368 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:781    .text.startup.main:0000000000000368 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:785    .text.startup.main:0000000000000372 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:787    .text.startup.main:0000000000000376 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:790    .text.startup.main:0000000000000378 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:794    .text.startup.main:0000000000000382 .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 43
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:799    .text.startup.main:000000000000038e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:804    .text.startup.main:0000000000000392 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:805    .text.startup.main:0000000000000392 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:807    .text.startup.main:0000000000000396 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:811    .text.startup.main:000000000000039c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:812    .text.startup.main:000000000000039c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:814    .text.startup.main:00000000000003a0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:817    .text.startup.main:00000000000003a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:819    .text.startup.main:00000000000003ac .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:823    .text.startup.main:00000000000003b2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:824    .text.startup.main:00000000000003b2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:826    .text.startup.main:00000000000003b6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:829    .text.startup.main:00000000000003bc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:830    .text.startup.main:00000000000003bc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:832    .text.startup.main:00000000000003be .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:834    .text.startup.main:00000000000003c0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:835    .text.startup.main:00000000000003c0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:837    .text.startup.main:00000000000003c2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:839    .text.startup.main:00000000000003c4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:841    .text.startup.main:00000000000003c6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:845    .text.startup.main:00000000000003d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:846    .text.startup.main:00000000000003d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:848    .text.startup.main:00000000000003d2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:850    .text.startup.main:00000000000003d4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:852    .text.startup.main:00000000000003d6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:856    .text.startup.main:00000000000003e0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:857    .text.startup.main:00000000000003e0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:859    .text.startup.main:00000000000003e2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:861    .text.startup.main:00000000000003e4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:863    .text.startup.main:00000000000003e6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:867    .text.startup.main:00000000000003ec .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:870    .text.startup.main:00000000000003f0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:871    .text.startup.main:00000000000003f0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:876    .text.startup.main:00000000000003f6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:877    .text.startup.main:00000000000003f6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:879    .text.startup.main:00000000000003f8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:882    .text.startup.main:00000000000003fe .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:883    .text.startup.main:00000000000003fe .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:885    .text.startup.main:0000000000000400 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:886    .text.startup.main:0000000000000400 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:889    .text.startup.main:0000000000000404 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:890    .text.startup.main:0000000000000404 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:897    .text.startup.main:0000000000000410 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:899    .text.startup.main:0000000000000412 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:903    .text.startup.main:000000000000041a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:904    .text.startup.main:000000000000041a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:907    .text.startup.main:0000000000000422 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:909    .text.startup.main:0000000000000426 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:914    .text.startup.main:0000000000000436 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:915    .text.startup.main:0000000000000436 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:919    .text.startup.main:000000000000043c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:920    .text.startup.main:000000000000043c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:922    .text.startup.main:000000000000043e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:925    .text.startup.main:0000000000000446 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:926    .text.startup.main:0000000000000446 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:928    .text.startup.main:0000000000000448 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:936    .text.startup.main:000000000000045a .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 44
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:937    .text.startup.main:000000000000045a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:940    .text.startup.main:0000000000000462 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:942    .text.startup.main:0000000000000464 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:944    .text.startup.main:0000000000000468 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:945    .text.startup.main:0000000000000468 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:951    .text.startup.main:0000000000000474 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:958    .text.startup.main:0000000000000484 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:959    .text.startup.main:0000000000000484 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:961    .text.startup.main:0000000000000486 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:963    .text.startup.main:0000000000000488 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:965    .text.startup.main:000000000000048a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:968    .text.startup.main:000000000000048e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:970    .text.startup.main:0000000000000492 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:972    .text.startup.main:0000000000000494 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:974    .text.startup.main:0000000000000498 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:976    .text.startup.main:000000000000049c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:977    .text.startup.main:000000000000049c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:981    .text.startup.main:00000000000004a2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:984    .text.startup.main:00000000000004a4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:985    .text.startup.main:00000000000004a4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:987    .text.startup.main:00000000000004a6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:989    .text.startup.main:00000000000004a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:991    .text.startup.main:00000000000004aa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:995    .text.startup.main:00000000000004b4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:996    .text.startup.main:00000000000004b4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:998    .text.startup.main:00000000000004b6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1000   .text.startup.main:00000000000004b8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1002   .text.startup.main:00000000000004ba .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1006   .text.startup.main:00000000000004c4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1007   .text.startup.main:00000000000004c4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1011   .text.startup.main:00000000000004c8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1016   .text.startup.main:00000000000004ce .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1017   .text.startup.main:00000000000004ce .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1019   .text.startup.main:00000000000004d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1021   .text.startup.main:00000000000004d4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1023   .text.startup.main:00000000000004d6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1027   .text.startup.main:00000000000004dc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1028   .text.startup.main:00000000000004dc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1030   .text.startup.main:00000000000004de .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1033   .text.startup.main:00000000000004e4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1035   .text.startup.main:00000000000004e6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1038   .text.startup.main:00000000000004ec .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1039   .text.startup.main:00000000000004ec .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1041   .text.startup.main:00000000000004f0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1043   .text.startup.main:00000000000004f2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1045   .text.startup.main:00000000000004f6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1049   .text.startup.main:00000000000004fa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1054   .text.startup.main:0000000000000506 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1059   .text.startup.main:0000000000000514 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1060   .text.startup.main:0000000000000514 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1062   .text.startup.main:0000000000000518 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1064   .text.startup.main:000000000000051a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1066   .text.startup.main:000000000000051e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1068   .text.startup.main:0000000000000522 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1070   .text.startup.main:0000000000000526 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1072   .text.startup.main:000000000000052a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1074   .text.startup.main:000000000000052c .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 45
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1076   .text.startup.main:000000000000052e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1077   .text.startup.main:000000000000052e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1079   .text.startup.main:0000000000000532 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1081   .text.startup.main:0000000000000536 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1083   .text.startup.main:000000000000053a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1085   .text.startup.main:000000000000053e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1087   .text.startup.main:0000000000000542 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1089   .text.startup.main:0000000000000544 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1091   .text.startup.main:0000000000000548 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1093   .text.startup.main:000000000000054a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1094   .text.startup.main:000000000000054a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1096   .text.startup.main:000000000000054e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1098   .text.startup.main:0000000000000552 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1100   .text.startup.main:0000000000000556 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1102   .text.startup.main:000000000000055a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1104   .text.startup.main:000000000000055e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1106   .text.startup.main:0000000000000560 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1108   .text.startup.main:0000000000000562 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1109   .text.startup.main:0000000000000562 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1111   .text.startup.main:0000000000000564 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1113   .text.startup.main:0000000000000566 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1115   .text.startup.main:0000000000000568 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1117   .text.startup.main:000000000000056c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1119   .text.startup.main:0000000000000570 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1121   .text.startup.main:0000000000000572 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1125   .text.startup.main:000000000000057c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1130   .text.startup.main:0000000000000588 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1136   .text.startup.main:000000000000059a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1142   .text.startup.main:00000000000005ac .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1151   .text.startup.main:00000000000005c0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1152   .text.startup.main:00000000000005c0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1154   .text.startup.main:00000000000005c2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1157   .text.startup.main:00000000000005c4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1163   .text.startup.main:00000000000005d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1164   .text.startup.main:00000000000005d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1165   .text.startup.main:00000000000005d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1167   .text.startup.main:00000000000005d2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1169   .text.startup.main:00000000000005d4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1171   .text.startup.main:00000000000005d6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1174   .text.startup.main:00000000000005da .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1175   .text.startup.main:00000000000005da .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1177   .text.startup.main:00000000000005dc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1179   .text.startup.main:00000000000005de .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1182   .text.startup.main:00000000000005e2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1184   .text.startup.main:00000000000005e6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1186   .text.startup.main:00000000000005e8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1191   .text.startup.main:00000000000005f2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1197   .text.startup.main:0000000000000600 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1202   .text.startup.main:000000000000060c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1203   .text.startup.main:000000000000060c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1207   .text.startup.main:0000000000000610 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1210   .text.startup.main:0000000000000614 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1213   .text.startup.main:000000000000061c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1214   .text.startup.main:000000000000061c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1217   .text.startup.main:0000000000000624 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1219   .text.startup.main:0000000000000628 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1221   .text.startup.main:000000000000062c .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 46
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1223   .text.startup.main:000000000000062e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1224   .text.startup.main:000000000000062e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1227   .text.startup.main:0000000000000636 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1229   .text.startup.main:000000000000063a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1231   .text.startup.main:000000000000063e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1233   .text.startup.main:0000000000000640 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1234   .text.startup.main:0000000000000640 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1237   .text.startup.main:0000000000000648 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1239   .text.startup.main:000000000000064c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1241   .text.startup.main:000000000000064e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1243   .text.startup.main:0000000000000650 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1244   .text.startup.main:0000000000000650 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1247   .text.startup.main:0000000000000656 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1251   .text.startup.main:0000000000000662 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1252   .text.startup.main:0000000000000662 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1255   .text.startup.main:0000000000000668 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1259   .text.startup.main:0000000000000674 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1260   .text.startup.main:0000000000000674 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1263   .text.startup.main:000000000000067a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1267   .text.startup.main:0000000000000686 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1268   .text.startup.main:0000000000000686 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1271   .text.startup.main:000000000000068c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1275   .text.startup.main:0000000000000698 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1276   .text.startup.main:0000000000000698 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1279   .text.startup.main:000000000000069e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1283   .text.startup.main:00000000000006aa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1284   .text.startup.main:00000000000006aa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1287   .text.startup.main:00000000000006b0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1291   .text.startup.main:00000000000006bc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1294   .text.startup.main:00000000000006be .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1297   .text.startup.main:00000000000006c8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1302   .rodata:0000000000000000 .LANCHOR0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:107    .text.rtcInit:0000000000000094 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:297    .text.updateLCD:000000000000011c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1300   .text.startup.main:00000000000006c8 .L0 
+                     .debug_frame:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:92     .text.rtcInit:000000000000008e .L1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:268    .text.updateLCD:00000000000000e2 .L5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:256    .text.updateLCD:00000000000000d2 .L6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:233    .text.updateLCD:00000000000000b0 .L7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:245    .text.updateLCD:00000000000000c2 .L8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:262    .text.updateLCD:00000000000000da .L10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:161    .text.updateLCD:0000000000000040 .L9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:250    .text.updateLCD:00000000000000c8 .L14
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:167    .text.updateLCD:000000000000004a .L12
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1339   .rodata.main.str1.4:0000000000000000 .LC3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1341   .rodata.main.str1.4:0000000000000004 .LC4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1345   .rodata.main.str1.4:0000000000000014 .LC6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1348   .rodata.main.str1.4:0000000000000018 .LC7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1343   .rodata.main.str1.4:000000000000000c .LC5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:724    .text.startup.main:0000000000000316 .L16
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:778    .text.startup.main:0000000000000368 .L17
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:874    .text.startup.main:00000000000003f6 .L18
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:802    .text.startup.main:0000000000000392 .L19
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:809    .text.startup.main:000000000000039c .L20
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:821    .text.startup.main:00000000000003b2 .L21
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:759    .text.startup.main:0000000000000354 .L25
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 47
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1009   .text.startup.main:00000000000004c8 .L50
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:719    .text.startup.main:000000000000030c .L47
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:753    .text.startup.main:000000000000034e .L55
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1014   .text.startup.main:00000000000004ce .L26
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:982    .text.startup.main:00000000000004a4 .L27
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:901    .text.startup.main:000000000000041a .L29
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:516    .text.startup.main:0000000000000198 .L30
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:934    .text.startup.main:000000000000045a .L31
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1189   .text.startup.main:00000000000005f2 .L32
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1205   .text.startup.main:0000000000000610 .L33
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1047   .text.startup.main:00000000000004fa .L34
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1155   .text.startup.main:00000000000005c4 .L35
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1162   .text.startup.main:00000000000005d0 .L39
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:865    .text.startup.main:00000000000003ec .L49
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1025   .text.startup.main:00000000000004dc .L28
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:766    .text.startup.main:000000000000035a .L52
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:868    .text.startup.main:00000000000003f0 .L23
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:774    .text.startup.main:0000000000000362 .L48
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1292   .text.startup.main:00000000000006be .L37
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:956    .text.startup.main:0000000000000484 .L36
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1208   .text.startup.main:0000000000000614 .L51
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:4845   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6118   .debug_str:00000000000001b5 .LASF245
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6336   .debug_str:00000000000006f1 .LASF246
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6046   .debug_str:0000000000000000 .LASF247
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6022   .debug_ranges:0000000000000000 .Ldebug_ranges0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6044   .debug_line:0000000000000000 .Ldebug_line0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6356   .debug_str:000000000000074c .LASF0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6182   .debug_str:00000000000003a3 .LASF1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6134   .debug_str:000000000000029b .LASF6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6190   .debug_str:00000000000003cf .LASF2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6460   .debug_str:0000000000000947 .LASF3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6520   .debug_str:0000000000000a5c .LASF4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6150   .debug_str:00000000000002fc .LASF5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6308   .debug_str:000000000000066c .LASF7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6262   .debug_str:000000000000056f .LASF8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6316   .debug_str:0000000000000694 .LASF9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6418   .debug_str:0000000000000876 .LASF10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6184   .debug_str:00000000000003af .LASF11
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6502   .debug_str:0000000000000a06 .LASF12
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6272   .debug_str:00000000000005a3 .LASF177
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6440   .debug_str:00000000000008ef .LASF13
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6446   .debug_str:0000000000000905 .LASF14
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6448   .debug_str:000000000000090e .LASF15
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6358   .debug_str:0000000000000759 .LASF16
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6492   .debug_str:00000000000009de .LASF17
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6296   .debug_str:000000000000061b .LASF18
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6092   .debug_str:000000000000012e .LASF19
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6094   .debug_str:0000000000000139 .LASF20
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6096   .debug_str:0000000000000144 .LASF21
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6098   .debug_str:000000000000014f .LASF22
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6100   .debug_str:000000000000015a .LASF23
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6102   .debug_str:0000000000000165 .LASF24
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6388   .debug_str:00000000000007f0 .LASF25
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6174   .debug_str:0000000000000375 .LASF26
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6176   .debug_str:000000000000037e .LASF27
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6110   .debug_str:0000000000000193 .LASF28
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 48
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6112   .debug_str:000000000000019e .LASF29
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6076   .debug_str:00000000000000e2 .LASF30
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6078   .debug_str:00000000000000ec .LASF31
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6504   .debug_str:0000000000000a0f .LASF32
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6506   .debug_str:0000000000000a18 .LASF33
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6206   .debug_str:0000000000000446 .LASF34
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6208   .debug_str:000000000000044f .LASF35
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6476   .debug_str:000000000000099a .LASF36
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6060   .debug_str:000000000000008a .LASF37
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6186   .debug_str:00000000000003b7 .LASF38
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6400   .debug_str:0000000000000829 .LASF39
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6276   .debug_str:00000000000005bb .LASF40
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6318   .debug_str:00000000000006a2 .LASF41
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6320   .debug_str:00000000000006ac .LASF42
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6322   .debug_str:00000000000006b6 .LASF43
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6324   .debug_str:00000000000006c0 .LASF44
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6326   .debug_str:00000000000006ca .LASF45
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6312   .debug_str:0000000000000682 .LASF46
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6314   .debug_str:000000000000068b .LASF47
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6090   .debug_str:0000000000000123 .LASF48
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6172   .debug_str:000000000000036c .LASF49
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6108   .debug_str:0000000000000188 .LASF50
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6152   .debug_str:0000000000000305 .LASF51
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6342   .debug_str:0000000000000711 .LASF52
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6196   .debug_str:00000000000003ff .LASF53
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6234   .debug_str:00000000000004df .LASF54
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6104   .debug_str:0000000000000170 .LASF55
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6542   .debug_str:0000000000000ade .LASF56
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6306   .debug_str:0000000000000660 .LASF57
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6548   .debug_str:0000000000000b00 .LASF58
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6180   .debug_str:0000000000000394 .LASF59
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6470   .debug_str:000000000000097c .LASF60
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6074   .debug_str:00000000000000d4 .LASF61
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6346   .debug_str:0000000000000721 .LASF62
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6232   .debug_str:00000000000004cf .LASF63
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6510   .debug_str:0000000000000a29 .LASF64
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6204   .debug_str:0000000000000436 .LASF65
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6188   .debug_str:00000000000003bf .LASF66
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6212   .debug_str:0000000000000461 .LASF67
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6396   .debug_str:0000000000000813 .LASF68
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6450   .debug_str:0000000000000917 .LASF69
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6512   .debug_str:0000000000000a3a .LASF70
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6406   .debug_str:000000000000083d .LASF71
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6048   .debug_str:0000000000000059 .LASF72
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6132   .debug_str:0000000000000295 .LASF73
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6408   .debug_str:0000000000000845 .LASF74
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6390   .debug_str:00000000000007fa .LASF75
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6052   .debug_str:000000000000006d .LASF76
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6442   .debug_str:00000000000008f5 .LASF77
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6498   .debug_str:00000000000009f6 .LASF78
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6278   .debug_str:00000000000005c2 .LASF79
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6436   .debug_str:00000000000008df .LASF80
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6288   .debug_str:00000000000005f5 .LASF85
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6452   .debug_str:000000000000091e .LASF81
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6294   .debug_str:0000000000000613 .LASF82
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6350   .debug_str:0000000000000737 .LASF83
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6246   .debug_str:0000000000000529 .LASF84
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 49
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6082   .debug_str:00000000000000fe .LASF86
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6088   .debug_str:000000000000011a .LASF87
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6544   .debug_str:0000000000000aea .LASF88
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6522   .debug_str:0000000000000a6f .LASF89
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6368   .debug_str:000000000000078f .LASF90
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6170   .debug_str:0000000000000363 .LASF91
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6472   .debug_str:000000000000098b .LASF92
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6394   .debug_str:0000000000000809 .LASF93
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6398   .debug_str:000000000000081f .LASF94
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6540   .debug_str:0000000000000ad3 .LASF95
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6142   .debug_str:00000000000002bd .LASF96
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6538   .debug_str:0000000000000acb .LASF97
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6420   .debug_str:000000000000088d .LASF98
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6466   .debug_str:0000000000000964 .LASF99
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6490   .debug_str:00000000000009d6 .LASF100
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6386   .debug_str:00000000000007e8 .LASF101
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6484   .debug_str:00000000000009c3 .LASF102
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6218   .debug_str:000000000000047d .LASF103
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6486   .debug_str:00000000000009c8 .LASF104
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6428   .debug_str:00000000000008b2 .LASF105
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6160   .debug_str:000000000000032c .LASF106
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6266   .debug_str:0000000000000588 .LASF107
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6384   .debug_str:00000000000007e1 .LASF108
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6140   .debug_str:00000000000002b7 .LASF109
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6480   .debug_str:00000000000009b5 .LASF110
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6240   .debug_str:000000000000050b .LASF111
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6056   .debug_str:000000000000007a .LASF112
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6062   .debug_str:0000000000000092 .LASF113
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6404   .debug_str:0000000000000837 .LASF114
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6220   .debug_str:0000000000000482 .LASF115
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6372   .debug_str:000000000000079e .LASF116
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6086   .debug_str:0000000000000114 .LASF117
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6426   .debug_str:00000000000008a9 .LASF118
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6254   .debug_str:0000000000000553 .LASF119
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6454   .debug_str:0000000000000924 .LASF120
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6116   .debug_str:00000000000001af .LASF121
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6378   .debug_str:00000000000007ba .LASF122
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6270   .debug_str:000000000000059b .LASF123
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6198   .debug_str:0000000000000409 .LASF124
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6280   .debug_str:00000000000005d4 .LASF125
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6228   .debug_str:00000000000004b3 .LASF126
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6424   .debug_str:00000000000008a1 .LASF127
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6374   .debug_str:00000000000007a4 .LASF128
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6482   .debug_str:00000000000009be .LASF129
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6310   .debug_str:0000000000000677 .LASF130
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6194   .debug_str:00000000000003e6 .LASF131
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6496   .debug_str:00000000000009ee .LASF132
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6268   .debug_str:0000000000000590 .LASF133
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6300   .debug_str:000000000000062f .LASF134
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6508   .debug_str:0000000000000a21 .LASF135
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6156   .debug_str:000000000000031b .LASF136
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6260   .debug_str:000000000000056a .LASF137
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6340   .debug_str:0000000000000707 .LASF138
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6070   .debug_str:00000000000000c1 .LASF139
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6256   .debug_str:000000000000055b .LASF140
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6370   .debug_str:0000000000000799 .LASF141
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6302   .debug_str:0000000000000639 .LASF142
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 50
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6250   .debug_str:000000000000053d .LASF143
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6330   .debug_str:00000000000006db .LASF144
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6054   .debug_str:0000000000000075 .LASF145
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6214   .debug_str:0000000000000471 .LASF146
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6438   .debug_str:00000000000008e8 .LASF147
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6348   .debug_str:0000000000000731 .LASF148
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6328   .debug_str:00000000000006d4 .LASF149
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6344   .debug_str:000000000000071b .LASF150
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6422   .debug_str:0000000000000899 .LASF151
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6402   .debug_str:0000000000000831 .LASF152
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6120   .debug_str:000000000000023d .LASF153
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6518   .debug_str:0000000000000a57 .LASF154
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6178   .debug_str:0000000000000387 .LASF155
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6430   .debug_str:00000000000008b8 .LASF156
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6068   .debug_str:00000000000000b4 .LASF157
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6164   .debug_str:0000000000000344 .LASF158
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6338   .debug_str:00000000000006f8 .LASF159
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6380   .debug_str:00000000000007c3 .LASF160
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6444   .debug_str:0000000000000900 .LASF161
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6458   .debug_str:000000000000093a .LASF162
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6414   .debug_str:000000000000085b .LASF163
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6376   .debug_str:00000000000007ac .LASF164
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6410   .debug_str:000000000000084c .LASF165
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6282   .debug_str:00000000000005db .LASF166
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6546   .debug_str:0000000000000af3 .LASF167
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6148   .debug_str:00000000000002ee .LASF168
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6432   .debug_str:00000000000008c5 .LASF169
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6532   .debug_str:0000000000000a9d .LASF170
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6364   .debug_str:0000000000000777 .LASF171
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6084   .debug_str:0000000000000103 .LASF172
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6360   .debug_str:0000000000000761 .LASF173
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6494   .debug_str:00000000000009e7 .LASF174
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6332   .debug_str:00000000000006e3 .LASF175
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6080   .debug_str:00000000000000f6 .LASF176
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6050   .debug_str:0000000000000062 .LASF248
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6154   .debug_str:000000000000030f .LASF178
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6202   .debug_str:0000000000000423 .LASF179
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6464   .debug_str:000000000000095a .LASF180
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6434   .debug_str:00000000000008d4 .LASF181
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6166   .debug_str:0000000000000353 .LASF249
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:302    .text.startup.main:0000000000000000 .LFB5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1298   .text.startup.main:00000000000006c8 .LFE5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5743   .debug_loc:0000000000000000 .LLST8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6136   .debug_str:00000000000002a5 .LASF182
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6474   .debug_str:0000000000000995 .LASF183
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6298   .debug_str:0000000000000625 .LASF184
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6500   .debug_str:00000000000009fe .LASF185
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6114   .debug_str:00000000000001a9 .LASF186
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6366   .debug_str:0000000000000786 .LASF187
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6162   .debug_str:0000000000000332 .LASF188
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6236   .debug_str:00000000000004ea .LASF189
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6064   .debug_str:0000000000000099 .LASF190
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6242   .debug_str:0000000000000513 .LASF191
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6334   .debug_str:00000000000006ec .LASF192
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5756   .debug_loc:0000000000000021 .LLST9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6412   .debug_str:0000000000000856 .LASF193
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5763   .debug_loc:0000000000000034 .LLST10
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 51
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6210   .debug_str:0000000000000458 .LASF194
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6530   .debug_str:0000000000000a94 .LASF195
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6416   .debug_str:0000000000000869 .LASF196
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6462   .debug_str:0000000000000951 .LASF197
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6524   .debug_str:0000000000000a79 .LASF198
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6526   .debug_str:0000000000000a82 .LASF199
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6528   .debug_str:0000000000000a8b .LASF200
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6072   .debug_str:00000000000000c9 .LASF201
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6158   .debug_str:0000000000000325 .LASF202
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6534   .debug_str:0000000000000aae .LASF203
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6138   .debug_str:00000000000002aa .LASF204
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5775   .debug_loc:000000000000004d .LLST11
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:369    .text.startup.main:000000000000005e .LVL31
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:376    .text.startup.main:0000000000000070 .LVL32
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:435    .text.startup.main:00000000000000d6 .LVL34
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:441    .text.startup.main:00000000000000e6 .LVL35
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:447    .text.startup.main:00000000000000f6 .LVL36
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:453    .text.startup.main:0000000000000106 .LVL37
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:459    .text.startup.main:0000000000000116 .LVL38
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:462    .text.startup.main:000000000000011e .LVL39
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:465    .text.startup.main:0000000000000126 .LVL40
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:468    .text.startup.main:000000000000012e .LVL41
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:471    .text.startup.main:0000000000000136 .LVL42
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:475    .text.startup.main:0000000000000140 .LVL43
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:479    .text.startup.main:000000000000014a .LVL44
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:482    .text.startup.main:0000000000000152 .LVL45
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:487    .text.startup.main:0000000000000160 .LVL46
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:490    .text.startup.main:0000000000000168 .LVL47
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:501    .text.startup.main:000000000000017c .LVL48
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:507    .text.startup.main:0000000000000188 .LVL49
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:525    .text.startup.main:00000000000001a6 .LVL50
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:531    .text.startup.main:00000000000001b2 .LVL51
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:543    .text.startup.main:00000000000001c6 .LVL52
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:549    .text.startup.main:00000000000001d6 .LVL53
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:555    .text.startup.main:00000000000001e2 .LVL54
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:561    .text.startup.main:00000000000001ec .LVL56
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:574    .text.startup.main:0000000000000206 .LVL57
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:584    .text.startup.main:0000000000000218 .LVL58
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:605    .text.startup.main:0000000000000240 .LVL59
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:615    .text.startup.main:0000000000000258 .LVL60
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:623    .text.startup.main:000000000000026c .LVL61
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:627    .text.startup.main:0000000000000276 .LVL62
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:635    .text.startup.main:0000000000000288 .LVL63
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:643    .text.startup.main:000000000000029a .LVL64
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:651    .text.startup.main:00000000000002ac .LVL65
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:659    .text.startup.main:00000000000002be .LVL66
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:667    .text.startup.main:00000000000002d0 .LVL67
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:675    .text.startup.main:00000000000002e2 .LVL68
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:715    .text.startup.main:000000000000030a .LVL76
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:723    .text.startup.main:0000000000000316 .LVL78
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:730    .text.startup.main:0000000000000322 .LVL79
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:737    .text.startup.main:000000000000032e .LVL80
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:783    .text.startup.main:0000000000000372 .LVL81
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:792    .text.startup.main:0000000000000382 .LVL83
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:797    .text.startup.main:000000000000038e .LVL84
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:900    .text.startup.main:000000000000041a .LVL86
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:905    .text.startup.main:0000000000000422 .LVL87
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 52
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:910    .text.startup.main:000000000000042e .LVL88
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:912    .text.startup.main:0000000000000436 .LVL89
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:933    .text.startup.main:000000000000045a .LVL90
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:938    .text.startup.main:0000000000000462 .LVL91
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1057   .text.startup.main:0000000000000514 .LVL92
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1123   .text.startup.main:000000000000057c .LVL93
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1128   .text.startup.main:0000000000000588 .LVL94
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1134   .text.startup.main:000000000000059a .LVL95
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1140   .text.startup.main:00000000000005ac .LVL96
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1149   .text.startup.main:00000000000005c0 .LVL97
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1160   .text.startup.main:00000000000005d0 .LVL98
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1188   .text.startup.main:00000000000005f2 .LVL99
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1195   .text.startup.main:0000000000000600 .LVL100
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1200   .text.startup.main:000000000000060c .LVL101
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1211   .text.startup.main:000000000000061c .LVL102
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1215   .text.startup.main:0000000000000624 .LVL103
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1225   .text.startup.main:0000000000000636 .LVL104
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1235   .text.startup.main:0000000000000648 .LVL105
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1249   .text.startup.main:0000000000000662 .LVL106
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1257   .text.startup.main:0000000000000674 .LVL107
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1265   .text.startup.main:0000000000000686 .LVL108
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1273   .text.startup.main:0000000000000698 .LVL109
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1281   .text.startup.main:00000000000006aa .LVL110
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1289   .text.startup.main:00000000000006bc .LVL111
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6222   .debug_str:0000000000000489 .LASF250
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:112    .text.updateLCD:0000000000000000 .LFB4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:295    .text.updateLCD:000000000000011c .LFE4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5818   .debug_loc:00000000000000b5 .LLST1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5841   .debug_loc:00000000000000ed .LLST2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5863   .debug_loc:0000000000000124 .LLST3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5885   .debug_loc:000000000000015b .LLST4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5911   .debug_loc:000000000000019d .LLST5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5933   .debug_loc:00000000000001d4 .LLST6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5955   .debug_loc:000000000000020b .LLST7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:149    .text.updateLCD:000000000000002a .LVL15
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:177    .text.updateLCD:0000000000000060 .LVL17
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:185    .text.updateLCD:0000000000000074 .LVL18
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:193    .text.updateLCD:000000000000008a .LVL19
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:232    .text.updateLCD:00000000000000b0 .LVL25
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:253    .text.updateLCD:00000000000000d0 .LVL26
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:274    .text.updateLCD:00000000000000f0 .LVL27
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:280    .text.updateLCD:00000000000000fe .LVL28
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:286    .text.updateLCD:000000000000010c .LVL29
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:292    .text.updateLCD:000000000000011a .LVL30
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6552   .debug_str:0000000000000b15 .LASF251
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:14     .text.rtcInit:0000000000000000 .LFB3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:105    .text.rtcInit:0000000000000094 .LFE3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:5977   .debug_loc:0000000000000242 .LLST0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:48     .text.rtcInit:0000000000000038 .LBB4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:53     .text.rtcInit:0000000000000044 .LVL5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:58     .text.rtcInit:0000000000000052 .LVL6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:61     .text.rtcInit:000000000000005a .LVL7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:64     .text.rtcInit:0000000000000062 .LVL8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:69     .text.rtcInit:0000000000000070 .LVL9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:72     .text.rtcInit:0000000000000078 .LVL10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:76     .text.rtcInit:0000000000000082 .LVL11
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:91     .text.rtcInit:000000000000008e .LVL12
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 53
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:30     .text.rtcInit:0000000000000010 .LVL0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:33     .text.rtcInit:0000000000000018 .LVL1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:37     .text.rtcInit:0000000000000024 .LVL2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:40     .text.rtcInit:000000000000002c .LVL3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:45     .text.rtcInit:0000000000000036 .LVL4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6488   .debug_str:00000000000009cf .LASF252
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6126   .debug_str:0000000000000266 .LASF253
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6216   .debug_str:0000000000000476 .LASF205
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6258   .debug_str:0000000000000563 .LASF206
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6226   .debug_str:00000000000004ab .LASF207
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6274   .debug_str:00000000000005b3 .LASF208
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6352   .debug_str:000000000000073d .LASF209
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6066   .debug_str:00000000000000a4 .LASF210
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6252   .debug_str:0000000000000547 .LASF211
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6192   .debug_str:00000000000003dd .LASF212
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6058   .debug_str:0000000000000080 .LASF213
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6392   .debug_str:0000000000000802 .LASF214
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6304   .debug_str:0000000000000642 .LASF215
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6106   .debug_str:000000000000017b .LASF216
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6362   .debug_str:000000000000076a .LASF217
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6286   .debug_str:00000000000005ee .LASF218
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6238   .debug_str:00000000000004f4 .LASF219
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6244   .debug_str:0000000000000519 .LASF220
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6550   .debug_str:0000000000000b0f .LASF221
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6292   .debug_str:0000000000000604 .LASF222
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6468   .debug_str:000000000000096d .LASF223
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6382   .debug_str:00000000000007ce .LASF224
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6128   .debug_str:0000000000000277 .LASF225
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6122   .debug_str:0000000000000243 .LASF226
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6290   .debug_str:00000000000005fd .LASF227
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6354   .debug_str:0000000000000745 .LASF228
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6284   .debug_str:00000000000005e7 .LASF229
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6130   .debug_str:000000000000028d .LASF230
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6456   .debug_str:000000000000092a .LASF231
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6264   .debug_str:0000000000000581 .LASF232
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6516   .debug_str:0000000000000a50 .LASF233
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6124   .debug_str:000000000000024a .LASF234
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6146   .debug_str:00000000000002e2 .LASF235
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6230   .debug_str:00000000000004ba .LASF236
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6536   .debug_str:0000000000000ab3 .LASF237
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6144   .debug_str:00000000000002cb .LASF238
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6248   .debug_str:000000000000052e .LASF239
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6478   .debug_str:00000000000009a3 .LASF240
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6514   .debug_str:0000000000000a41 .LASF241
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6224   .debug_str:0000000000000493 .LASF242
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6168   .debug_str:0000000000000358 .LASF243
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:6200   .debug_str:0000000000000410 .LASF244
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:308    .text.startup.main:0000000000000002 .LCFI7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:788    .text.startup.main:0000000000000378 .LVL82
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:801    .text.startup.main:0000000000000392 .LVL85
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:557    .text.startup.main:00000000000001e4 .LVL55
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:718    .text.startup.main:000000000000030c .LVL77
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:682    .text.startup.main:00000000000002e6 .LVL69
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:686    .text.startup.main:00000000000002ea .LVL70
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:690    .text.startup.main:00000000000002ee .LVL71
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:694    .text.startup.main:00000000000002f2 .LVL72
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:698    .text.startup.main:00000000000002f6 .LVL73
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 54
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:702    .text.startup.main:00000000000002fa .LVL74
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:711    .text.startup.main:0000000000000302 .LVL75
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:119    .text.updateLCD:0000000000000002 .LCFI4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:228    .text.updateLCD:00000000000000a8 .LCFI5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:234    .text.updateLCD:00000000000000b0 .LCFI6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:115    .text.updateLCD:0000000000000000 .LVL13
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:126    .text.updateLCD:0000000000000008 .LVL14
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:213    .text.updateLCD:000000000000009a .LVL23
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:170    .text.updateLCD:000000000000004c .LVL16
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:219    .text.updateLCD:000000000000009e .LVL24
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:204    .text.updateLCD:0000000000000094 .LVL20
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:207    .text.updateLCD:0000000000000096 .LVL21
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:210    .text.updateLCD:0000000000000098 .LVL22
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:21     .text.rtcInit:0000000000000002 .LCFI0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:85     .text.rtcInit:0000000000000086 .LCFI1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:93     .text.rtcInit:000000000000008e .LCFI2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:101    .text.rtcInit:0000000000000092 .LCFI3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:1375   .debug_info:0000000000000000 .Ldebug_info0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:79     .text.rtcInit:0000000000000082 .LBE4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:87     .text.rtcInit:0000000000000086 .LBB7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:96     .text.rtcInit:000000000000008e .LBE7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:677    .text.startup.main:00000000000002e2 .LBB8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:704    .text.startup.main:00000000000002fa .LBE8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:708    .text.startup.main:00000000000002fe .LBB9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s:712    .text.startup.main:0000000000000302 .LBE9
+
+UNDEFINED SYMBOLS
+rcu_periph_clock_enable
+pmu_backup_write_enable
+bkp_deinit
+rcu_osci_stab_wait
+rcu_rtc_clock_config
+rtc_register_sync_wait
+rtc_lwoff_wait
+rtc_prescaler_set
+rtc_flag_clear
+LCD_Clear
+LCD_ShowStr
+memcpy
+memset
+t5omsi
+colinit
+l88init
+keyinit
+ADC3powerUpInit
+Lcd_SetType
+Lcd_Init
+u0init
+eclic_global_interrupt_enable
+LCD_WR_Queue
+adc_flag_get
+putstr
+adc_inserted_data_read
+rtc_counter_get
+putch
+adc_flag_clear
+usart_flag_get
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccV0zVNq.s 			page 55
+
+
+usart_data_receive
+adc_regular_data_read
+l88mem
+t5expq
+colset
+l88row
+keyscan
+rtc_counter_set
+strcpy
+strcat
+adc_software_trigger_enable

@@ -1,0 +1,912 @@
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 1
+
+
+   1              		.file	"gd32vf103_hw.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p0_m2p0_a2p0_c2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.section	.text.usb_rcu_config,"ax",@progbits
+  10              		.align	1
+  11              		.globl	usb_rcu_config
+  13              	usb_rcu_config:
+  14              	.LFB6:
+  15              		.file 1 "./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c"
+   1:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** /*!
+   2:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \file  gd32vf103_hw.c
+   3:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \brief USB hardware configuration for GD32VF103
+   4:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+   5:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \version 2019-6-5, V1.0.0, demo for GD32VF103
+   6:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** */
+   7:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+   8:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** /*
+   9:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     Copyright (c) 2019, GigaDevice Semiconductor Inc.
+  10:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  11:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     Redistribution and use in source and binary forms, with or without modification, 
+  12:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** are permitted provided that the following conditions are met:
+  13:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  14:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     1. Redistributions of source code must retain the above copyright notice, this 
+  15:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****        list of conditions and the following disclaimer.
+  16:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     2. Redistributions in binary form must reproduce the above copyright notice, 
+  17:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****        this list of conditions and the following disclaimer in the documentation 
+  18:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****        and/or other materials provided with the distribution.
+  19:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     3. Neither the name of the copyright holder nor the names of its contributors 
+  20:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****        may be used to endorse or promote products derived from this software without 
+  21:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****        specific prior written permission.
+  22:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  23:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+  24:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  25:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  26:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  27:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  28:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  29:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  30:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  31:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+  32:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** OF SUCH DAMAGE.
+  33:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** */
+  34:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  35:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  36:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** #include "drv_usb_hw.h"
+  37:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** #include <stdio.h>
+  38:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** #include <stdlib.h>
+  39:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** #include <string.h>
+  40:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** #include "debugger_delay.h"
+  41:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  42:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** #define TIM_MSEC_DELAY                          0x01
+  43:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** #define TIM_USEC_DELAY                          0x02
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 2
+
+
+  44:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  45:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** __IO uint32_t delay_time = 0;
+  46:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** __IO uint32_t timer_prescaler;
+  47:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** __IO uint32_t usbfs_prescaler = 0;
+  48:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  49:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** //static void hw_time_set (uint8_t unit);
+  50:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** static void hw_delay    (uint32_t ntime, uint8_t unit);
+  51:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  52:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  53:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** /*!
+  54:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \brief      configure USB clock
+  55:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[in]  none
+  56:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[out] none
+  57:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \retval     none
+  58:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** */
+  59:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** void usb_rcu_config(void)
+  60:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** {
+  16              		.loc 1 60 1
+  17              		.cfi_startproc
+  61:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     uint32_t system_clock = rcu_clock_freq_get(CK_SYS);
+  18              		.loc 1 61 5
+  60:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     uint32_t system_clock = rcu_clock_freq_get(CK_SYS);
+  19              		.loc 1 60 1 is_stmt 0
+  20 0000 4111     		addi	sp,sp,-16
+  21              	.LCFI0:
+  22              		.cfi_def_cfa_offset 16
+  23              		.loc 1 61 29
+  24 0002 0145     		li	a0,0
+  60:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     uint32_t system_clock = rcu_clock_freq_get(CK_SYS);
+  25              		.loc 1 60 1
+  26 0004 06C6     		sw	ra,12(sp)
+  27              		.cfi_offset 1, -4
+  28              		.loc 1 61 29
+  29 0006 97000000 		call	rcu_clock_freq_get
+  29      E7800000 
+  30              	.LVL0:
+  62:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****   
+  63:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     if (system_clock == 48000000) {
+  31              		.loc 1 63 5 is_stmt 1
+  32              		.loc 1 63 8 is_stmt 0
+  33 000e 3777DC02 		li	a4,48001024
+  34 0012 B7070000 		lui	a5,%hi(.LANCHOR0)
+  35 0016 130707C0 		addi	a4,a4,-1024
+  36 001a 93870700 		addi	a5,a5,%lo(.LANCHOR0)
+  37 001e 6317E502 		bne	a0,a4,.L2
+  64:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         usbfs_prescaler = RCU_CKUSB_CKPLL_DIV1;
+  38              		.loc 1 64 9 is_stmt 1
+  39              		.loc 1 64 25 is_stmt 0
+  40 0022 37074000 		li	a4,4194304
+  41 0026 98C3     		sw	a4,0(a5)
+  65:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         timer_prescaler = 3;
+  42              		.loc 1 65 9 is_stmt 1
+  43              		.loc 1 65 25 is_stmt 0
+  44 0028 8D46     		li	a3,3
+  45 002a 37070000 		lui	a4,%hi(timer_prescaler)
+  46              	.L6:
+  66:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     } else if (system_clock == 72000000) {
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 3
+
+
+  67:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         usbfs_prescaler = RCU_CKUSB_CKPLL_DIV1_5;
+  68:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         timer_prescaler = 5;
+  69:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     } else if (system_clock == 96000000) {
+  70:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         usbfs_prescaler = RCU_CKUSB_CKPLL_DIV2;
+  71:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         timer_prescaler = 7;
+  47              		.loc 1 71 25
+  48 002e 2320D700 		sw	a3,%lo(timer_prescaler)(a4)
+  49              	.L3:
+  72:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     } else {
+  73:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         /*  reserved  */
+  74:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     }
+  50              		.loc 1 74 5 is_stmt 1
+  75:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  76:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     rcu_usb_clock_config(usbfs_prescaler);
+  51              		.loc 1 76 5
+  52 0032 8843     		lw	a0,0(a5)
+  53              	.LVL1:
+  54 0034 97000000 		call	rcu_usb_clock_config
+  54      E7800000 
+  55              	.LVL2:
+  77:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     rcu_periph_clock_enable(RCU_USBFS);
+  56              		.loc 1 77 5
+  78:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** }
+  57              		.loc 1 78 1 is_stmt 0
+  58 003c B240     		lw	ra,12(sp)
+  59              		.cfi_remember_state
+  60              		.cfi_restore 1
+  77:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     rcu_periph_clock_enable(RCU_USBFS);
+  61              		.loc 1 77 5
+  62 003e 1305C050 		li	a0,1292
+  63              		.loc 1 78 1
+  64 0042 4101     		addi	sp,sp,16
+  65              	.LCFI1:
+  66              		.cfi_def_cfa_offset 0
+  77:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     rcu_periph_clock_enable(RCU_USBFS);
+  67              		.loc 1 77 5
+  68 0044 17030000 		tail	rcu_periph_clock_enable
+  68      67000300 
+  69              	.LVL3:
+  70              	.L2:
+  71              	.LCFI2:
+  72              		.cfi_restore_state
+  66:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         usbfs_prescaler = RCU_CKUSB_CKPLL_DIV1_5;
+  73              		.loc 1 66 12 is_stmt 1
+  66:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         usbfs_prescaler = RCU_CKUSB_CKPLL_DIV1_5;
+  74              		.loc 1 66 15 is_stmt 0
+  75 004c 37A74A04 		li	a4,71999488
+  76 0050 13070720 		addi	a4,a4,512
+  77 0054 6318E500 		bne	a0,a4,.L4
+  67:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         timer_prescaler = 5;
+  78              		.loc 1 67 9 is_stmt 1
+  67:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         timer_prescaler = 5;
+  79              		.loc 1 67 25 is_stmt 0
+  80 0058 23A00700 		sw	zero,0(a5)
+  68:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     } else if (system_clock == 96000000) {
+  81              		.loc 1 68 9 is_stmt 1
+  68:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     } else if (system_clock == 96000000) {
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 4
+
+
+  82              		.loc 1 68 25 is_stmt 0
+  83 005c 37070000 		lui	a4,%hi(timer_prescaler)
+  84 0060 9546     		li	a3,5
+  85 0062 F1B7     		j	.L6
+  86              	.L4:
+  69:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         usbfs_prescaler = RCU_CKUSB_CKPLL_DIV2;
+  87              		.loc 1 69 12 is_stmt 1
+  69:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         usbfs_prescaler = RCU_CKUSB_CKPLL_DIV2;
+  88              		.loc 1 69 15 is_stmt 0
+  89 0064 37E7B805 		li	a4,96002048
+  90 0068 13070780 		addi	a4,a4,-2048
+  91 006c E313E5FC 		bne	a0,a4,.L3
+  70:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         timer_prescaler = 7;
+  92              		.loc 1 70 9 is_stmt 1
+  70:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         timer_prescaler = 7;
+  93              		.loc 1 70 25 is_stmt 0
+  94 0070 3707C000 		li	a4,12582912
+  95 0074 98C3     		sw	a4,0(a5)
+  71:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     } else {
+  96              		.loc 1 71 9 is_stmt 1
+  71:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     } else {
+  97              		.loc 1 71 25 is_stmt 0
+  98 0076 9D46     		li	a3,7
+  99 0078 37070000 		lui	a4,%hi(timer_prescaler)
+ 100 007c 4DBF     		j	.L6
+ 101              		.cfi_endproc
+ 102              	.LFE6:
+ 104              		.section	.text.usb_intr_config,"ax",@progbits
+ 105              		.align	1
+ 106              		.globl	usb_intr_config
+ 108              	usb_intr_config:
+ 109              	.LFB7:
+  79:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  80:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** /*!
+  81:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \brief      configure USB interrupt
+  82:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[in]  none
+  83:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[out] none
+  84:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \retval     none
+  85:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** */
+  86:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** void usb_intr_config(void)
+  87:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** {
+ 110              		.loc 1 87 1 is_stmt 1
+ 111              		.cfi_startproc
+  88:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     eclic_irq_enable((uint8_t)USBFS_IRQn, 1, 0);
+ 112              		.loc 1 88 5
+  87:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     eclic_irq_enable((uint8_t)USBFS_IRQn, 1, 0);
+ 113              		.loc 1 87 1 is_stmt 0
+ 114 0000 4111     		addi	sp,sp,-16
+ 115              	.LCFI3:
+ 116              		.cfi_def_cfa_offset 16
+ 117              		.loc 1 88 5
+ 118 0002 0146     		li	a2,0
+ 119 0004 8545     		li	a1,1
+ 120 0006 13056005 		li	a0,86
+  87:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     eclic_irq_enable((uint8_t)USBFS_IRQn, 1, 0);
+ 121              		.loc 1 87 1
+ 122 000a 06C6     		sw	ra,12(sp)
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 5
+
+
+ 123              		.cfi_offset 1, -4
+ 124              		.loc 1 88 5
+ 125 000c 97000000 		call	eclic_irq_enable
+ 125      E7800000 
+ 126              	.LVL4:
+  89:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  90:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     /* enable the power module clock */
+  91:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     rcu_periph_clock_enable(RCU_PMU);
+ 127              		.loc 1 91 5 is_stmt 1
+ 128 0014 1305C071 		li	a0,1820
+ 129 0018 97000000 		call	rcu_periph_clock_enable
+ 129      E7800000 
+ 130              	.LVL5:
+  92:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  93:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     /* USB wakeup EXTI line configuration */
+  94:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     exti_interrupt_flag_clear(EXTI_18);
+ 131              		.loc 1 94 5
+ 132 0020 37050400 		li	a0,262144
+ 133 0024 97000000 		call	exti_interrupt_flag_clear
+ 133      E7800000 
+ 134              	.LVL6:
+  95:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     exti_init(EXTI_18, EXTI_INTERRUPT, EXTI_TRIG_RISING);
+ 135              		.loc 1 95 5
+ 136 002c 0146     		li	a2,0
+ 137 002e 8145     		li	a1,0
+ 138 0030 37050400 		li	a0,262144
+ 139 0034 97000000 		call	exti_init
+ 139      E7800000 
+ 140              	.LVL7:
+  96:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     exti_interrupt_enable(EXTI_18);
+ 141              		.loc 1 96 5
+ 142 003c 37050400 		li	a0,262144
+ 143 0040 97000000 		call	exti_interrupt_enable
+ 143      E7800000 
+ 144              	.LVL8:
+  97:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+  98:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     eclic_irq_enable((uint8_t)USBFS_WKUP_IRQn, 3, 0);
+ 145              		.loc 1 98 5
+  99:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** }
+ 146              		.loc 1 99 1 is_stmt 0
+ 147 0048 B240     		lw	ra,12(sp)
+ 148              		.cfi_restore 1
+  98:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** }
+ 149              		.loc 1 98 5
+ 150 004a 0146     		li	a2,0
+ 151              		.loc 1 99 1
+  98:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** }
+ 152              		.loc 1 98 5
+ 153 004c 8D45     		li	a1,3
+ 154 004e 1305D003 		li	a0,61
+ 155              		.loc 1 99 1
+ 156 0052 4101     		addi	sp,sp,16
+ 157              	.LCFI4:
+ 158              		.cfi_def_cfa_offset 0
+  98:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** }
+ 159              		.loc 1 98 5
+ 160 0054 17030000 		tail	eclic_irq_enable
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 6
+
+
+ 160      67000300 
+ 161              	.LVL9:
+ 162              		.cfi_endproc
+ 163              	.LFE7:
+ 165              		.section	.text.usb_timer_init,"ax",@progbits
+ 166              		.align	1
+ 167              		.globl	usb_timer_init
+ 169              	usb_timer_init:
+ 170              	.LFB8:
+ 100:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+ 101:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** /*!
+ 102:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \brief      initializes delay unit using Timer2
+ 103:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[in]  none
+ 104:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[out] none
+ 105:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \retval     none
+ 106:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** */
+ 107:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** void usb_timer_init (void)
+ 108:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** {
+ 171              		.loc 1 108 1 is_stmt 1
+ 172              		.cfi_startproc
+ 109:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     /*rcu_periph_clock_enable(RCU_TIMER2);
+ 110:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+ 111:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     eclic_irq_enable(TIMER2_IRQn, 2, 0);*/
+ 112:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** }
+ 173              		.loc 1 112 1
+ 174 0000 8280     		ret
+ 175              		.cfi_endproc
+ 176              	.LFE8:
+ 178              		.section	.text.usb_udelay,"ax",@progbits
+ 179              		.align	1
+ 180              		.globl	usb_udelay
+ 182              	usb_udelay:
+ 183              	.LFB9:
+ 113:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+ 114:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** /*!
+ 115:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \brief      delay in micro seconds
+ 116:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[in]  usec: value of delay required in micro seconds
+ 117:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[out] none
+ 118:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \retval     none
+ 119:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** */
+ 120:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** void usb_udelay (const uint32_t usec)
+ 121:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** {
+ 184              		.loc 1 121 1
+ 185              		.cfi_startproc
+ 186              	.LVL10:
+ 122:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     hw_delay(usec, TIM_USEC_DELAY);
+ 187              		.loc 1 122 5
+ 188              	.LBB6:
+ 189              	.LBB7:
+ 123:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** }
+ 124:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+ 125:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** /*!
+ 126:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \brief      delay in milli seconds
+ 127:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[in]  msec: value of delay required in milli seconds
+ 128:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[out] none
+ 129:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \retval     none
+ 130:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** */
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 7
+
+
+ 131:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** void usb_mdelay (const uint32_t msec)
+ 132:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** {
+ 133:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     hw_delay(msec, TIM_MSEC_DELAY);
+ 134:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** }
+ 135:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** 
+ 136:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** /*!
+ 137:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \brief      delay routine based on TIM0
+ 138:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[in]  nTime: delay Time 
+ 139:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[in]  unit: delay Time unit = mili sec / micro sec
+ 140:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \param[out] none
+ 141:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     \retval     none
+ 142:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** */
+ 143:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** static void hw_delay(uint32_t ntime, uint8_t unit)
+ 144:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** {
+ 145:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     if(unit == TIM_USEC_DELAY){
+ 190              		.loc 1 145 5
+ 146:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         dbg_delay_1us(ntime);
+ 191              		.loc 1 146 9
+ 192 0000 17030000 		tail	dbg_delay_1us
+ 192      67000300 
+ 193              	.LVL11:
+ 194              	.LBE7:
+ 195              	.LBE6:
+ 196              		.cfi_endproc
+ 197              	.LFE9:
+ 199              		.section	.text.usb_mdelay,"ax",@progbits
+ 200              		.align	1
+ 201              		.globl	usb_mdelay
+ 203              	usb_mdelay:
+ 204              	.LFB10:
+ 132:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     hw_delay(msec, TIM_MSEC_DELAY);
+ 205              		.loc 1 132 1
+ 206              		.cfi_startproc
+ 207              	.LVL12:
+ 133:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c **** }
+ 208              		.loc 1 133 5
+ 209              	.LBB8:
+ 210              	.LBB9:
+ 145:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         dbg_delay_1us(ntime);
+ 211              		.loc 1 145 5
+ 147:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****         return;
+ 148:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     }
+ 149:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****     if(unit == TIM_MSEC_DELAY){
+ 212              		.loc 1 149 5
+ 150:./../../firmware/debugger/lib/usbcdc/src/gd32vf103_hw.c ****             dbg_delay_1ms(ntime);
+ 213              		.loc 1 150 13
+ 214 0000 17030000 		tail	dbg_delay_1ms
+ 214      67000300 
+ 215              	.LVL13:
+ 216              	.LBE9:
+ 217              	.LBE8:
+ 218              		.cfi_endproc
+ 219              	.LFE10:
+ 221              		.globl	usbfs_prescaler
+ 222              		.comm	timer_prescaler,4,4
+ 223              		.globl	delay_time
+ 224              		.section	.sbss.delay_time,"aw",@nobits
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 8
+
+
+ 225              		.align	2
+ 228              	delay_time:
+ 229 0000 00000000 		.zero	4
+ 230              		.section	.sbss.usbfs_prescaler,"aw",@nobits
+ 231              		.align	2
+ 232              		.set	.LANCHOR0,. + 0
+ 235              	usbfs_prescaler:
+ 236 0000 00000000 		.zero	4
+ 237              		.text
+ 238              	.Letext0:
+ 239              		.file 2 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 240              		.file 3 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 241              		.file 4 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_exti.h"
+ 242              		.file 5 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_rcu.h"
+ 243              		.file 6 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\li
+ 244              		.file 7 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 245              		.file 8 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 246              		.file 9 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 247              		.file 10 "./../../firmware/GD32VF103_standard_peripheral/system_gd32vf103.h"
+ 248              		.file 11 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\r
+ 249              		.file 12 "./../../firmware/debugger/debugger_delay.h"
+ 250              		.file 13 "./../../firmware/GD32VF103_standard_peripheral/Include/gd32vf103_eclic.h"
+ 251              		.file 14 "./../../firmware/GD32VF103_standard_peripheral/gd32vf103.h"
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 gd32vf103_hw.c
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:13     .text.usb_rcu_config:0000000000000000 usb_rcu_config
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:17     .text.usb_rcu_config:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:18     .text.usb_rcu_config:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:19     .text.usb_rcu_config:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:20     .text.usb_rcu_config:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:22     .text.usb_rcu_config:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:24     .text.usb_rcu_config:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:26     .text.usb_rcu_config:0000000000000004 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:27     .text.usb_rcu_config:0000000000000006 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:29     .text.usb_rcu_config:0000000000000006 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:32     .text.usb_rcu_config:000000000000000e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:33     .text.usb_rcu_config:000000000000000e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:39     .text.usb_rcu_config:0000000000000022 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:40     .text.usb_rcu_config:0000000000000022 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:43     .text.usb_rcu_config:0000000000000028 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:44     .text.usb_rcu_config:0000000000000028 .L0 
+                            *COM*:0000000000000004 timer_prescaler
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:48     .text.usb_rcu_config:000000000000002e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:51     .text.usb_rcu_config:0000000000000032 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:52     .text.usb_rcu_config:0000000000000032 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:57     .text.usb_rcu_config:000000000000003c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:58     .text.usb_rcu_config:000000000000003c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:59     .text.usb_rcu_config:000000000000003e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:60     .text.usb_rcu_config:000000000000003e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:62     .text.usb_rcu_config:000000000000003e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:64     .text.usb_rcu_config:0000000000000042 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:66     .text.usb_rcu_config:0000000000000044 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:68     .text.usb_rcu_config:0000000000000044 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:72     .text.usb_rcu_config:000000000000004c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:74     .text.usb_rcu_config:000000000000004c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:75     .text.usb_rcu_config:000000000000004c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:79     .text.usb_rcu_config:0000000000000058 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:80     .text.usb_rcu_config:0000000000000058 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:82     .text.usb_rcu_config:000000000000005c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:83     .text.usb_rcu_config:000000000000005c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:88     .text.usb_rcu_config:0000000000000064 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:89     .text.usb_rcu_config:0000000000000064 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:93     .text.usb_rcu_config:0000000000000070 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:94     .text.usb_rcu_config:0000000000000070 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:97     .text.usb_rcu_config:0000000000000076 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:98     .text.usb_rcu_config:0000000000000076 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:101    .text.usb_rcu_config:000000000000007e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:108    .text.usb_intr_config:0000000000000000 usb_intr_config
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:111    .text.usb_intr_config:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:112    .text.usb_intr_config:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:113    .text.usb_intr_config:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:114    .text.usb_intr_config:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:116    .text.usb_intr_config:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:118    .text.usb_intr_config:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:122    .text.usb_intr_config:000000000000000a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:123    .text.usb_intr_config:000000000000000c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:125    .text.usb_intr_config:000000000000000c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:128    .text.usb_intr_config:0000000000000014 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:132    .text.usb_intr_config:0000000000000020 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:136    .text.usb_intr_config:000000000000002c .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 10
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:142    .text.usb_intr_config:000000000000003c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:146    .text.usb_intr_config:0000000000000048 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:147    .text.usb_intr_config:0000000000000048 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:148    .text.usb_intr_config:000000000000004a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:150    .text.usb_intr_config:000000000000004a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:152    .text.usb_intr_config:000000000000004c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:153    .text.usb_intr_config:000000000000004c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:156    .text.usb_intr_config:0000000000000052 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:158    .text.usb_intr_config:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:160    .text.usb_intr_config:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:162    .text.usb_intr_config:000000000000005c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:169    .text.usb_timer_init:0000000000000000 usb_timer_init
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:172    .text.usb_timer_init:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:173    .text.usb_timer_init:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:174    .text.usb_timer_init:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:175    .text.usb_timer_init:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:182    .text.usb_udelay:0000000000000000 usb_udelay
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:185    .text.usb_udelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:187    .text.usb_udelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:190    .text.usb_udelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:191    .text.usb_udelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:192    .text.usb_udelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:196    .text.usb_udelay:0000000000000008 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:203    .text.usb_mdelay:0000000000000000 usb_mdelay
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:206    .text.usb_mdelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:208    .text.usb_mdelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:211    .text.usb_mdelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:212    .text.usb_mdelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:213    .text.usb_mdelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:214    .text.usb_mdelay:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:218    .text.usb_mdelay:0000000000000008 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:235    .sbss.usbfs_prescaler:0000000000000000 usbfs_prescaler
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:228    .sbss.delay_time:0000000000000000 delay_time
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:232    .sbss.usbfs_prescaler:0000000000000000 .LANCHOR0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:104    .text.usb_rcu_config:000000000000007e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:165    .text.usb_intr_config:000000000000005c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:178    .text.usb_timer_init:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:199    .text.usb_udelay:0000000000000008 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:224    .text.usb_mdelay:0000000000000008 .L0 
+                     .debug_frame:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:70     .text.usb_rcu_config:000000000000004c .L2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:86     .text.usb_rcu_config:0000000000000064 .L4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:46     .text.usb_rcu_config:000000000000002e .L6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:49     .text.usb_rcu_config:0000000000000032 .L3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:2524   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3515   .debug_str:00000000000001c9 .LASF278
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3499   .debug_str:0000000000000141 .LASF279
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3465   .debug_str:000000000000004f .LASF280
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3433   .debug_ranges:0000000000000000 .Ldebug_ranges0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3447   .debug_line:0000000000000000 .Ldebug_line0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3567   .debug_str:0000000000000379 .LASF281
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3775   .debug_str:0000000000000810 .LASF0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4015   .debug_str:0000000000000d03 .LASF1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3685   .debug_str:0000000000000604 .LASF2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3579   .debug_str:00000000000003ba .LASF3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3829   .debug_str:000000000000092b .LASF4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3907   .debug_str:0000000000000ac2 .LASF5
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 11
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3947   .debug_str:0000000000000baf .LASF6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3563   .debug_str:0000000000000360 .LASF7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4017   .debug_str:0000000000000d10 .LASF8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3853   .debug_str:00000000000009a1 .LASF9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3909   .debug_str:0000000000000acd .LASF10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3905   .debug_str:0000000000000ab7 .LASF11
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3677   .debug_str:00000000000005d5 .LASF12
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3449   .debug_str:0000000000000000 .LASF13
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4001   .debug_str:0000000000000ca6 .LASF14
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3773   .debug_str:0000000000000805 .LASF15
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3537   .debug_str:00000000000002cd .LASF16
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3505   .debug_str:000000000000018f .LASF17
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3849   .debug_str:0000000000000980 .LASF18
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3637   .debug_str:000000000000050c .LASF19
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3599   .debug_str:000000000000042a .LASF20
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3929   .debug_str:0000000000000b48 .LASF21
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3705   .debug_str:000000000000067b .LASF22
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3621   .debug_str:00000000000004c0 .LASF23
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3565   .debug_str:000000000000036c .LASF24
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3711   .debug_str:00000000000006a0 .LASF25
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3517   .debug_str:0000000000000251 .LASF26
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3917   .debug_str:0000000000000b04 .LASF27
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3561   .debug_str:0000000000000353 .LASF28
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3459   .debug_str:000000000000002c .LASF29
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3919   .debug_str:0000000000000b13 .LASF30
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3937   .debug_str:0000000000000b7c .LASF31
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3717   .debug_str:00000000000006c1 .LASF32
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3723   .debug_str:00000000000006ed .LASF33
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3521   .debug_str:0000000000000265 .LASF34
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3869   .debug_str:0000000000000a0c .LASF35
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3541   .debug_str:00000000000002ea .LASF36
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3461   .debug_str:000000000000003c .LASF37
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3649   .debug_str:0000000000000561 .LASF38
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3603   .debug_str:0000000000000456 .LASF39
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3949   .debug_str:0000000000000bb8 .LASF40
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3745   .debug_str:0000000000000763 .LASF41
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3815   .debug_str:00000000000008d4 .LASF42
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3865   .debug_str:00000000000009f7 .LASF43
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3645   .debug_str:0000000000000543 .LASF44
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3641   .debug_str:0000000000000526 .LASF45
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3893   .debug_str:0000000000000a7e .LASF46
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3749   .debug_str:0000000000000775 .LASF47
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3479   .debug_str:00000000000000de .LASF48
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3837   .debug_str:000000000000094d .LASF49
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3539   .debug_str:00000000000002e0 .LASF50
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3991   .debug_str:0000000000000c71 .LASF51
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3769   .debug_str:00000000000007ef .LASF52
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3631   .debug_str:00000000000004e3 .LASF53
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3951   .debug_str:0000000000000bc2 .LASF54
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3819   .debug_str:00000000000008ef .LASF55
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3611   .debug_str:000000000000048c .LASF56
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3935   .debug_str:0000000000000b69 .LASF57
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3911   .debug_str:0000000000000ada .LASF58
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3687   .debug_str:0000000000000611 .LASF59
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3679   .debug_str:00000000000005e0 .LASF60
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3635   .debug_str:00000000000004fe .LASF61
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3965   .debug_str:0000000000000c01 .LASF62
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 12
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3531   .debug_str:00000000000002ae .LASF63
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4019   .debug_str:0000000000000d19 .LASF64
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3757   .debug_str:00000000000007a8 .LASF65
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3783   .debug_str:000000000000083a .LASF66
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3589   .debug_str:00000000000003f0 .LASF67
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3535   .debug_str:00000000000002c3 .LASF72
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3597   .debug_str:000000000000041c .LASF68
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3915   .debug_str:0000000000000afa .LASF69
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3995   .debug_str:0000000000000c81 .LASF70
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3551   .debug_str:0000000000000329 .LASF71
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3721   .debug_str:00000000000006e2 .LASF73
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3683   .debug_str:00000000000005f2 .LASF74
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3731   .debug_str:000000000000071c .LASF75
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3857   .debug_str:00000000000009c4 .LASF76
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3591   .debug_str:00000000000003fc .LASF77
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3957   .debug_str:0000000000000bde .LASF78
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3693   .debug_str:0000000000000637 .LASF254
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3969   .debug_str:0000000000000c24 .LASF79
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3971   .debug_str:0000000000000c2b .LASF80
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3973   .debug_str:0000000000000c32 .LASF81
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3975   .debug_str:0000000000000c39 .LASF82
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3977   .debug_str:0000000000000c40 .LASF83
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3979   .debug_str:0000000000000c47 .LASF84
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3981   .debug_str:0000000000000c4e .LASF85
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3983   .debug_str:0000000000000c55 .LASF86
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3985   .debug_str:0000000000000c5c .LASF87
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3987   .debug_str:0000000000000c63 .LASF88
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3657   .debug_str:0000000000000585 .LASF89
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3659   .debug_str:000000000000058d .LASF90
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3661   .debug_str:0000000000000595 .LASF91
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3663   .debug_str:000000000000059d .LASF92
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3665   .debug_str:00000000000005a5 .LASF93
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3667   .debug_str:00000000000005ad .LASF94
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3669   .debug_str:00000000000005b5 .LASF95
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3671   .debug_str:00000000000005bd .LASF96
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3673   .debug_str:00000000000005c5 .LASF97
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3903   .debug_str:0000000000000aa8 .LASF98
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3523   .debug_str:0000000000000271 .LASF99
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3729   .debug_str:000000000000070b .LASF100
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3647   .debug_str:000000000000054f .LASF101
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3609   .debug_str:000000000000047d .LASF102
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3529   .debug_str:000000000000029f .LASF103
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3887   .debug_str:0000000000000a65 .LASF104
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3889   .debug_str:0000000000000a6e .LASF105
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3777   .debug_str:0000000000000822 .LASF106
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3943   .debug_str:0000000000000b9f .LASF107
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3709   .debug_str:0000000000000696 .LASF108
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3493   .debug_str:0000000000000120 .LASF109
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3495   .debug_str:000000000000012b .LASF110
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3497   .debug_str:0000000000000136 .LASF111
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3875   .debug_str:0000000000000a2b .LASF112
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3501   .debug_str:0000000000000179 .LASF113
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3503   .debug_str:0000000000000184 .LASF114
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3807   .debug_str:00000000000008b2 .LASF115
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3583   .debug_str:00000000000003d1 .LASF116
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3585   .debug_str:00000000000003da .LASF117
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3509   .debug_str:00000000000001ad .LASF118
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 13
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3511   .debug_str:00000000000001b8 .LASF119
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3475   .debug_str:00000000000000ca .LASF120
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3477   .debug_str:00000000000000d4 .LASF121
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3959   .debug_str:0000000000000be7 .LASF122
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3961   .debug_str:0000000000000bf0 .LASF123
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3613   .debug_str:000000000000049f .LASF124
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3615   .debug_str:00000000000004a8 .LASF125
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3927   .debug_str:0000000000000b3f .LASF126
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3467   .debug_str:00000000000000a6 .LASF127
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3593   .debug_str:0000000000000404 .LASF128
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3831   .debug_str:000000000000093a .LASF129
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3695   .debug_str:0000000000000647 .LASF130
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3733   .debug_str:000000000000072a .LASF131
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3735   .debug_str:0000000000000734 .LASF132
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3737   .debug_str:000000000000073e .LASF133
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3739   .debug_str:0000000000000748 .LASF134
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3741   .debug_str:0000000000000752 .LASF135
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3725   .debug_str:00000000000006f9 .LASF136
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3727   .debug_str:0000000000000702 .LASF137
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3491   .debug_str:0000000000000115 .LASF138
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3581   .debug_str:00000000000003c8 .LASF139
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3507   .debug_str:00000000000001a2 .LASF140
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3901   .debug_str:0000000000000aa1 .LASF141
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3781   .debug_str:0000000000000833 .LASF142
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3899   .debug_str:0000000000000a99 .LASF143
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3575   .debug_str:00000000000003a7 .LASF144
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3823   .debug_str:000000000000090c .LASF145
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3891   .debug_str:0000000000000a77 .LASF146
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3989   .debug_str:0000000000000c6a .LASF147
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3843   .debug_str:0000000000000967 .LASF148
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3451   .debug_str:000000000000000b .LASF149
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3533   .debug_str:00000000000002bd .LASF150
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3845   .debug_str:000000000000096f .LASF151
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3811   .debug_str:00000000000008c7 .LASF152
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3455   .debug_str:000000000000001f .LASF153
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3883   .debug_str:0000000000000a55 .LASF154
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3955   .debug_str:0000000000000bd6 .LASF155
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3697   .debug_str:000000000000064e .LASF156
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3879   .debug_str:0000000000000a45 .LASF157
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3703   .debug_str:0000000000000673 .LASF162
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3895   .debug_str:0000000000000a8d .LASF158
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3707   .debug_str:000000000000068e .LASF159
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3765   .debug_str:00000000000007d3 .LASF160
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3653   .debug_str:0000000000000576 .LASF161
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3483   .debug_str:00000000000000f0 .LASF163
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3489   .debug_str:000000000000010c .LASF164
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4011   .debug_str:0000000000000ced .LASF165
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3997   .debug_str:0000000000000c94 .LASF166
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3789   .debug_str:0000000000000864 .LASF167
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3573   .debug_str:000000000000039e .LASF168
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3925   .debug_str:0000000000000b35 .LASF169
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3821   .debug_str:0000000000000902 .LASF170
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3825   .debug_str:0000000000000918 .LASF171
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4009   .debug_str:0000000000000ce2 .LASF172
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3543   .debug_str:00000000000002f7 .LASF173
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4007   .debug_str:0000000000000cda .LASF174
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3859   .debug_str:00000000000009db .LASF175
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 14
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3923   .debug_str:0000000000000b2c .LASF176
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3941   .debug_str:0000000000000b97 .LASF177
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3805   .debug_str:00000000000008aa .LASF178
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3619   .debug_str:00000000000004bb .LASF179
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3625   .debug_str:00000000000004d1 .LASF180
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3939   .debug_str:0000000000000b90 .LASF181
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3871   .debug_str:0000000000000a18 .LASF182
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3559   .debug_str:000000000000034d .LASF183
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3999   .debug_str:0000000000000c9e .LASF184
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3803   .debug_str:00000000000008a3 .LASF185
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3545   .debug_str:0000000000000305 .LASF186
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3931   .debug_str:0000000000000b5b .LASF187
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3651   .debug_str:000000000000056e .LASF188
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3463   .debug_str:0000000000000049 .LASF189
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3469   .debug_str:00000000000000ae .LASF190
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3839   .debug_str:0000000000000959 .LASF191
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3629   .debug_str:00000000000004dc .LASF192
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3793   .debug_str:0000000000000873 .LASF193
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3487   .debug_str:0000000000000106 .LASF194
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3867   .debug_str:0000000000000a03 .LASF195
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3841   .debug_str:000000000000095f .LASF196
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3897   .debug_str:0000000000000a93 .LASF197
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3513   .debug_str:00000000000001c3 .LASF198
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3799   .debug_str:000000000000088f .LASF199
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3691   .debug_str:000000000000062f .LASF200
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3605   .debug_str:0000000000000463 .LASF201
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3699   .debug_str:0000000000000660 .LASF202
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3639   .debug_str:000000000000051f .LASF203
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3863   .debug_str:00000000000009ef .LASF204
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3795   .debug_str:0000000000000879 .LASF205
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3933   .debug_str:0000000000000b64 .LASF206
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3771   .debug_str:00000000000007fa .LASF207
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3601   .debug_str:000000000000043d .LASF208
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3953   .debug_str:0000000000000bce .LASF209
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3689   .debug_str:0000000000000624 .LASF210
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3713   .debug_str:00000000000006ae .LASF211
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3963   .debug_str:0000000000000bf9 .LASF212
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3555   .debug_str:000000000000033e .LASF213
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3681   .debug_str:00000000000005ed .LASF214
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3759   .debug_str:00000000000007bd .LASF215
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3473   .debug_str:00000000000000c2 .LASF216
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3675   .debug_str:00000000000005cd .LASF217
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3791   .debug_str:000000000000086e .LASF218
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3715   .debug_str:00000000000006b8 .LASF219
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3655   .debug_str:000000000000057b .LASF220
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3747   .debug_str:000000000000076d .LASF221
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3457   .debug_str:0000000000000027 .LASF222
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3623   .debug_str:00000000000004cc .LASF223
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3881   .debug_str:0000000000000a4e .LASF224
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3763   .debug_str:00000000000007cd .LASF225
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3743   .debug_str:000000000000075c .LASF226
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3761   .debug_str:00000000000007c7 .LASF227
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3861   .debug_str:00000000000009e7 .LASF228
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3833   .debug_str:0000000000000942 .LASF229
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3519   .debug_str:000000000000025f .LASF230
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3993   .debug_str:0000000000000c7c .LASF231
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3587   .debug_str:00000000000003e3 .LASF232
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 15
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3873   .debug_str:0000000000000a1e .LASF233
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3471   .debug_str:00000000000000b5 .LASF234
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3569   .debug_str:000000000000037e .LASF235
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3755   .debug_str:0000000000000799 .LASF236
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3801   .debug_str:0000000000000898 .LASF237
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3885   .debug_str:0000000000000a60 .LASF238
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3913   .debug_str:0000000000000aed .LASF239
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3851   .debug_str:0000000000000993 .LASF240
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3797   .debug_str:0000000000000881 .LASF241
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3847   .debug_str:0000000000000976 .LASF242
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3701   .debug_str:0000000000000667 .LASF243
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4013   .debug_str:0000000000000cf6 .LASF244
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3549   .debug_str:000000000000031b .LASF245
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3877   .debug_str:0000000000000a36 .LASF246
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4003   .debug_str:0000000000000cb1 .LASF247
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3785   .debug_str:0000000000000847 .LASF248
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3485   .debug_str:00000000000000f5 .LASF249
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3779   .debug_str:000000000000082a .LASF250
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3945   .debug_str:0000000000000ba8 .LASF251
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3751   .debug_str:0000000000000785 .LASF252
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3481   .debug_str:00000000000000e8 .LASF253
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3453   .debug_str:0000000000000014 .LASF282
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3553   .debug_str:0000000000000332 .LASF255
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3607   .debug_str:000000000000046a .LASF256
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3921   .debug_str:0000000000000b22 .LASF257
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3753   .debug_str:000000000000078e .LASF258
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3527   .debug_str:000000000000028f .LASF259
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3595   .debug_str:000000000000040c .LASF260
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3827   .debug_str:0000000000000922 .LASF283
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3627   .debug_str:00000000000004d6 .LASF261
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3557   .debug_str:0000000000000348 .LASF262
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3809   .debug_str:00000000000008bc .LASF263
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:204    .text.usb_mdelay:0000000000000000 .LFB10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:219    .text.usb_mdelay:0000000000000008 .LFE10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3835   .debug_str:0000000000000948 .LASF265
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3304   .debug_loc:0000000000000000 .LLST5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:209    .text.usb_mdelay:0000000000000000 .LBB8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:217    .text.usb_mdelay:0000000000000008 .LBE8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3318   .debug_loc:0000000000000021 .LLST6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:215    .text.usb_mdelay:0000000000000008 .LVL13
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3577   .debug_str:00000000000003af .LASF264
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:183    .text.usb_udelay:0000000000000000 .LFB9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:197    .text.usb_udelay:0000000000000008 .LFE9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3813   .debug_str:00000000000008cf .LASF266
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3332   .debug_loc:0000000000000042 .LLST3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:188    .text.usb_udelay:0000000000000000 .LBB6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:195    .text.usb_udelay:0000000000000008 .LBE6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3346   .debug_loc:0000000000000063 .LLST4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:193    .text.usb_udelay:0000000000000008 .LVL11
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3817   .debug_str:00000000000008e0 .LASF284
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:170    .text.usb_timer_init:0000000000000000 .LFB8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:176    .text.usb_timer_init:0000000000000002 .LFE8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3547   .debug_str:000000000000030b .LASF267
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:109    .text.usb_intr_config:0000000000000000 .LFB7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:163    .text.usb_intr_config:000000000000005c .LFE7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3360   .debug_loc:0000000000000084 .LLST2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:126    .text.usb_intr_config:0000000000000014 .LVL4
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s 			page 16
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:130    .text.usb_intr_config:0000000000000020 .LVL5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:134    .text.usb_intr_config:000000000000002c .LVL6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:140    .text.usb_intr_config:000000000000003c .LVL7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:144    .text.usb_intr_config:0000000000000048 .LVL8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:161    .text.usb_intr_config:000000000000005c .LVL9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3633   .debug_str:00000000000004ef .LASF268
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:14     .text.usb_rcu_config:0000000000000000 .LFB6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:102    .text.usb_rcu_config:000000000000007e .LFE6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3378   .debug_loc:00000000000000b0 .LLST0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3719   .debug_str:00000000000006d5 .LASF285
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3401   .debug_loc:00000000000000e8 .LLST1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:30     .text.usb_rcu_config:000000000000000e .LVL0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:55     .text.usb_rcu_config:000000000000003c .LVL2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:69     .text.usb_rcu_config:000000000000004c .LVL3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3643   .debug_str:0000000000000535 .LASF269
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3787   .debug_str:0000000000000856 .LASF270
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3571   .debug_str:000000000000038d .LASF271
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:4005   .debug_str:0000000000000cc2 .LASF272
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3855   .debug_str:00000000000009aa .LASF273
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3617   .debug_str:00000000000004b1 .LASF274
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3767   .debug_str:00000000000007d9 .LASF275
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3525   .debug_str:000000000000027c .LASF276
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:3967   .debug_str:0000000000000c0f .LASF277
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:207    .text.usb_mdelay:0000000000000000 .LVL12
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:186    .text.usb_udelay:0000000000000000 .LVL10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:115    .text.usb_intr_config:0000000000000002 .LCFI3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:157    .text.usb_intr_config:0000000000000054 .LCFI4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:21     .text.usb_rcu_config:0000000000000002 .LCFI0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:65     .text.usb_rcu_config:0000000000000044 .LCFI1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:71     .text.usb_rcu_config:000000000000004c .LCFI2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:53     .text.usb_rcu_config:0000000000000034 .LVL1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBtbT2F.s:253    .debug_info:0000000000000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+rcu_clock_freq_get
+rcu_usb_clock_config
+rcu_periph_clock_enable
+eclic_irq_enable
+exti_interrupt_flag_clear
+exti_init
+exti_interrupt_enable
+dbg_delay_1us
+dbg_delay_1ms

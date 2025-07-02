@@ -1,0 +1,536 @@
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s 			page 1
+
+
+   1              		.file	"main.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p0_m2p0_a2p0_c2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.globl	__fixsfsi
+  10              		.globl	__floatsisf
+  11              		.globl	__addsf3
+  12              		.section	.text.startup.main,"ax",@progbits
+  13              		.align	1
+  14              		.globl	main
+  16              	main:
+  17              	.LFB2:
+  18              		.file 1 "main.c"
+   1:main.c        **** #include "gd32vf103.h"
+   2:main.c        **** #include "drivers.h"
+   3:main.c        **** #include "dac.h"
+   4:main.c        **** #include "pwm.h"
+   5:main.c        **** 
+   6:main.c        **** int main(void){
+  19              		.loc 1 6 15
+  20              		.cfi_startproc
+   7:main.c        **** 	int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  21              		.loc 1 7 2
+  22              	.LVL0:
+   8:main.c        **** 	int dac=0, speed=-100;
+  23              		.loc 1 8 2
+   9:main.c        **** 	int x = 0;
+  24              		.loc 1 9 2
+  10:main.c        **** 	//int lookUpTbl[16]={587, 698, 440, 659, 523, 415, 392, 370, 494, 349, 330, 311, 466, 294, 277, 26
+  11:main.c        **** 	float lookUpTbl[16] = {1.70, 1.43, 2.27, 1.52, 1.91, 2.41, 2.55, 2.70, 2.02, 2.86, 3.03, 3.22, 2.1
+  25              		.loc 1 11 2
+   6:main.c        **** 	int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  26              		.loc 1 6 15 is_stmt 0
+  27 0000 3571     		addi	sp,sp,-160
+  28              	.LCFI0:
+  29              		.cfi_def_cfa_offset 160
+  30              		.loc 1 11 8
+  31 0002 B7050000 		lui	a1,%hi(.LANCHOR0)
+   6:main.c        **** 	int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  32              		.loc 1 6 15
+  33 0006 22CD     		sw	s0,152(sp)
+  34              		.loc 1 11 8
+  35 0008 13060004 		li	a2,64
+  36              		.cfi_offset 8, -8
+  37 000c 13840500 		addi	s0,a1,%lo(.LANCHOR0)
+  38 0010 8800     		addi	a0,sp,64
+  39 0012 93850500 		addi	a1,a1,%lo(.LANCHOR0)
+   6:main.c        **** 	int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  40              		.loc 1 6 15
+  41 0016 06CF     		sw	ra,156(sp)
+  42 0018 26CB     		sw	s1,148(sp)
+  43 001a 4AC9     		sw	s2,144(sp)
+  44 001c 4EC7     		sw	s3,140(sp)
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s 			page 2
+
+
+  45              		.cfi_offset 1, -4
+  46              		.cfi_offset 9, -12
+  47              		.cfi_offset 18, -16
+  48              		.cfi_offset 19, -20
+  49              		.loc 1 11 8
+  50 001e 97000000 		call	memcpy
+  50      E7800000 
+  51              	.LVL1:
+  12:main.c        **** 
+  13:main.c        **** 
+  14:main.c        **** 
+  15:main.c        **** 	int lookUpP[10] = {2048, 3251, 3995, 3995, 3251, 2048, 844, 100, 100, 844};
+  52              		.loc 1 15 2 is_stmt 1
+  53              		.loc 1 15 6 is_stmt 0
+  54 0026 93050404 		addi	a1,s0,64
+  55 002a 13068002 		li	a2,40
+  56 002e 2808     		addi	a0,sp,24
+  57 0030 97000000 		call	memcpy
+  57      E7800000 
+  58              	.LVL2:
+  16:main.c        **** 
+  17:main.c        **** 
+  18:main.c        **** 	t5omsi();                               // Initialize timer5 1kHz
+  59              		.loc 1 18 2 is_stmt 1
+  60 0038 97000000 		call	t5omsi
+  60      E7800000 
+  61              	.LVL3:
+  19:main.c        **** 	colinit();                              // Initialize column toolbox
+  62              		.loc 1 19 2
+   9:main.c        **** 	//int lookUpTbl[16]={587, 698, 440, 659, 523, 415, 392, 370, 494, 349, 330, 311, 466, 294, 277, 26
+  63              		.loc 1 9 6 is_stmt 0
+  64 0040 0144     		li	s0,0
+  65              		.loc 1 19 2
+  66 0042 97000000 		call	colinit
+  66      E7800000 
+  67              	.LVL4:
+  20:main.c        **** 	l88init();                              // Initialize 8*8 led toolbox
+  68              		.loc 1 20 2 is_stmt 1
+   7:main.c        **** 	int dac=0, speed=-100;
+  69              		.loc 1 7 36 is_stmt 0
+  70 004a 8144     		li	s1,0
+  71              		.loc 1 20 2
+  72 004c 97000000 		call	l88init
+  72      E7800000 
+  73              	.LVL5:
+  21:main.c        **** 	keyinit();                              // Initialize keyboard toolbox
+  74              		.loc 1 21 2 is_stmt 1
+   7:main.c        **** 	int dac=0, speed=-100;
+  75              		.loc 1 7 31 is_stmt 0
+  76 0054 0149     		li	s2,0
+  77              		.loc 1 21 2
+  78 0056 97000000 		call	keyinit
+  78      E7800000 
+  79              	.LVL6:
+  22:main.c        **** 	DAC0powerUpInit();                      // Initialize DAC0/PA4 toolbox
+  80              		.loc 1 22 2 is_stmt 1
+  23:main.c        **** 	//T1powerUpInitPWM(0x4);                  // Timer #1, Ch #2 PWM
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s 			page 3
+
+
+  24:main.c        **** 	//T1powerUpInitPWM(0xC);                  // Timer #1, Ch #2 & 3 PWM
+  25:main.c        **** 
+  26:main.c        **** 	while (1)
+  27:main.c        **** 	{
+  28:main.c        **** 		idle++;                             // Manage Async events
+  29:main.c        ****  
+  30:main.c        **** 		if (t5expq())   // what is the return value? a0?
+  31:main.c        **** 		{                     // Manage periodic tasks
+  32:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+  33:main.c        **** 			ms++;                           // ...One second heart beat
+  34:main.c        **** 			if (ms==1000)
+  35:main.c        **** 				ms=0;
+  36:main.c        **** 			if ((key = keyscan()) >= 0)			// ...Any key pressed?
+  37:main.c        **** 			{
+  38:main.c        **** 				
+  39:main.c        **** 				c = lookUpTbl[key];
+  40:main.c        **** 				pKey = lookUpTbl[key];
+  41:main.c        **** 				l88mem(1,lookUpTbl[key]+(c << 4));
+  42:main.c        **** 			}
+  43:main.c        **** 			l88mem(2,idle>>8);              // ...Performance monitor
+  44:main.c        **** 			l88mem(3,idle);
+  45:main.c        **** 			idle=0;
+  46:main.c        **** 			//DAC0set(pKey);                 // DAC0 Unit test
+  47:main.c        **** 	
+  48:main.c        **** 			//T1setPWMch2(15000);               // PWM T1/C2 Unit test
+  49:main.c        **** 		}
+  50:main.c        **** 		if (!(t5ret()%c)) // current period
+  51:main.c        **** 		{
+  52:main.c        **** 			DAC0set(lookUpP[x]);
+  53:main.c        **** 			x++;
+  54:main.c        **** 		}
+  55:main.c        **** 		if (x >= 9)
+  81              		.loc 1 55 6 is_stmt 0
+  82 005e A149     		li	s3,8
+  22:main.c        **** 	DAC0powerUpInit();                      // Initialize DAC0/PA4 toolbox
+  83              		.loc 1 22 2
+  84 0060 97000000 		call	DAC0powerUpInit
+  84      E7800000 
+  85              	.LVL7:
+  86              	.L2:
+  26:main.c        **** 	{
+  87              		.loc 1 26 2 is_stmt 1
+  28:main.c        ****  
+  88              		.loc 1 28 3
+  28:main.c        ****  
+  89              		.loc 1 28 7 is_stmt 0
+  90 0068 8504     		addi	s1,s1,1
+  91              	.LVL8:
+  30:main.c        **** 		{                     // Manage periodic tasks
+  92              		.loc 1 30 3 is_stmt 1
+  30:main.c        **** 		{                     // Manage periodic tasks
+  93              		.loc 1 30 7 is_stmt 0
+  94 006a 97000000 		call	t5expq
+  94      E7800000 
+  95              	.LVL9:
+  30:main.c        **** 		{                     // Manage periodic tasks
+  96              		.loc 1 30 6
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s 			page 4
+
+
+  97 0072 2DCD     		beq	a0,zero,.L3
+  32:main.c        **** 			ms++;                           // ...One second heart beat
+  98              		.loc 1 32 4 is_stmt 1
+  99 0074 97000000 		call	colset
+  99      E7800000 
+ 100              	.LVL10:
+ 101 007c 97000000 		call	l88row
+ 101      E7800000 
+ 102              	.LVL11:
+  33:main.c        **** 			if (ms==1000)
+ 103              		.loc 1 33 4
+  34:main.c        **** 				ms=0;
+ 104              		.loc 1 34 4
+  36:main.c        **** 			{
+ 105              		.loc 1 36 4
+  36:main.c        **** 			{
+ 106              		.loc 1 36 15 is_stmt 0
+ 107 0084 97000000 		call	keyscan
+ 107      E7800000 
+ 108              	.LVL12:
+  36:main.c        **** 			{
+ 109              		.loc 1 36 7
+ 110 008c 63420504 		blt	a0,zero,.L4
+  39:main.c        **** 				pKey = lookUpTbl[key];
+ 111              		.loc 1 39 5 is_stmt 1
+  39:main.c        **** 				pKey = lookUpTbl[key];
+ 112              		.loc 1 39 18 is_stmt 0
+ 113 0090 1C01     		addi	a5,sp,128
+ 114 0092 0A05     		slli	a0,a0,2
+ 115              	.LVL13:
+ 116 0094 3E95     		add	a0,a5,a0
+ 117 0096 832505FC 		lw	a1,-64(a0)
+  39:main.c        **** 				pKey = lookUpTbl[key];
+ 118              		.loc 1 39 7
+ 119 009a 2E85     		mv	a0,a1
+ 120 009c 2EC6     		sw	a1,12(sp)
+ 121 009e 97000000 		call	__fixsfsi
+ 121      E7800000 
+ 122              	.LVL14:
+ 123 00a6 2A89     		mv	s2,a0
+ 124              	.LVL15:
+  40:main.c        **** 				l88mem(1,lookUpTbl[key]+(c << 4));
+ 125              		.loc 1 40 5 is_stmt 1
+  41:main.c        **** 			}
+ 126              		.loc 1 41 5
+  41:main.c        **** 			}
+ 127              		.loc 1 41 28 is_stmt 0
+ 128 00a8 1205     		slli	a0,a0,4
+ 129              	.LVL16:
+ 130 00aa 97000000 		call	__floatsisf
+ 130      E7800000 
+ 131              	.LVL17:
+ 132 00b2 B245     		lw	a1,12(sp)
+ 133 00b4 97000000 		call	__addsf3
+ 133      E7800000 
+ 134              	.LVL18:
+  41:main.c        **** 			}
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s 			page 5
+
+
+ 135              		.loc 1 41 5
+ 136 00bc 97000000 		call	__fixsfsi
+ 136      E7800000 
+ 137              	.LVL19:
+ 138 00c4 AA85     		mv	a1,a0
+ 139 00c6 0545     		li	a0,1
+ 140 00c8 97000000 		call	l88mem
+ 140      E7800000 
+ 141              	.LVL20:
+ 142              	.L4:
+  43:main.c        **** 			l88mem(3,idle);
+ 143              		.loc 1 43 4 is_stmt 1
+ 144 00d0 93D58440 		srai	a1,s1,8
+ 145 00d4 0945     		li	a0,2
+ 146 00d6 97000000 		call	l88mem
+ 146      E7800000 
+ 147              	.LVL21:
+  44:main.c        **** 			idle=0;
+ 148              		.loc 1 44 4
+ 149 00de A685     		mv	a1,s1
+ 150 00e0 0D45     		li	a0,3
+ 151 00e2 97000000 		call	l88mem
+ 151      E7800000 
+ 152              	.LVL22:
+  45:main.c        **** 			//DAC0set(pKey);                 // DAC0 Unit test
+ 153              		.loc 1 45 4
+  45:main.c        **** 			//DAC0set(pKey);                 // DAC0 Unit test
+ 154              		.loc 1 45 8 is_stmt 0
+ 155 00ea 8144     		li	s1,0
+ 156              	.LVL23:
+ 157              	.L3:
+  50:main.c        **** 		{
+ 158              		.loc 1 50 3 is_stmt 1
+  50:main.c        **** 		{
+ 159              		.loc 1 50 9 is_stmt 0
+ 160 00ec 97000000 		call	t5ret
+ 160      E7800000 
+ 161              	.LVL24:
+  50:main.c        **** 		{
+ 162              		.loc 1 50 16
+ 163 00f4 33652503 		rem	a0,a0,s2
+  50:main.c        **** 		{
+ 164              		.loc 1 50 6
+ 165 00f8 01ED     		bne	a0,zero,.L5
+  52:main.c        **** 			x++;
+ 166              		.loc 1 52 4 is_stmt 1
+ 167 00fa 93172400 		slli	a5,s0,2
+ 168 00fe 1801     		addi	a4,sp,128
+ 169 0100 BA97     		add	a5,a4,a5
+ 170 0102 03A587F9 		lw	a0,-104(a5)
+  53:main.c        **** 		}
+ 171              		.loc 1 53 5 is_stmt 0
+ 172 0106 0504     		addi	s0,s0,1
+ 173              	.LVL25:
+  52:main.c        **** 			x++;
+ 174              		.loc 1 52 4
+ 175 0108 97000000 		call	DAC0set
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s 			page 6
+
+
+ 175      E7800000 
+ 176              	.LVL26:
+  53:main.c        **** 		}
+ 177              		.loc 1 53 4 is_stmt 1
+ 178              	.L5:
+ 179              		.loc 1 55 3
+ 180              		.loc 1 55 6 is_stmt 0
+ 181 0110 E3DC89F4 		ble	s0,s3,.L2
+  56:main.c        **** 			x = 0;
+ 182              		.loc 1 56 6
+ 183 0114 0144     		li	s0,0
+ 184              	.LVL27:
+ 185 0116 89BF     		j	.L2
+ 186              		.cfi_endproc
+ 187              	.LFE2:
+ 189              		.section	.rodata
+ 190              		.align	2
+ 191              		.set	.LANCHOR0,. + 0
+ 192              	.LC0:
+ 193 0000 9A99D93F 		.word	1071225242
+ 194 0004 3D0AB73F 		.word	1068960317
+ 195 0008 AE471140 		.word	1074874286
+ 196 000c 5C8FC23F 		.word	1069715292
+ 197 0010 E17AF43F 		.word	1072986849
+ 198 0014 713D1A40 		.word	1075461489
+ 199 0018 33332340 		.word	1076048691
+ 200 001c CDCC2C40 		.word	1076677837
+ 201 0020 AE470140 		.word	1073825710
+ 202 0024 3D0A3740 		.word	1077348925
+ 203 0028 85EB4140 		.word	1078061957
+ 204 002c 7B144E40 		.word	1078858875
+ 205 0030 C3F50840 		.word	1074329027
+ 206 0034 9A995940 		.word	1079613850
+ 207 0038 3D0A6740 		.word	1080494653
+ 208 003c E17A7440 		.word	1081375457
+ 209              	.LC1:
+ 210 0040 00080000 		.word	2048
+ 211 0044 B30C0000 		.word	3251
+ 212 0048 9B0F0000 		.word	3995
+ 213 004c 9B0F0000 		.word	3995
+ 214 0050 B30C0000 		.word	3251
+ 215 0054 00080000 		.word	2048
+ 216 0058 4C030000 		.word	844
+ 217 005c 64000000 		.word	100
+ 218 0060 64000000 		.word	100
+ 219 0064 4C030000 		.word	844
+ 220              		.text
+ 221              	.Letext0:
+ 222              		.file 2 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 223              		.file 3 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 224              		.file 4 "drivers.h"
+ 225              		.file 5 "dac.h"
+ 226              		.file 6 "./../../firmware/GD32VF103_standard_peripheral/system_gd32vf103.h"
+ 227              		.file 7 "<built-in>"
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:16     .text.startup.main:0000000000000000 main
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:20     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:21     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:23     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:24     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:25     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:26     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:27     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:29     .text.startup.main:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:31     .text.startup.main:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:33     .text.startup.main:0000000000000006 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:35     .text.startup.main:0000000000000008 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:36     .text.startup.main:000000000000000c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:41     .text.startup.main:0000000000000016 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:45     .text.startup.main:000000000000001e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:46     .text.startup.main:000000000000001e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:47     .text.startup.main:000000000000001e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:48     .text.startup.main:000000000000001e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:50     .text.startup.main:000000000000001e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:53     .text.startup.main:0000000000000026 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:54     .text.startup.main:0000000000000026 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:60     .text.startup.main:0000000000000038 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:63     .text.startup.main:0000000000000040 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:64     .text.startup.main:0000000000000040 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:66     .text.startup.main:0000000000000042 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:69     .text.startup.main:000000000000004a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:70     .text.startup.main:000000000000004a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:72     .text.startup.main:000000000000004c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:75     .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:76     .text.startup.main:0000000000000054 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:78     .text.startup.main:0000000000000056 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:81     .text.startup.main:000000000000005e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:82     .text.startup.main:000000000000005e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:84     .text.startup.main:0000000000000060 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:88     .text.startup.main:0000000000000068 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:89     .text.startup.main:0000000000000068 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:90     .text.startup.main:0000000000000068 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:93     .text.startup.main:000000000000006a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:94     .text.startup.main:000000000000006a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:97     .text.startup.main:0000000000000072 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:99     .text.startup.main:0000000000000074 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:104    .text.startup.main:0000000000000084 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:105    .text.startup.main:0000000000000084 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:106    .text.startup.main:0000000000000084 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:107    .text.startup.main:0000000000000084 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:110    .text.startup.main:000000000000008c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:112    .text.startup.main:0000000000000090 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:113    .text.startup.main:0000000000000090 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:119    .text.startup.main:000000000000009a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:126    .text.startup.main:00000000000000a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:127    .text.startup.main:00000000000000a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:128    .text.startup.main:00000000000000a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:136    .text.startup.main:00000000000000bc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:144    .text.startup.main:00000000000000d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:149    .text.startup.main:00000000000000de .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s 			page 8
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:154    .text.startup.main:00000000000000ea .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:155    .text.startup.main:00000000000000ea .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:159    .text.startup.main:00000000000000ec .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:160    .text.startup.main:00000000000000ec .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:163    .text.startup.main:00000000000000f4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:165    .text.startup.main:00000000000000f8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:167    .text.startup.main:00000000000000fa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:172    .text.startup.main:0000000000000106 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:175    .text.startup.main:0000000000000108 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:179    .text.startup.main:0000000000000110 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:180    .text.startup.main:0000000000000110 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:181    .text.startup.main:0000000000000110 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:183    .text.startup.main:0000000000000114 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:186    .text.startup.main:0000000000000118 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:191    .rodata:0000000000000000 .LANCHOR0
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:189    .text.startup.main:0000000000000118 .L0 
+                     .debug_frame:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:157    .text.startup.main:00000000000000ec .L3
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:142    .text.startup.main:00000000000000d0 .L4
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:178    .text.startup.main:0000000000000110 .L5
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:86     .text.startup.main:0000000000000068 .L2
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:648    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1117   .debug_str:0000000000000187 .LASF30
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1103   .debug_str:0000000000000149 .LASF31
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1073   .debug_str:000000000000006c .LASF32
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1047   .debug_ranges:0000000000000000 .Ldebug_ranges0
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1053   .debug_line:0000000000000000 .Ldebug_line0
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1089   .debug_str:0000000000000101 .LASF0
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1125   .debug_str:000000000000022c .LASF1
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1067   .debug_str:0000000000000039 .LASF2
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1113   .debug_str:0000000000000175 .LASF3
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1071   .debug_str:0000000000000059 .LASF4
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1059   .debug_str:000000000000000d .LASF5
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1081   .debug_str:00000000000000da .LASF9
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1069   .debug_str:0000000000000047 .LASF6
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1101   .debug_str:000000000000013b .LASF7
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1065   .debug_str:0000000000000022 .LASF8
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1119   .debug_str:000000000000020f .LASF10
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1107   .debug_str:0000000000000157 .LASF33
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1123   .debug_str:0000000000000220 .LASF11
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1085   .debug_str:00000000000000ec .LASF34
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:17     .text.startup.main:0000000000000000 .LFB2
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:187    .text.startup.main:0000000000000118 .LFE2
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:926    .debug_loc:0000000000000000 .LLST0
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:939    .debug_loc:0000000000000021 .LLST1
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:947    .debug_loc:0000000000000035 .LLST2
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1079   .debug_str:00000000000000d5 .LASF12
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:954    .debug_loc:0000000000000048 .LLST3
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:971    .debug_loc:0000000000000073 .LLST4
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1057   .debug_str:0000000000000008 .LASF13
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:991    .debug_loc:00000000000000a8 .LLST5
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1095   .debug_str:0000000000000126 .LASF14
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1012   .debug_loc:00000000000000de .LLST6
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1075   .debug_str:00000000000000c3 .LASF15
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1097   .debug_str:000000000000012c .LASF16
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:51     .text.startup.main:0000000000000026 .LVL1
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:58     .text.startup.main:0000000000000038 .LVL2
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s 			page 9
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:61     .text.startup.main:0000000000000040 .LVL3
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:67     .text.startup.main:000000000000004a .LVL4
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:73     .text.startup.main:0000000000000054 .LVL5
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:79     .text.startup.main:000000000000005e .LVL6
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:85     .text.startup.main:0000000000000068 .LVL7
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:95     .text.startup.main:0000000000000072 .LVL9
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:100    .text.startup.main:000000000000007c .LVL10
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:102    .text.startup.main:0000000000000084 .LVL11
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:108    .text.startup.main:000000000000008c .LVL12
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:141    .text.startup.main:00000000000000d0 .LVL20
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:147    .text.startup.main:00000000000000de .LVL21
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:152    .text.startup.main:00000000000000ea .LVL22
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:161    .text.startup.main:00000000000000f4 .LVL24
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:176    .text.startup.main:0000000000000110 .LVL26
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1063   .debug_str:000000000000001c .LASF17
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1105   .debug_str:0000000000000150 .LASF35
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1093   .debug_str:0000000000000115 .LASF36
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1091   .debug_str:000000000000010e .LASF18
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1055   .debug_str:0000000000000000 .LASF19
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1127   .debug_str:0000000000000238 .LASF20
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1115   .debug_str:000000000000017f .LASF21
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1087   .debug_str:00000000000000f1 .LASF22
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1109   .debug_str:0000000000000167 .LASF23
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1083   .debug_str:00000000000000e5 .LASF24
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1111   .debug_str:000000000000016e .LASF25
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1121   .debug_str:0000000000000218 .LASF26
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1099   .debug_str:0000000000000134 .LASF27
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1061   .debug_str:0000000000000016 .LASF28
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:1077   .debug_str:00000000000000cd .LASF29
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:28     .text.startup.main:0000000000000002 .LCFI0
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:22     .text.startup.main:0000000000000000 .LVL0
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:115    .text.startup.main:0000000000000094 .LVL13
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:124    .text.startup.main:00000000000000a8 .LVL15
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:129    .text.startup.main:00000000000000aa .LVL16
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:156    .text.startup.main:00000000000000ec .LVL23
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:173    .text.startup.main:0000000000000108 .LVL25
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:184    .text.startup.main:0000000000000116 .LVL27
+C:\Users\SEBAST~1\AppData\Local\Temp\cczMphTf.s:229    .debug_info:0000000000000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+__fixsfsi
+__floatsisf
+__addsf3
+memcpy
+t5omsi
+colinit
+l88init
+keyinit
+DAC0powerUpInit
+t5expq
+colset
+l88row
+keyscan
+l88mem
+t5ret
+DAC0set

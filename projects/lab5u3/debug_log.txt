@@ -1,0 +1,659 @@
+
+w +$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+;fork-events+;vfork-events+;exec-events+;vContSupported+;QThreadEvents+;no-resumed+#df
+r +$PacketSize=109;hwbreak+#14
+w +$vMustReplyEmpty#3a
+r +$#00
+w +$Hg0#df
+r +$OK#9A
+w +$qTStatus#49
+r +$#00
+w +$?#3f
+r +$S05#B8
+w +$qfThreadInfo#bb
+r +$1el#02
+w +$Hc-1#09
+r +$OK#9A
+w +$qC#b4
+r +$#00
+w +$qAttached#8f
+r +$0#30
+w +$qOffsets#4b
+r +$Text=0;Data=0;Bss=0;#3F
+w +$g#67
+r +$000000003002000800700020081000200000000044B48488BA18000809000000000000205E070020E013000801000000000000000A300C00099F24007C000400040000000B00000001000000380900200000002000000000000000000000000000000000000000000000000000000000010000000F0000002800000048000000E0130008#4F
+w +$m8000c40,40#8c
+r +$0808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808080808082D7102C2#15
+w +$m8000c7c,2#90
+r +$2D71#DE
+w +$qfThreadInfo#bb
+r +$1el#02
+w +$qSymbol::#5b
+r +$OK#9A
+w +
+c 
+c 
+c 1016-thread-info 1
+w $qfThreadInfo#bb
+r +$1el#02
+w +
+c 
+c 
+c 1017-break-insert -f main.c:144
+w $m8000fc0,40#be
+r +$130790046303F70002D0925785073ED2F247034731009419B6971377F70F2380E7F6F24785073ECE97500000E780A033E30E05DA97500000E780E03797500000#39
+w +$m8000fc8,2#94
+r +$02D0#D6
+w +
+c 
+c 
+c 1018-symbol-list-lines C:/Users/Sebastian/Downloads/mikrodatorteknik/toolchain-gd32v-v201-win/projects/lab5u3/main.c
+c 
+c 
+c 1019-thread-info
+w $qfThreadInfo#bb
+r +$1el#02
+w +
+c 
+c 
+c 1020-stack-list-frames 0 1000
+w $m8000182,2#2e
+r +$9302#CE
+w +$m8000184,2#30
+r +$0020#C2
+w +
+c 
+c 
+c 1021-break-delete 1
+c delete breakpoint 1
+c 
+c 
+c -exec-continue
+w $Z0,8000fc8,2#dd
+r +$OK#9A
+w +$vCont?#49
+r +$#00
+w +$Hc0#db
+r +$OK#9A
+w +$c#63
+r +<Timeout: 0 seconds>
+c 
+c 
+r $S05#B8
+w +$g#67
+r +$000000002E0F0008E06E0020081000200000000000100040DA460008F701000000400140100E0000300000000500000000000055D06F00204900000030000000B4B08B8804000000060000000020014000100008001000080010000800100008001000080A0000008A06000000000000FFFFFFFF950700202800000048000000C80F0008#95
+w +$qfThreadInfo#bb
+r +$1el#02
+w +$z0,8000fc8,2#fd
+r +$OK#9A
+w +
+c 1022-stack-list-frames 0 1000
+c 
+c 
+c 1023-list-features
+c 
+c 
+c 1024-stack-list-arguments 0 0 0
+c 
+c 
+c 1025-var-create  - * "rtc_counter_value"
+c 
+c 
+c 1026-var-create  - * "time"
+c 
+c 
+c 1027-var-create  - * "time[x]"
+c 
+c 
+c 1028-var-create  - * "time[6]"
+w $m20006f2e,1#bf
+r +$00#60
+w +
+c 
+c 
+c 1029-var-create  - * "joser"
+c 
+c 
+c 1030-var-create  - * "hh"
+w $m20006f00,40#bb
+r +$00000000000000000000000000000000000000000000000000000049442BCABC00000000000000FF000000000000005400000000000000000000F3F720202020#E5
+w +
+c 
+c 
+c 1031-var-create  - * "message1"
+c 
+c 
+c 1032-var-create  - * "res"
+c 
+c 
+c 1033-var-list-children --simple-values "var7" 0 1000
+w $m20006f3c,1#be
+r +$20#62
+w +$m20006f3d,1#bf
+r +$20#62
+w +$m20006f3e,1#c0
+r +$20#62
+w +$m20006f3f,1#c1
+r +$20#62
+w +$m20006f40,1#8c
+r +$20#62
+w +$m20006f41,1#8d
+r +$20#62
+w +$m20006f42,1#8e
+r +$20#62
+w +$m20006f43,1#8f
+r +$30#63
+w +$m20006f44,1#90
+r +$20#62
+w +$m20006f45,1#91
+r +$20#62
+w +$m20006f46,1#92
+r +$20#62
+w +$m20006f47,1#93
+r +$20#62
+w +$m20006f48,1#94
+r +$20#62
+w +$m20006f49,1#95
+r +$20#62
+w +$m20006f4a,1#bd
+r +$20#62
+w +$m20006f4b,1#be
+r +$20#62
+w +$m20006f4c,1#bf
+r +$20#62
+w +
+c 
+c 
+c 1034-stack-list-variables 0
+c 
+c 
+c 1035-var-create  - * "ms"
+w $m20006ec0,40#ed
+r +$D06F0020000000AA0500000000000000F8010000100E000000400140BE0D000857DF9C300900000000000000FFFFFFFFFFFFFFFF00000000DC03000000000000#C2
+w +
+c 
+c 
+c 1036-var-create  - * "s"
+c 
+c 
+c 1037-var-create  - * "key"
+c 
+c 
+c 1038-var-create  - * "pKey"
+c 
+c 
+c 1039-var-create  - * "c"
+c 
+c 
+c 1040-var-create  - * "idle"
+c 
+c 
+c 1041-var-create  - * "recvCount"
+c 
+c 
+c 1042-var-create  - * "correct"
+c 
+c 
+c 1043-var-create  - * "state"
+c 
+c 
+c 1044-var-create  - * "hh"
+c 
+c 
+c 1045-var-create  - * "mm"
+c 
+c 
+c 1046-var-create  - * "ss"
+c 
+c 
+c 1047-var-create  - * "timeSend"
+c 
+c 
+c 1048-var-create  - * "lookUpTbl"
+c 
+c 
+c 1049-var-create  - * "lookUpTblK"
+c 
+c 
+c 1050-var-create  - * "adcr"
+c 
+c 
+c 1051-var-create  - * "tmpr"
+c 
+c 
+c 1052-var-create  - * "recieved"
+c 
+c 
+c 1053-var-create  - * "recievedFull"
+c 
+c 
+c 1054-var-create  - * "tmprSend"
+c 
+c 
+c 1055-var-create  - * "recievedTime"
+c 
+c 
+c 1056-var-create  - * "message1"
+c 
+c 
+c 1057-var-create  - * "time"
+c 
+c 
+c 1058-var-create  - * "timeReceived"
+c 
+c 
+c -exec-continue
+w $Hc0#db
+r +$OK#9A
+w +$s#73
+r +<Timeout: 0 seconds>
+c 
+c 
+r $S05#B8
+w +$g#67
+r +$000000002E0F0008E06E0020081000200000000000100040DA460008F701000000400140100E0000300000000500000000000055D06F00204900000000000000B4B08B8804000000060000000020014000100008001000080010000800100008001000080A0000008A06000000000000FFFFFFFF950700202800000048000000CA0F0008#9B
+w +$m8000fc0,40#be
+r +$130790046303F70002D0925785073ED2F247034731009419B6971377F70F2380E7F6F24785073ECE97500000E780A033E30E05DA97500000E780E03797500000#39
+w +$Z0,8000fc8,2#dd
+r +$OK#9A
+w +$Hc0#db
+r +$OK#9A
+w +$c#63
+r +$S05#B8
+w +$g#67
+r +$000000002E0F0008E06E002008100020000000008F070020DA460008F601000000400140100E00003200000005000000000000AAD06F00204400000032000000B4B08B8804000000060000000020014000100008001000080010000800100008001000080A0000008A06000000000000FFFFFFFF950700202800000048000000C80F0008#CD
+w +$qfThreadInfo#bb
+r +$1el#02
+w +$z0,8000fc8,2#fd
+r +$OK#9A
+w +
+c 1059-stack-list-frames 0 1000
+c 
+c 
+c 1060-var-delete var2
+c 
+c 
+c 1061-var-delete var4
+c 
+c 
+c 1062-var-delete var6
+c 
+c 
+c 1063-var-delete var7
+c 
+c 
+c 1064-var-delete var8
+c 
+c 
+c 1065-var-delete var9
+c 
+c 
+c 1066-var-delete var10
+c 
+c 
+c 1067-var-delete var11
+c 
+c 
+c 1068-var-delete var12
+c 
+c 
+c 1069-var-delete var13
+c 
+c 
+c 1070-var-delete var14
+c 
+c 
+c 1071-var-delete var15
+c 
+c 
+c 1072-var-delete var16
+c 
+c 
+c 1073-var-delete var17
+c 
+c 
+c 1074-var-delete var18
+c 
+c 
+c 1075-var-delete var19
+c 
+c 
+c 1076-var-delete var20
+c 
+c 
+c 1077-var-delete var21
+c 
+c 
+c 1078-var-delete var22
+c 
+c 
+c 1079-var-delete var23
+c 
+c 
+c 1080-var-delete var24
+c 
+c 
+c 1081-var-delete var25
+c 
+c 
+c 1082-var-delete var26
+c 
+c 
+c 1083-var-delete var27
+c 
+c 
+c 1084-var-delete var28
+c 
+c 
+c 1085-var-delete var29
+c 
+c 
+c 1086-var-delete var30
+c 
+c 
+c 1087-var-delete var31
+c 
+c 
+c 1088-var-delete var32
+c 
+c 
+c 1089-stack-list-arguments 0 0 0
+c 
+c 
+c 1090-var-create  - * "rtc_counter_value"
+c 
+c 
+c 1091-var-create  - * "time"
+c 
+c 
+c 1092-var-create  - * "time[x]"
+c 
+c 
+c 1093-var-create  - * "time[6]"
+w $m20006f2e,1#bf
+r +$00#60
+w +
+c 
+c 
+c 1094-var-create  - * "joser"
+c 
+c 
+c 1095-var-create  - * "hh"
+w $m20006f00,40#bb
+r +$00000000010000000000000000000000000000000000000000000049442BCABC00000000000000FF000000000000005430000000000000000000F3F720202020#E9
+w +
+c 
+c 
+c 1096-var-create  - * "message1"
+c 
+c 
+c 1097-var-create  - * "res"
+c 
+c 
+c 1098-var-list-children --simple-values "var39" 0 1000
+w $m20006f3c,1#be
+r +$20#62
+w +$m20006f3d,1#bf
+r +$20#62
+w +$m20006f3e,1#c0
+r +$20#62
+w +$m20006f3f,1#c1
+r +$20#62
+w +$m20006f40,1#8c
+r +$20#62
+w +$m20006f41,1#8d
+r +$20#62
+w +$m20006f42,1#8e
+r +$20#62
+w +$m20006f43,1#8f
+r +$20#62
+w +$m20006f44,1#90
+r +$32#65
+w +$m20006f45,1#91
+r +$20#62
+w +$m20006f46,1#92
+r +$20#62
+w +$m20006f47,1#93
+r +$20#62
+w +$m20006f48,1#94
+r +$20#62
+w +$m20006f49,1#95
+r +$20#62
+w +$m20006f4a,1#bd
+r +$20#62
+w +$m20006f4b,1#be
+r +$20#62
+w +$m20006f4c,1#bf
+r +$20#62
+w +
+c 
+c 
+c 1099-stack-list-variables 0
+c 
+c 
+c 1100-var-create  - * "ms"
+w $m20006ec0,40#ed
+r +$D06F0020000000550500000030000000F7010000100E000000400140BE0D000857DF9C320A00000000000000FFFFFFFFFFFFFFFF000000000100000001000000#8E
+w +
+c 
+c 
+c 1101-var-create  - * "s"
+c 
+c 
+c 1102-var-create  - * "key"
+c 
+c 
+c 1103-var-create  - * "pKey"
+c 
+c 
+c 1104-var-create  - * "c"
+c 
+c 
+c 1105-var-create  - * "idle"
+c 
+c 
+c 1106-var-create  - * "recvCount"
+c 
+c 
+c 1107-var-create  - * "correct"
+c 
+c 
+c 1108-var-create  - * "state"
+c 
+c 
+c 1109-var-create  - * "hh"
+c 
+c 
+c 1110-var-create  - * "mm"
+c 
+c 
+c 1111-var-create  - * "ss"
+c 
+c 
+c 1112-var-create  - * "timeSend"
+c 
+c 
+c 1113-var-create  - * "lookUpTbl"
+c 
+c 
+c 1114-var-create  - * "lookUpTblK"
+c 
+c 
+c 1115-var-create  - * "adcr"
+c 
+c 
+c 1116-var-create  - * "tmpr"
+c 
+c 
+c 1117-var-create  - * "recieved"
+c 
+c 
+c 1118-var-create  - * "recievedFull"
+c 
+c 
+c 1119-var-create  - * "tmprSend"
+c 
+c 
+c 1120-var-create  - * "recievedTime"
+c 
+c 
+c 1121-var-create  - * "message1"
+c 
+c 
+c 1122-var-create  - * "time"
+c 
+c 
+c 1123-var-create  - * "timeReceived"
+c 
+c 
+c -exec-continue
+w $Hc0#db
+r +$OK#9A
+w +$s#73
+r +<Timeout: 0 seconds>
+c 
+c 
+r $S05#B8
+w +$g#67
+r +$000000002E0F0008E06E002008100020000000008F070020DA460008F601000000400140100E00003200000005000000000000AAD06F00204400000001000000B4B08B8804000000060000000020014000100008001000080010000800100008001000080A0000008A06000000000000FFFFFFFF950700202800000048000000CA0F0008#D2
+w +$m8000fc0,40#be
+r +$130790046303F70002D0925785073ED2F247034731009419B6971377F70F2380E7F6F24785073ECE97500000E780A033E30E05DA97500000E780E03797500000#39
+w +$Z0,8000fc8,2#dd
+r +$OK#9A
+w +$Hc0#db
+r +$OK#9A
+w +$c#63
+r +$S05#B8
+w +$g#67
+r +$000000002E0F0008E06E002008100020000000008F070020DA460008F501000000400140100E00000A0000000500000000000055D06F00202D0000000A000000B4B08B8804000000060000000020014000100008001000080010000800100008001000080A0000008A06000000000000FFFFFFFF950700202800000048000000C80F0008#DA
+w +$qfThreadInfo#bb
+r +$1el#02
+w +$z0,8000fc8,2#fd
+r +$OK#9A
+w +
+c 1124-stack-list-frames 0 1000
+c 
+c 
+c 1125-var-delete var34
+c 
+c 
+c 1126-var-delete var36
+c 
+c 
+c 1127-var-delete var38
+c 
+c 
+c 1128-var-delete var39
+c 
+c 
+c 1129-var-delete var40
+c 
+c 
+c 1130-var-delete var41
+c 
+c 
+c 1131-var-delete var42
+c 
+c 
+c 1132-var-delete var43
+c 
+c 
+c 1133-var-delete var44
+c 
+c 
+c 1134-var-delete var45
+c 
+c 
+c 1135-var-delete var46
+c 
+c 
+c 1136-var-delete var47
+c 
+c 
+c 1137-var-delete var48
+c 
+c 
+c 1138-var-delete var49
+c 
+c 
+c 1139-var-delete var50
+c 
+c 
+c 1140-var-delete var51
+c 
+c 
+c 1141-var-delete var52
+c 
+c 
+c 1142-var-delete var53
+c 
+c 
+c 1143-var-delete var54
+c 
+c 
+c 1144-var-delete var55
+c 
+c 
+c 1145-var-delete var56
+c 
+c 
+c 1146-var-delete var57
+c 
+c 
+c 1147-var-delete var58
+c 
+c 
+c 1148-var-delete var59
+c 
+c 
+c 1149-var-delete var60
+c 
+c 
+c 1150-var-delete var61
+c 
+c 
+c 1151-var-delete var62
+c 
+c 
+c 1152-var-delete var63
+c 
+c 
+c 1153-var-delete var64
+c 
+c 
+c 1154-stack-list-arguments 0 0 0
+c 
+c 
+c -exec-continue
+w $Hc0#db
+r +$OK#9A
+w +$s#73
+r +<Timeout: 0 seconds>
+c 
+c 
+r $S05#B8
+w +$g#67
+r +$000000002E0F0008E06E002008100020000000008F070020DA460008F501000000400140100E00000A0000000500000000000055D06F00202D00000002000000B4B08B8804000000060000000020014000100008001000080010000800100008001000080A0000008A06000000000000FFFFFFFF950700202800000048000000CA0F0008#D4
+w +$m8000fc0,40#be
+r +$130790046303F70002D0925785073ED2F247034731009419B6971377F70F2380E7F6F24785073ECE97500000E780A033E30E05DA97500000E780E03797500000#39
+w +$Z0,8000fc8,2#dd
+r +$OK#9A
+w +$Hc0#db
+r +$OK#9A
+w +$c#63
+r +
+c 1155-exec-interrupt
+w <Break>
+r $S05#B8
+w +$g#67
+r +$00000000CC0D0008E06E0020081000200000000000100040DA4600080000000000400140100E0000000000000200000000000037FF0100009D00000001000000B4B08B880400000000000000002001400010000800100008001000080010000800100008050000008A06000000000000FFFFFFFF950700202800000048000000CE0D0008#80
+w +$qfThreadInfo#bb
+r +$1el#02
+w +$z0,8000fc8,2#fd
+r +$OK#9A
+w +
+c 
+c 
+c 1156kill
+c kill
+w $vKill;a410#33
+r +

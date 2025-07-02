@@ -1,0 +1,1184 @@
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 1
+
+
+   1              		.file	"main.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p0_m2p0_a2p0_c2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.section	.text.startup.main,"ax",@progbits
+  10              		.align	1
+  11              		.globl	main
+  13              	main:
+  14              	.LFB2:
+  15              		.file 1 "main.c"
+   1:main.c        **** #include "gd32vf103.h"
+   2:main.c        **** #include "drivers.h"
+   3:main.c        **** #include "lcd.h"
+   4:main.c        **** 
+   5:main.c        **** int main(void){
+  16              		.loc 1 5 15
+  17              		.cfi_startproc
+   6:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  18              		.loc 1 6 2
+   5:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  19              		.loc 1 5 15 is_stmt 0
+  20 0000 1571     		addi	sp,sp,-224
+  21              	.LCFI0:
+  22              		.cfi_def_cfa_offset 224
+  23              		.loc 1 6 15
+  24 0002 02C6     		sw	zero,12(sp)
+  25              		.loc 1 6 21
+  26 0004 02C8     		sw	zero,16(sp)
+   5:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  27              		.loc 1 5 15
+  28 0006 A2CD     		sw	s0,216(sp)
+  29              		.cfi_offset 8, -8
+  30              		.loc 1 6 31
+  31 0008 7D54     		li	s0,-1
+  32 000a 22CC     		sw	s0,24(sp)
+   7:main.c        **** 	int lookUpTbl[16]={1,4,7,14,2,5,8,0,3,6,9,15,10,11,12,13};
+  33              		.loc 1 7 6
+  34 000c B7050000 		lui	a1,%hi(.LANCHOR0)
+   5:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  35              		.loc 1 5 15
+  36 0010 A6CB     		sw	s1,212(sp)
+   6:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  37              		.loc 1 6 40
+  38 0012 02CE     		sw	zero,28(sp)
+  39              		.cfi_offset 9, -12
+  40              		.loc 1 7 6
+  41 0014 93840500 		addi	s1,a1,%lo(.LANCHOR0)
+  42 0018 13060004 		li	a2,64
+  43 001c 93850500 		addi	a1,a1,%lo(.LANCHOR0)
+  44 0020 8800     		addi	a0,sp,64
+   5:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  45              		.loc 1 5 15
+  46 0022 86CF     		sw	ra,220(sp)
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 2
+
+
+  47 0024 CAC9     		sw	s2,208(sp)
+  48 0026 CEC7     		sw	s3,204(sp)
+  49 0028 D2C5     		sw	s4,200(sp)
+  50 002a D6C3     		sw	s5,196(sp)
+  51 002c DAC1     		sw	s6,192(sp)
+  52              		.cfi_offset 1, -4
+  53              		.cfi_offset 18, -16
+  54              		.cfi_offset 19, -20
+  55              		.cfi_offset 20, -24
+  56              		.cfi_offset 21, -28
+  57              		.cfi_offset 22, -32
+   6:main.c        **** 	volatile int ms=0, s=0, key, pKey=-1, c=0, idle=0;
+  58              		.loc 1 6 45
+  59 002e 02D0     		sw	zero,32(sp)
+  60              		.loc 1 7 2 is_stmt 1
+  61              		.loc 1 7 6 is_stmt 0
+  62 0030 97000000 		call	memcpy
+  62      E7800000 
+  63              	.LVL0:
+   8:main.c        **** 	int lookUpTblp[]={68, 35, 0, 42, 67, 9, 8, 7, 66, 6, 5, 4, 65, 3, 2, 1};
+  64              		.loc 1 8 2 is_stmt 1
+  65              		.loc 1 8 6 is_stmt 0
+  66 0038 93850404 		addi	a1,s1,64
+  67 003c 13060004 		li	a2,64
+  68 0040 0801     		addi	a0,sp,128
+  69 0042 97000000 		call	memcpy
+  69      E7800000 
+  70              	.LVL1:
+   9:main.c        **** 	int dac=0, speed=-100;
+  71              		.loc 1 9 2 is_stmt 1
+  10:main.c        **** 	int adcr, tmpr;
+  72              		.loc 1 10 2
+  11:main.c        **** 
+  12:main.c        **** 	volatile int buffer1 = -1, buffer2 = -1, cordX1, cordY1, cordX2, cordY2, color;
+  73              		.loc 1 12 2
+  74              		.loc 1 12 15 is_stmt 0
+  75 004a 22D2     		sw	s0,36(sp)
+  76              		.loc 1 12 29
+  77 004c 22D4     		sw	s0,40(sp)
+  13:main.c        **** 
+  14:main.c        **** 	t5omsi();                               // Initialize timer5 1kHz
+  78              		.loc 1 14 2 is_stmt 1
+  79 004e 97000000 		call	t5omsi
+  79      E7800000 
+  80              	.LVL2:
+  15:main.c        **** 	colinit();                              // Initialize column toolbox
+  81              		.loc 1 15 2
+  82 0056 97000000 		call	colinit
+  82      E7800000 
+  83              	.LVL3:
+  16:main.c        **** 	l88init();                              // Initialize 8*8 led toolbox
+  84              		.loc 1 16 2
+  85 005e 97000000 		call	l88init
+  85      E7800000 
+  86              	.LVL4:
+  17:main.c        **** 	keyinit();                              // Initialize keyboard toolbox
+  87              		.loc 1 17 2
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 3
+
+
+  88 0066 97000000 		call	keyinit
+  88      E7800000 
+  89              	.LVL5:
+  18:main.c        **** 	Lcd_SetType(LCD_NORMAL);                // or use LCD_INVERTED!
+  90              		.loc 1 18 2
+  91 006e 0145     		li	a0,0
+  19:main.c        **** 	Lcd_Init();
+  20:main.c        **** 	LCD_Clear(RED);
+  92              		.loc 1 20 2 is_stmt 0
+  93 0070 C164     		li	s1,65536
+  18:main.c        **** 	Lcd_SetType(LCD_NORMAL);                // or use LCD_INVERTED!
+  94              		.loc 1 18 2
+  95 0072 97000000 		call	Lcd_SetType
+  95      E7800000 
+  96              	.LVL6:
+  19:main.c        **** 	Lcd_Init();
+  97              		.loc 1 19 2 is_stmt 1
+  98 007a 97000000 		call	Lcd_Init
+  98      E7800000 
+  99              	.LVL7:
+ 100              		.loc 1 20 2
+ 101 0082 13850480 		addi	a0,s1,-2048
+  21:main.c        **** 
+  22:main.c        **** 	while (1) {
+  23:main.c        **** 		idle++;                             // Manage Async events
+  24:main.c        **** 		LCD_WR_Queue();                   // Manage LCD com queue!
+  25:main.c        **** 
+  26:main.c        **** 		if (t5expq())
+  27:main.c        **** 		{                     // Manage periodic tasks
+  28:main.c        **** 			l88row(colset());               // ...8*8LED and Keyboard
+  29:main.c        **** 			ms++;                           // ...One second heart beat
+  30:main.c        **** 			if (ms==1000)
+  31:main.c        **** 			{
+  32:main.c        **** 				ms=0;
+  33:main.c        **** 				l88mem(0,s++);
+  34:main.c        **** 				//LCD_ShowStr(10, 30, digits[s%10], WHITE, OPAQUE);
+  35:main.c        **** 				//LCD_DrawLine(16, 32, 32, 64, BLUE);
+  36:main.c        **** 			}
+  37:main.c        **** 			if ((key = keyscan()) >= 0)	// ...Any key pressed?
+  38:main.c        **** 			{
+  39:main.c        **** 				l88mem(1,lookUpTbl[key]+(c<<4));
+  40:main.c        **** 				// now what
+  41:main.c        **** 
+  42:main.c        **** 				if (lookUpTblp[key] > 9)
+  43:main.c        **** 				{
+  44:main.c        **** 					switch (lookUpTblp[key]) // create variable buffert, why?
+  45:main.c        **** 					{
+  46:main.c        **** 					case 'A':
+  47:main.c        **** 						if (buffer2 >= 0)	// if bufferts empty clear all, else confirm cords, same with B
+  48:main.c        **** 						{
+  49:main.c        **** 							cordX1 = buffer1;
+  50:main.c        **** 							cordY1 = buffer2;
+  51:main.c        **** 							buffer1 = -1;
+  52:main.c        **** 							buffer2 = -1;
+  53:main.c        **** 							break;
+  54:main.c        **** 						}
+  55:main.c        **** 						buffer1 = -1;
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 4
+
+
+  56:main.c        **** 						buffer2 = -1;
+  57:main.c        **** 						cordX1 = 0;
+  58:main.c        **** 						cordY1 = 0;
+  59:main.c        **** 						cordX2 = 0;
+  60:main.c        **** 						cordY2 = 0;
+  61:main.c        **** 						LCD_Clear(RED);
+ 102              		.loc 1 61 7 is_stmt 0
+ 103 0086 938A0480 		addi	s5,s1,-2048
+  20:main.c        **** 
+ 104              		.loc 1 20 2
+ 105 008a 97000000 		call	LCD_Clear
+ 105      E7800000 
+ 106              	.LVL8:
+  30:main.c        **** 			{
+ 107              		.loc 1 30 7
+ 108 0092 9309803E 		li	s3,1000
+  42:main.c        **** 				{
+ 109              		.loc 1 42 8
+ 110 0096 254A     		li	s4,9
+  44:main.c        **** 					{
+ 111              		.loc 1 44 6
+ 112 0098 13091004 		li	s2,65
+  62:main.c        **** 						break;
+  63:main.c        **** 					case 'B':
+  64:main.c        **** 						if (buffer2 >= 0)	// if bufferts empty clear all, else confirm cords, same with B
+  65:main.c        **** 						{
+  66:main.c        **** 						cordX2 = buffer1;
+  67:main.c        **** 						cordY2 = buffer2;
+  68:main.c        **** 						buffer1 = -1;
+  69:main.c        **** 						buffer2 = -1;
+  70:main.c        **** 						break;
+  71:main.c        **** 						}
+  72:main.c        **** 						LCD_ShowStr(140, 60, "SS", WHITE, TRANSPARENT);
+  73:main.c        **** 						break;
+  74:main.c        **** 					case 'C':
+  75:main.c        **** 						switch (buffer1)
+  76:main.c        **** 						{
+  77:main.c        **** 						case 0:
+  78:main.c        **** 							color = WHITE;
+ 113              		.loc 1 78 14
+ 114 009c FD14     		addi	s1,s1,-1
+  72:main.c        **** 						break;
+ 115              		.loc 1 72 7
+ 116 009e 370B0000 		lui	s6,%hi(.LC2)
+ 117              	.L3:
+  22:main.c        **** 		idle++;                             // Manage Async events
+ 118              		.loc 1 22 2 is_stmt 1
+  23:main.c        **** 		LCD_WR_Queue();                   // Manage LCD com queue!
+ 119              		.loc 1 23 3
+  23:main.c        **** 		LCD_WR_Queue();                   // Manage LCD com queue!
+ 120              		.loc 1 23 7 is_stmt 0
+ 121 00a2 8257     		lw	a5,32(sp)
+ 122 00a4 8507     		addi	a5,a5,1
+ 123 00a6 3ED0     		sw	a5,32(sp)
+  24:main.c        **** 
+ 124              		.loc 1 24 3 is_stmt 1
+ 125 00a8 97000000 		call	LCD_WR_Queue
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 5
+
+
+ 125      E7800000 
+ 126              	.LVL9:
+  26:main.c        **** 		{                     // Manage periodic tasks
+ 127              		.loc 1 26 3
+  26:main.c        **** 		{                     // Manage periodic tasks
+ 128              		.loc 1 26 7 is_stmt 0
+ 129 00b0 97000000 		call	t5expq
+ 129      E7800000 
+ 130              	.LVL10:
+  26:main.c        **** 		{                     // Manage periodic tasks
+ 131              		.loc 1 26 6
+ 132 00b8 6DD5     		beq	a0,zero,.L3
+  28:main.c        **** 			ms++;                           // ...One second heart beat
+ 133              		.loc 1 28 4 is_stmt 1
+ 134 00ba 97000000 		call	colset
+ 134      E7800000 
+ 135              	.LVL11:
+ 136 00c2 97000000 		call	l88row
+ 136      E7800000 
+ 137              	.LVL12:
+  29:main.c        **** 			if (ms==1000)
+ 138              		.loc 1 29 4
+  29:main.c        **** 			if (ms==1000)
+ 139              		.loc 1 29 6 is_stmt 0
+ 140 00ca B247     		lw	a5,12(sp)
+ 141 00cc 8507     		addi	a5,a5,1
+ 142 00ce 3EC6     		sw	a5,12(sp)
+  30:main.c        **** 			{
+ 143              		.loc 1 30 4 is_stmt 1
+  30:main.c        **** 			{
+ 144              		.loc 1 30 10 is_stmt 0
+ 145 00d0 B247     		lw	a5,12(sp)
+  30:main.c        **** 			{
+ 146              		.loc 1 30 7
+ 147 00d2 639C3701 		bne	a5,s3,.L4
+  32:main.c        **** 				l88mem(0,s++);
+ 148              		.loc 1 32 5 is_stmt 1
+  32:main.c        **** 				l88mem(0,s++);
+ 149              		.loc 1 32 7 is_stmt 0
+ 150 00d6 02C6     		sw	zero,12(sp)
+  33:main.c        **** 				//LCD_ShowStr(10, 30, digits[s%10], WHITE, OPAQUE);
+ 151              		.loc 1 33 5 is_stmt 1
+ 152 00d8 C245     		lw	a1,16(sp)
+ 153 00da 0145     		li	a0,0
+ 154 00dc 93871500 		addi	a5,a1,1
+ 155 00e0 3EC8     		sw	a5,16(sp)
+ 156 00e2 97000000 		call	l88mem
+ 156      E7800000 
+ 157              	.LVL13:
+ 158              	.L4:
+  37:main.c        **** 			{
+ 159              		.loc 1 37 4
+  37:main.c        **** 			{
+ 160              		.loc 1 37 15 is_stmt 0
+ 161 00ea 97000000 		call	keyscan
+ 161      E7800000 
+ 162              	.LVL14:
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 6
+
+
+  37:main.c        **** 			{
+ 163              		.loc 1 37 13
+ 164 00f2 2ACA     		sw	a0,20(sp)
+  37:main.c        **** 			{
+ 165              		.loc 1 37 7
+ 166 00f4 634A0514 		blt	a0,zero,.L5
+  39:main.c        **** 				// now what
+ 167              		.loc 1 39 5 is_stmt 1
+  39:main.c        **** 				// now what
+ 168              		.loc 1 39 23 is_stmt 0
+ 169 00f8 D247     		lw	a5,20(sp)
+ 170 00fa 9401     		addi	a3,sp,192
+  39:main.c        **** 				// now what
+ 171              		.loc 1 39 31
+ 172 00fc 7247     		lw	a4,28(sp)
+  39:main.c        **** 				// now what
+ 173              		.loc 1 39 23
+ 174 00fe 8A07     		slli	a5,a5,2
+ 175 0100 B697     		add	a5,a3,a5
+  39:main.c        **** 				// now what
+ 176              		.loc 1 39 5
+ 177 0102 83A507F8 		lw	a1,-128(a5)
+  39:main.c        **** 				// now what
+ 178              		.loc 1 39 31
+ 179 0106 1207     		slli	a4,a4,4
+  39:main.c        **** 				// now what
+ 180              		.loc 1 39 5
+ 181 0108 0545     		li	a0,1
+ 182 010a BA95     		add	a1,a4,a1
+ 183 010c 97000000 		call	l88mem
+ 183      E7800000 
+ 184              	.LVL15:
+  42:main.c        **** 				{
+ 185              		.loc 1 42 5 is_stmt 1
+  42:main.c        **** 				{
+ 186              		.loc 1 42 19 is_stmt 0
+ 187 0114 D247     		lw	a5,20(sp)
+ 188 0116 9801     		addi	a4,sp,192
+ 189 0118 8A07     		slli	a5,a5,2
+ 190 011a BA97     		add	a5,a4,a5
+  42:main.c        **** 				{
+ 191              		.loc 1 42 8
+ 192 011c 83A707FC 		lw	a5,-64(a5)
+ 193 0120 6352FA10 		ble	a5,s4,.L6
+  44:main.c        **** 					{
+ 194              		.loc 1 44 6 is_stmt 1
+  44:main.c        **** 					{
+ 195              		.loc 1 44 24 is_stmt 0
+ 196 0124 D247     		lw	a5,20(sp)
+ 197 0126 8A07     		slli	a5,a5,2
+ 198 0128 BA97     		add	a5,a4,a5
+ 199 012a 83A707FC 		lw	a5,-64(a5)
+  44:main.c        **** 					{
+ 200              		.loc 1 44 6
+ 201 012e 63822707 		beq	a5,s2,.L7
+ 202 0132 6348F902 		bgt	a5,s2,.L8
+ 203 0136 13073002 		li	a4,35
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 7
+
+
+ 204 013a 6388E70C 		beq	a5,a4,.L9
+ 205 013e 1307A002 		li	a4,42
+ 206 0142 E390E7F6 		bne	a5,a4,.L3
+  79:main.c        **** 							break;
+  80:main.c        **** 						case 1:
+  81:main.c        **** 							color = BLUE;
+  82:main.c        **** 							break;
+  83:main.c        **** 						case 2:
+  84:main.c        **** 							color = GREEN;
+  85:main.c        **** 							break;
+  86:main.c        **** 						default:
+  87:main.c        **** 							break;
+  88:main.c        **** 						}
+  89:main.c        **** 						buffer1 = -1;
+  90:main.c        **** 						continue;;
+  91:main.c        **** 					case 'D':
+  92:main.c        **** 						LCD_DrawLine(cordX1*16, cordY1*8, cordX2* 16, cordY2*8, color); // FIX COLOR
+  93:main.c        **** 						break;
+  94:main.c        **** 					case '*':
+  95:main.c        **** 						LCD_Fill(cordX1*16, cordY1*8, cordX2* 16, cordY2*8, color);
+ 207              		.loc 1 95 7 is_stmt 1
+ 208              		.loc 1 95 22 is_stmt 0
+ 209 0146 3255     		lw	a0,44(sp)
+ 210              		.loc 1 95 33
+ 211 0148 C255     		lw	a1,48(sp)
+ 212              		.loc 1 95 43
+ 213 014a 5256     		lw	a2,52(sp)
+ 214              		.loc 1 95 55
+ 215 014c E256     		lw	a3,56(sp)
+ 216              		.loc 1 95 7
+ 217 014e 7257     		lw	a4,60(sp)
+ 218 0150 1206     		slli	a2,a2,4
+ 219 0152 8E06     		slli	a3,a3,3
+ 220 0154 8E05     		slli	a1,a1,3
+ 221 0156 1205     		slli	a0,a0,4
+ 222 0158 97000000 		call	LCD_Fill
+ 222      E7800000 
+ 223              	.LVL16:
+  96:main.c        **** 						break;
+ 224              		.loc 1 96 7 is_stmt 1
+ 225 0160 89B7     		j	.L3
+ 226              	.L8:
+  44:main.c        **** 					{
+ 227              		.loc 1 44 6 is_stmt 0
+ 228 0162 13073004 		li	a4,67
+ 229 0166 6381E708 		beq	a5,a4,.L12
+ 230 016a 63CAE704 		blt	a5,a4,.L13
+ 231 016e 13074004 		li	a4,68
+ 232 0172 E398E7F2 		bne	a5,a4,.L3
+  90:main.c        **** 					case 'D':
+ 233              		.loc 1 90 16 is_stmt 1
+  92:main.c        **** 						break;
+ 234              		.loc 1 92 7
+  92:main.c        **** 						break;
+ 235              		.loc 1 92 26 is_stmt 0
+ 236 0176 3255     		lw	a0,44(sp)
+  92:main.c        **** 						break;
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 8
+
+
+ 237              		.loc 1 92 37
+ 238 0178 C255     		lw	a1,48(sp)
+  92:main.c        **** 						break;
+ 239              		.loc 1 92 47
+ 240 017a 5256     		lw	a2,52(sp)
+  92:main.c        **** 						break;
+ 241              		.loc 1 92 59
+ 242 017c E256     		lw	a3,56(sp)
+  92:main.c        **** 						break;
+ 243              		.loc 1 92 7
+ 244 017e 7257     		lw	a4,60(sp)
+ 245 0180 1206     		slli	a2,a2,4
+ 246 0182 8E06     		slli	a3,a3,3
+ 247 0184 8E05     		slli	a1,a1,3
+ 248 0186 1205     		slli	a0,a0,4
+ 249 0188 97000000 		call	LCD_DrawLine
+ 249      E7800000 
+ 250              	.LVL17:
+  93:main.c        **** 					case '*':
+ 251              		.loc 1 93 7 is_stmt 1
+ 252 0190 09BF     		j	.L3
+ 253              	.L7:
+  47:main.c        **** 						{
+ 254              		.loc 1 47 7
+  47:main.c        **** 						{
+ 255              		.loc 1 47 19 is_stmt 0
+ 256 0192 A257     		lw	a5,40(sp)
+  47:main.c        **** 						{
+ 257              		.loc 1 47 10
+ 258 0194 63C90700 		blt	a5,zero,.L15
+  49:main.c        **** 							cordY1 = buffer2;
+ 259              		.loc 1 49 8 is_stmt 1
+  49:main.c        **** 							cordY1 = buffer2;
+ 260              		.loc 1 49 15 is_stmt 0
+ 261 0198 9257     		lw	a5,36(sp)
+ 262 019a 3ED6     		sw	a5,44(sp)
+  50:main.c        **** 							buffer1 = -1;
+ 263              		.loc 1 50 8 is_stmt 1
+  50:main.c        **** 							buffer1 = -1;
+ 264              		.loc 1 50 15 is_stmt 0
+ 265 019c A257     		lw	a5,40(sp)
+ 266 019e 3ED8     		sw	a5,48(sp)
+  51:main.c        **** 							buffer2 = -1;
+ 267              		.loc 1 51 8 is_stmt 1
+ 268              	.L24:
+  68:main.c        **** 						buffer2 = -1;
+ 269              		.loc 1 68 7
+  68:main.c        **** 						buffer2 = -1;
+ 270              		.loc 1 68 15 is_stmt 0
+ 271 01a0 22D2     		sw	s0,36(sp)
+  69:main.c        **** 						break;
+ 272              		.loc 1 69 7 is_stmt 1
+  69:main.c        **** 						break;
+ 273              		.loc 1 69 15 is_stmt 0
+ 274 01a2 22D4     		sw	s0,40(sp)
+  70:main.c        **** 						}
+ 275              		.loc 1 70 7 is_stmt 1
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 9
+
+
+ 276 01a4 FDBD     		j	.L3
+ 277              	.L15:
+  55:main.c        **** 						buffer2 = -1;
+ 278              		.loc 1 55 7
+  55:main.c        **** 						buffer2 = -1;
+ 279              		.loc 1 55 15 is_stmt 0
+ 280 01a6 22D2     		sw	s0,36(sp)
+  56:main.c        **** 						cordX1 = 0;
+ 281              		.loc 1 56 7 is_stmt 1
+  56:main.c        **** 						cordX1 = 0;
+ 282              		.loc 1 56 15 is_stmt 0
+ 283 01a8 22D4     		sw	s0,40(sp)
+  57:main.c        **** 						cordY1 = 0;
+ 284              		.loc 1 57 7 is_stmt 1
+  57:main.c        **** 						cordY1 = 0;
+ 285              		.loc 1 57 14 is_stmt 0
+ 286 01aa 02D6     		sw	zero,44(sp)
+  58:main.c        **** 						cordX2 = 0;
+ 287              		.loc 1 58 7 is_stmt 1
+  58:main.c        **** 						cordX2 = 0;
+ 288              		.loc 1 58 14 is_stmt 0
+ 289 01ac 02D8     		sw	zero,48(sp)
+  59:main.c        **** 						cordY2 = 0;
+ 290              		.loc 1 59 7 is_stmt 1
+  59:main.c        **** 						cordY2 = 0;
+ 291              		.loc 1 59 14 is_stmt 0
+ 292 01ae 02DA     		sw	zero,52(sp)
+  60:main.c        **** 						LCD_Clear(RED);
+ 293              		.loc 1 60 7 is_stmt 1
+  61:main.c        **** 						break;
+ 294              		.loc 1 61 7 is_stmt 0
+ 295 01b0 5685     		mv	a0,s5
+  60:main.c        **** 						LCD_Clear(RED);
+ 296              		.loc 1 60 14
+ 297 01b2 02DC     		sw	zero,56(sp)
+  61:main.c        **** 						break;
+ 298              		.loc 1 61 7 is_stmt 1
+ 299 01b4 97000000 		call	LCD_Clear
+ 299      E7800000 
+ 300              	.LVL18:
+  62:main.c        **** 					case 'B':
+ 301              		.loc 1 62 7
+ 302 01bc DDB5     		j	.L3
+ 303              	.L13:
+  64:main.c        **** 						{
+ 304              		.loc 1 64 7
+  64:main.c        **** 						{
+ 305              		.loc 1 64 19 is_stmt 0
+ 306 01be A257     		lw	a5,40(sp)
+  64:main.c        **** 						{
+ 307              		.loc 1 64 10
+ 308 01c0 63C70700 		blt	a5,zero,.L16
+  66:main.c        **** 						cordY2 = buffer2;
+ 309              		.loc 1 66 7 is_stmt 1
+  66:main.c        **** 						cordY2 = buffer2;
+ 310              		.loc 1 66 14 is_stmt 0
+ 311 01c4 9257     		lw	a5,36(sp)
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 10
+
+
+ 312 01c6 3EDA     		sw	a5,52(sp)
+  67:main.c        **** 						buffer1 = -1;
+ 313              		.loc 1 67 7 is_stmt 1
+  67:main.c        **** 						buffer1 = -1;
+ 314              		.loc 1 67 14 is_stmt 0
+ 315 01c8 A257     		lw	a5,40(sp)
+ 316 01ca 3EDC     		sw	a5,56(sp)
+ 317 01cc D1BF     		j	.L24
+ 318              	.L16:
+  72:main.c        **** 						break;
+ 319              		.loc 1 72 7 is_stmt 1
+ 320 01ce 0547     		li	a4,1
+ 321 01d0 A686     		mv	a3,s1
+ 322 01d2 13060B00 		addi	a2,s6,%lo(.LC2)
+ 323 01d6 9305C003 		li	a1,60
+ 324 01da 1305C008 		li	a0,140
+ 325 01de 97000000 		call	LCD_ShowStr
+ 325      E7800000 
+ 326              	.LVL19:
+  73:main.c        **** 					case 'C':
+ 327              		.loc 1 73 7
+ 328 01e6 75BD     		j	.L3
+ 329              	.L12:
+  75:main.c        **** 						{
+ 330              		.loc 1 75 7
+ 331 01e8 9257     		lw	a5,36(sp)
+ 332 01ea 0547     		li	a4,1
+ 333 01ec 6389E700 		beq	a5,a4,.L17
+ 334 01f0 0947     		li	a4,2
+ 335 01f2 6389E700 		beq	a5,a4,.L18
+ 336 01f6 91E3     		bne	a5,zero,.L19
+  78:main.c        **** 							break;
+ 337              		.loc 1 78 8
+  78:main.c        **** 							break;
+ 338              		.loc 1 78 14 is_stmt 0
+ 339 01f8 26DE     		sw	s1,60(sp)
+  79:main.c        **** 						case 1:
+ 340              		.loc 1 79 8 is_stmt 1
+ 341              	.L19:
+  89:main.c        **** 						continue;;
+ 342              		.loc 1 89 7
+  89:main.c        **** 						continue;;
+ 343              		.loc 1 89 15 is_stmt 0
+ 344 01fa 22D2     		sw	s0,36(sp)
+  90:main.c        **** 					case 'D':
+ 345              		.loc 1 90 7 is_stmt 1
+ 346 01fc 5DB5     		j	.L3
+ 347              	.L17:
+  81:main.c        **** 							break;
+ 348              		.loc 1 81 8
+  81:main.c        **** 							break;
+ 349              		.loc 1 81 14 is_stmt 0
+ 350 01fe FD47     		li	a5,31
+ 351              	.L25:
+  84:main.c        **** 							break;
+ 352              		.loc 1 84 14
+ 353 0200 3EDE     		sw	a5,60(sp)
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 11
+
+
+  85:main.c        **** 						default:
+ 354              		.loc 1 85 8 is_stmt 1
+ 355 0202 E5BF     		j	.L19
+ 356              	.L18:
+  84:main.c        **** 							break;
+ 357              		.loc 1 84 8
+  84:main.c        **** 							break;
+ 358              		.loc 1 84 14 is_stmt 0
+ 359 0204 9307007E 		li	a5,2016
+ 360 0208 E5BF     		j	.L25
+ 361              	.L9:
+  97:main.c        **** 					case '#':
+  98:main.c        **** 						Draw_Circle(cordX1*16, cordY1*8, cordX2, color);
+ 362              		.loc 1 98 7 is_stmt 1
+ 363              		.loc 1 98 25 is_stmt 0
+ 364 020a 3255     		lw	a0,44(sp)
+ 365              		.loc 1 98 36
+ 366 020c C255     		lw	a1,48(sp)
+ 367              		.loc 1 98 7
+ 368 020e 5256     		lw	a2,52(sp)
+ 369 0210 F256     		lw	a3,60(sp)
+ 370 0212 8E05     		slli	a1,a1,3
+ 371 0214 1376F60F 		andi	a2,a2,0xff
+ 372 0218 1205     		slli	a0,a0,4
+ 373 021a 97000000 		call	Draw_Circle
+ 373      E7800000 
+ 374              	.LVL20:
+  99:main.c        **** 						break;
+ 375              		.loc 1 99 7 is_stmt 1
+ 376 0222 41B5     		j	.L3
+ 377              	.L6:
+ 100:main.c        **** 					default:
+ 101:main.c        **** 						break;
+ 102:main.c        **** 					}
+ 103:main.c        **** 					continue;
+ 104:main.c        **** 				}
+ 105:main.c        **** 				else if (buffer1 < 0)
+ 378              		.loc 1 105 10
+ 379              		.loc 1 105 22 is_stmt 0
+ 380 0224 9257     		lw	a5,36(sp)
+ 381              		.loc 1 105 13
+ 382 0226 63DA0700 		bge	a5,zero,.L20
+ 106:main.c        **** 				{
+ 107:main.c        **** 					buffer1 = lookUpTblp[key];
+ 383              		.loc 1 107 6 is_stmt 1
+ 384              		.loc 1 107 26 is_stmt 0
+ 385 022a D247     		lw	a5,20(sp)
+ 386 022c 9801     		addi	a4,sp,192
+ 387 022e 8A07     		slli	a5,a5,2
+ 388 0230 BA97     		add	a5,a4,a5
+ 389 0232 83A707FC 		lw	a5,-64(a5)
+ 390              		.loc 1 107 14
+ 391 0236 3ED2     		sw	a5,36(sp)
+ 108:main.c        **** 					continue;
+ 392              		.loc 1 108 6 is_stmt 1
+ 393 0238 ADB5     		j	.L3
+ 394              	.L20:
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 12
+
+
+ 109:main.c        **** 				}
+ 110:main.c        **** 				buffer2 = lookUpTblp[key];
+ 395              		.loc 1 110 5
+ 396              		.loc 1 110 25 is_stmt 0
+ 397 023a D247     		lw	a5,20(sp)
+ 398 023c 9801     		addi	a4,sp,192
+ 399 023e 8A07     		slli	a5,a5,2
+ 400 0240 BA97     		add	a5,a4,a5
+ 401 0242 83A707FC 		lw	a5,-64(a5)
+ 402              		.loc 1 110 13
+ 403 0246 3ED4     		sw	a5,40(sp)
+ 404              	.L5:
+ 111:main.c        **** 
+ 112:main.c        **** 			}
+ 113:main.c        **** 			l88mem(2,idle>>8);              // ...Performance monitor
+ 405              		.loc 1 113 4 is_stmt 1
+ 406 0248 8255     		lw	a1,32(sp)
+ 407 024a 0945     		li	a0,2
+ 408 024c A185     		srai	a1,a1,8
+ 409 024e 97000000 		call	l88mem
+ 409      E7800000 
+ 410              	.LVL21:
+ 114:main.c        **** 			l88mem(3,idle); idle=0;
+ 411              		.loc 1 114 4
+ 412 0256 8255     		lw	a1,32(sp)
+ 413 0258 0D45     		li	a0,3
+ 414 025a 97000000 		call	l88mem
+ 414      E7800000 
+ 415              	.LVL22:
+ 416              		.loc 1 114 20
+ 417              		.loc 1 114 24 is_stmt 0
+ 418 0262 02D0     		sw	zero,32(sp)
+ 419 0264 3DBD     		j	.L3
+ 420              		.cfi_endproc
+ 421              	.LFE2:
+ 423              		.section	.rodata
+ 424              		.align	2
+ 425              		.set	.LANCHOR0,. + 0
+ 426              	.LC0:
+ 427 0000 01000000 		.word	1
+ 428 0004 04000000 		.word	4
+ 429 0008 07000000 		.word	7
+ 430 000c 0E000000 		.word	14
+ 431 0010 02000000 		.word	2
+ 432 0014 05000000 		.word	5
+ 433 0018 08000000 		.word	8
+ 434 001c 00000000 		.word	0
+ 435 0020 03000000 		.word	3
+ 436 0024 06000000 		.word	6
+ 437 0028 09000000 		.word	9
+ 438 002c 0F000000 		.word	15
+ 439 0030 0A000000 		.word	10
+ 440 0034 0B000000 		.word	11
+ 441 0038 0C000000 		.word	12
+ 442 003c 0D000000 		.word	13
+ 443              	.LC1:
+ 444 0040 44000000 		.word	68
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 13
+
+
+ 445 0044 23000000 		.word	35
+ 446 0048 00000000 		.word	0
+ 447 004c 2A000000 		.word	42
+ 448 0050 43000000 		.word	67
+ 449 0054 09000000 		.word	9
+ 450 0058 08000000 		.word	8
+ 451 005c 07000000 		.word	7
+ 452 0060 42000000 		.word	66
+ 453 0064 06000000 		.word	6
+ 454 0068 05000000 		.word	5
+ 455 006c 04000000 		.word	4
+ 456 0070 41000000 		.word	65
+ 457 0074 03000000 		.word	3
+ 458 0078 02000000 		.word	2
+ 459 007c 01000000 		.word	1
+ 460              		.section	.rodata.main.str1.4,"aMS",@progbits,1
+ 461              		.align	2
+ 462              	.LC2:
+ 463 0000 535300   		.string	"SS"
+ 464              		.text
+ 465              	.Letext0:
+ 466              		.file 2 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 467              		.file 3 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 468              		.file 4 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\li
+ 469              		.file 5 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 470              		.file 6 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 471              		.file 7 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 472              		.file 8 "./../../firmware/GD32VF103_standard_peripheral/system_gd32vf103.h"
+ 473              		.file 9 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+ 474              		.file 10 "lcd.h"
+ 475              		.file 11 "drivers.h"
+ 476              		.file 12 "<built-in>"
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:13     .text.startup.main:0000000000000000 main
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:17     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:18     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:19     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:20     .text.startup.main:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:22     .text.startup.main:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:24     .text.startup.main:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:26     .text.startup.main:0000000000000004 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:28     .text.startup.main:0000000000000006 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:29     .text.startup.main:0000000000000008 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:31     .text.startup.main:0000000000000008 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:34     .text.startup.main:000000000000000c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:36     .text.startup.main:0000000000000010 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:38     .text.startup.main:0000000000000012 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:39     .text.startup.main:0000000000000014 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:41     .text.startup.main:0000000000000014 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:46     .text.startup.main:0000000000000022 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:52     .text.startup.main:000000000000002e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:53     .text.startup.main:000000000000002e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:54     .text.startup.main:000000000000002e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:55     .text.startup.main:000000000000002e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:56     .text.startup.main:000000000000002e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:57     .text.startup.main:000000000000002e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:59     .text.startup.main:000000000000002e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:61     .text.startup.main:0000000000000030 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:62     .text.startup.main:0000000000000030 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:65     .text.startup.main:0000000000000038 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:66     .text.startup.main:0000000000000038 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:72     .text.startup.main:000000000000004a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:73     .text.startup.main:000000000000004a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:74     .text.startup.main:000000000000004a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:75     .text.startup.main:000000000000004a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:77     .text.startup.main:000000000000004c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:79     .text.startup.main:000000000000004e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:82     .text.startup.main:0000000000000056 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:85     .text.startup.main:000000000000005e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:88     .text.startup.main:0000000000000066 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:91     .text.startup.main:000000000000006e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:93     .text.startup.main:0000000000000070 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:95     .text.startup.main:0000000000000072 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:98     .text.startup.main:000000000000007a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:101    .text.startup.main:0000000000000082 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:103    .text.startup.main:0000000000000086 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:105    .text.startup.main:000000000000008a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:108    .text.startup.main:0000000000000092 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:110    .text.startup.main:0000000000000096 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:112    .text.startup.main:0000000000000098 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:114    .text.startup.main:000000000000009c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:116    .text.startup.main:000000000000009e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:119    .text.startup.main:00000000000000a2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:120    .text.startup.main:00000000000000a2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:121    .text.startup.main:00000000000000a2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:125    .text.startup.main:00000000000000a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:128    .text.startup.main:00000000000000b0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:129    .text.startup.main:00000000000000b0 .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 15
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:132    .text.startup.main:00000000000000b8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:134    .text.startup.main:00000000000000ba .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:139    .text.startup.main:00000000000000ca .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:140    .text.startup.main:00000000000000ca .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:144    .text.startup.main:00000000000000d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:145    .text.startup.main:00000000000000d0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:147    .text.startup.main:00000000000000d2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:149    .text.startup.main:00000000000000d6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:150    .text.startup.main:00000000000000d6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:152    .text.startup.main:00000000000000d8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:160    .text.startup.main:00000000000000ea .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:161    .text.startup.main:00000000000000ea .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:164    .text.startup.main:00000000000000f2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:166    .text.startup.main:00000000000000f4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:168    .text.startup.main:00000000000000f8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:169    .text.startup.main:00000000000000f8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:172    .text.startup.main:00000000000000fc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:174    .text.startup.main:00000000000000fe .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:177    .text.startup.main:0000000000000102 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:179    .text.startup.main:0000000000000106 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:181    .text.startup.main:0000000000000108 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:186    .text.startup.main:0000000000000114 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:187    .text.startup.main:0000000000000114 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:192    .text.startup.main:000000000000011c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:195    .text.startup.main:0000000000000124 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:196    .text.startup.main:0000000000000124 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:201    .text.startup.main:000000000000012e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:208    .text.startup.main:0000000000000146 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:209    .text.startup.main:0000000000000146 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:211    .text.startup.main:0000000000000148 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:213    .text.startup.main:000000000000014a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:215    .text.startup.main:000000000000014c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:217    .text.startup.main:000000000000014e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:225    .text.startup.main:0000000000000160 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:228    .text.startup.main:0000000000000162 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:234    .text.startup.main:0000000000000176 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:235    .text.startup.main:0000000000000176 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:236    .text.startup.main:0000000000000176 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:238    .text.startup.main:0000000000000178 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:240    .text.startup.main:000000000000017a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:242    .text.startup.main:000000000000017c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:244    .text.startup.main:000000000000017e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:252    .text.startup.main:0000000000000190 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:255    .text.startup.main:0000000000000192 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:256    .text.startup.main:0000000000000192 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:258    .text.startup.main:0000000000000194 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:260    .text.startup.main:0000000000000198 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:261    .text.startup.main:0000000000000198 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:264    .text.startup.main:000000000000019c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:265    .text.startup.main:000000000000019c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:269    .text.startup.main:00000000000001a0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:270    .text.startup.main:00000000000001a0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:271    .text.startup.main:00000000000001a0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:273    .text.startup.main:00000000000001a2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:274    .text.startup.main:00000000000001a2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:276    .text.startup.main:00000000000001a4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:279    .text.startup.main:00000000000001a6 .L0 
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 16
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:280    .text.startup.main:00000000000001a6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:282    .text.startup.main:00000000000001a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:283    .text.startup.main:00000000000001a8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:285    .text.startup.main:00000000000001aa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:286    .text.startup.main:00000000000001aa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:288    .text.startup.main:00000000000001ac .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:289    .text.startup.main:00000000000001ac .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:291    .text.startup.main:00000000000001ae .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:292    .text.startup.main:00000000000001ae .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:294    .text.startup.main:00000000000001b0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:295    .text.startup.main:00000000000001b0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:297    .text.startup.main:00000000000001b2 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:299    .text.startup.main:00000000000001b4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:302    .text.startup.main:00000000000001bc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:305    .text.startup.main:00000000000001be .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:306    .text.startup.main:00000000000001be .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:308    .text.startup.main:00000000000001c0 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:310    .text.startup.main:00000000000001c4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:311    .text.startup.main:00000000000001c4 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:314    .text.startup.main:00000000000001c8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:315    .text.startup.main:00000000000001c8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:320    .text.startup.main:00000000000001ce .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:328    .text.startup.main:00000000000001e6 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:331    .text.startup.main:00000000000001e8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:338    .text.startup.main:00000000000001f8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:339    .text.startup.main:00000000000001f8 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:342    .text.startup.main:00000000000001fa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:343    .text.startup.main:00000000000001fa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:344    .text.startup.main:00000000000001fa .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:346    .text.startup.main:00000000000001fc .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:349    .text.startup.main:00000000000001fe .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:350    .text.startup.main:00000000000001fe .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:353    .text.startup.main:0000000000000200 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:355    .text.startup.main:0000000000000202 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:358    .text.startup.main:0000000000000204 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:359    .text.startup.main:0000000000000204 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:363    .text.startup.main:000000000000020a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:364    .text.startup.main:000000000000020a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:366    .text.startup.main:000000000000020c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:368    .text.startup.main:000000000000020e .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:376    .text.startup.main:0000000000000222 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:379    .text.startup.main:0000000000000224 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:380    .text.startup.main:0000000000000224 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:382    .text.startup.main:0000000000000226 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:384    .text.startup.main:000000000000022a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:385    .text.startup.main:000000000000022a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:391    .text.startup.main:0000000000000236 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:393    .text.startup.main:0000000000000238 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:396    .text.startup.main:000000000000023a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:397    .text.startup.main:000000000000023a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:403    .text.startup.main:0000000000000246 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:406    .text.startup.main:0000000000000248 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:412    .text.startup.main:0000000000000256 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:417    .text.startup.main:0000000000000262 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:418    .text.startup.main:0000000000000262 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:420    .text.startup.main:0000000000000266 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:425    .rodata:0000000000000000 .LANCHOR0
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 17
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:423    .text.startup.main:0000000000000266 .L0 
+                     .debug_frame:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:462    .rodata.main.str1.4:0000000000000000 .LC2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:117    .text.startup.main:00000000000000a2 .L3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:158    .text.startup.main:00000000000000ea .L4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:404    .text.startup.main:0000000000000248 .L5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:377    .text.startup.main:0000000000000224 .L6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:253    .text.startup.main:0000000000000192 .L7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:226    .text.startup.main:0000000000000162 .L8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:361    .text.startup.main:000000000000020a .L9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:329    .text.startup.main:00000000000001e8 .L12
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:303    .text.startup.main:00000000000001be .L13
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:277    .text.startup.main:00000000000001a6 .L15
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:318    .text.startup.main:00000000000001ce .L16
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:268    .text.startup.main:00000000000001a0 .L24
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:347    .text.startup.main:00000000000001fe .L17
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:356    .text.startup.main:0000000000000204 .L18
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:341    .text.startup.main:00000000000001fa .L19
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:351    .text.startup.main:0000000000000200 .L25
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:394    .text.startup.main:000000000000023a .L20
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:2434   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3352   .debug_str:0000000000000531 .LASF156
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3226   .debug_str:00000000000002f3 .LASF157
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3164   .debug_str:0000000000000184 .LASF158
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3076   .debug_ranges:0000000000000000 .Ldebug_ranges0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3082   .debug_line:0000000000000000 .Ldebug_line0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3342   .debug_str:00000000000004fe .LASF0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3124   .debug_str:00000000000000d9 .LASF1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3276   .debug_str:00000000000003d9 .LASF2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3086   .debug_str:000000000000000c .LASF3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3170   .debug_str:00000000000001fa .LASF4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3096   .debug_str:000000000000003a .LASF5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3176   .debug_str:0000000000000217 .LASF9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3204   .debug_str:000000000000028e .LASF6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3154   .debug_str:0000000000000156 .LASF7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3104   .debug_str:000000000000006e .LASF8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3368   .debug_str:0000000000000603 .LASF10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3194   .debug_str:0000000000000260 .LASF120
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3332   .debug_str:00000000000004d7 .LASF11
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3264   .debug_str:000000000000039c .LASF12
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3120   .debug_str:00000000000000cb .LASF13
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3330   .debug_str:00000000000004cf .LASF14
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3376   .debug_str:0000000000000624 .LASF15
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3222   .debug_str:00000000000002e6 .LASF16
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3192   .debug_str:0000000000000259 .LASF17
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3322   .debug_str:00000000000004af .LASF18
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3324   .debug_str:00000000000004b7 .LASF19
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3296   .debug_str:0000000000000431 .LASF20
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3362   .debug_str:00000000000005db .LASF21
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3272   .debug_str:00000000000003bf .LASF22
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3282   .debug_str:00000000000003f6 .LASF23
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3184   .debug_str:000000000000023c .LASF28
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3348   .debug_str:000000000000051e .LASF24
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3316   .debug_str:000000000000049a .LASF25
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3178   .debug_str:0000000000000222 .LASF26
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3372   .debug_str:0000000000000619 .LASF27
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3190   .debug_str:0000000000000254 .LASF29
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 18
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3116   .debug_str:00000000000000bb .LASF30
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3392   .debug_str:000000000000066f .LASF31
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3134   .debug_str:0000000000000101 .LASF32
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3408   .debug_str:00000000000006ad .LASF33
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3250   .debug_str:0000000000000351 .LASF34
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3240   .debug_str:0000000000000329 .LASF35
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3328   .debug_str:00000000000004c5 .LASF36
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3284   .debug_str:00000000000003ff .LASF37
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3388   .debug_str:0000000000000655 .LASF38
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3138   .debug_str:0000000000000110 .LASF39
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3088   .debug_str:0000000000000016 .LASF40
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3084   .debug_str:0000000000000000 .LASF41
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3354   .debug_str:00000000000005b9 .LASF42
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3150   .debug_str:0000000000000147 .LASF43
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3252   .debug_str:000000000000035a .LASF44
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3306   .debug_str:000000000000045e .LASF45
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3174   .debug_str:0000000000000212 .LASF46
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3286   .debug_str:0000000000000409 .LASF47
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3130   .debug_str:00000000000000f3 .LASF48
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3340   .debug_str:00000000000004f8 .LASF49
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3298   .debug_str:000000000000043c .LASF50
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3148   .debug_str:0000000000000140 .LASF51
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3206   .debug_str:00000000000002a0 .LASF52
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3106   .debug_str:0000000000000085 .LASF53
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3142   .debug_str:0000000000000126 .LASF54
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3186   .debug_str:0000000000000244 .LASF55
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3238   .debug_str:0000000000000322 .LASF56
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3326   .debug_str:00000000000004bf .LASF57
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3122   .debug_str:00000000000000d2 .LASF58
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3126   .debug_str:00000000000000e5 .LASF59
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3382   .debug_str:0000000000000641 .LASF60
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3338   .debug_str:00000000000004ef .LASF61
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3162   .debug_str:000000000000017c .LASF62
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3210   .debug_str:00000000000002ad .LASF63
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3232   .debug_str:0000000000000310 .LASF64
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3300   .debug_str:0000000000000444 .LASF65
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3288   .debug_str:0000000000000410 .LASF66
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3318   .debug_str:00000000000004a2 .LASF67
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3334   .debug_str:00000000000004e3 .LASF68
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3152   .debug_str:000000000000014f .LASF69
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3196   .debug_str:0000000000000270 .LASF70
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3182   .debug_str:0000000000000234 .LASF71
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3304   .debug_str:0000000000000459 .LASF72
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3092   .debug_str:0000000000000026 .LASF73
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3314   .debug_str:0000000000000481 .LASF74
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3310   .debug_str:000000000000046f .LASF75
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3258   .debug_str:0000000000000379 .LASF76
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3312   .debug_str:0000000000000477 .LASF77
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3220   .debug_str:00000000000002de .LASF78
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3188   .debug_str:000000000000024a .LASF79
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3402   .debug_str:000000000000069e .LASF80
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3268   .debug_str:00000000000003a8 .LASF81
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3198   .debug_str:0000000000000278 .LASF82
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3160   .debug_str:0000000000000174 .LASF83
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3228   .debug_str:00000000000002fa .LASF84
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3094   .debug_str:0000000000000031 .LASF85
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3380   .debug_str:0000000000000637 .LASF86
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 19
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3144   .debug_str:000000000000012e .LASF87
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3136   .debug_str:000000000000010b .LASF88
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3336   .debug_str:00000000000004ea .LASF89
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3294   .debug_str:000000000000042a .LASF90
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3374   .debug_str:000000000000061e .LASF91
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3212   .debug_str:00000000000002b3 .LASF92
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3278   .debug_str:00000000000003e7 .LASF93
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3090   .debug_str:000000000000001e .LASF94
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3320   .debug_str:00000000000004a9 .LASF95
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3234   .debug_str:0000000000000316 .LASF96
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3358   .debug_str:00000000000005cf .LASF97
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3370   .debug_str:000000000000060c .LASF98
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3350   .debug_str:0000000000000524 .LASF99
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3218   .debug_str:00000000000002d1 .LASF100
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3390   .debug_str:0000000000000660 .LASF101
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3260   .debug_str:0000000000000384 .LASF102
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3214   .debug_str:00000000000002ba .LASF103
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3394   .debug_str:0000000000000678 .LASF104
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3256   .debug_str:000000000000036c .LASF105
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3400   .debug_str:0000000000000690 .LASF106
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3114   .debug_str:00000000000000ad .LASF107
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3378   .debug_str:000000000000062d .LASF108
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3216   .debug_str:00000000000002c5 .LASF109
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3364   .debug_str:00000000000005e3 .LASF110
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3168   .debug_str:00000000000001ec .LASF111
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3112   .debug_str:000000000000009e .LASF112
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3166   .debug_str:00000000000001db .LASF113
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3098   .debug_str:0000000000000043 .LASF114
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3100   .debug_str:0000000000000052 .LASF115
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3280   .debug_str:00000000000003ed .LASF116
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3248   .debug_str:000000000000034a .LASF117
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3246   .debug_str:0000000000000341 .LASF118
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3384   .debug_str:0000000000000647 .LASF119
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3108   .debug_str:000000000000008e .LASF159
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3180   .debug_str:0000000000000228 .LASF121
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3366   .debug_str:00000000000005f0 .LASF122
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3254   .debug_str:0000000000000362 .LASF123
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3102   .debug_str:0000000000000063 .LASF124
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3406   .debug_str:00000000000006a8 .LASF160
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:14     .text.startup.main:0000000000000000 .LFB2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:421    .text.startup.main:0000000000000266 .LFE2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3050   .debug_loc:0000000000000000 .LLST0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3110   .debug_str:0000000000000099 .LASF125
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3266   .debug_str:00000000000003a3 .LASF126
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3396   .debug_str:000000000000067d .LASF127
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3292   .debug_str:000000000000041f .LASF128
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3386   .debug_str:000000000000064f .LASF129
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3404   .debug_str:00000000000006a3 .LASF130
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3172   .debug_str:000000000000020d .LASF131
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3156   .debug_str:0000000000000164 .LASF132
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3158   .debug_str:000000000000016c .LASF133
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3200   .debug_str:0000000000000280 .LASF134
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3242   .debug_str:0000000000000333 .LASF135
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3202   .debug_str:0000000000000287 .LASF136
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3244   .debug_str:000000000000033a .LASF137
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3236   .debug_str:000000000000031c .LASF138
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:63     .text.startup.main:0000000000000038 .LVL0
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 20
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:70     .text.startup.main:000000000000004a .LVL1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:80     .text.startup.main:0000000000000056 .LVL2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:83     .text.startup.main:000000000000005e .LVL3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:86     .text.startup.main:0000000000000066 .LVL4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:89     .text.startup.main:000000000000006e .LVL5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:96     .text.startup.main:000000000000007a .LVL6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:99     .text.startup.main:0000000000000082 .LVL7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:106    .text.startup.main:0000000000000092 .LVL8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:126    .text.startup.main:00000000000000b0 .LVL9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:130    .text.startup.main:00000000000000b8 .LVL10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:135    .text.startup.main:00000000000000c2 .LVL11
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:137    .text.startup.main:00000000000000ca .LVL12
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:157    .text.startup.main:00000000000000ea .LVL13
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:162    .text.startup.main:00000000000000f2 .LVL14
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:184    .text.startup.main:0000000000000114 .LVL15
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:223    .text.startup.main:0000000000000160 .LVL16
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:250    .text.startup.main:0000000000000190 .LVL17
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:300    .text.startup.main:00000000000001bc .LVL18
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:326    .text.startup.main:00000000000001e6 .LVL19
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:374    .text.startup.main:0000000000000222 .LVL20
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:410    .text.startup.main:0000000000000256 .LVL21
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:415    .text.startup.main:0000000000000262 .LVL22
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3224   .debug_str:00000000000002ec .LASF161
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3230   .debug_str:00000000000002ff .LASF162
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3360   .debug_str:00000000000005d4 .LASF139
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3140   .debug_str:000000000000011e .LASF140
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3274   .debug_str:00000000000003d1 .LASF141
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3128   .debug_str:00000000000000eb .LASF142
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3302   .debug_str:000000000000044d .LASF143
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3398   .debug_str:0000000000000687 .LASF144
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3146   .debug_str:0000000000000136 .LASF145
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3270   .debug_str:00000000000003b2 .LASF146
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3290   .debug_str:0000000000000418 .LASF147
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3118   .debug_str:00000000000000c4 .LASF148
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3344   .debug_str:000000000000050b .LASF149
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3208   .debug_str:00000000000002a6 .LASF150
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3132   .debug_str:00000000000000f9 .LASF151
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3262   .debug_str:0000000000000393 .LASF152
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3356   .debug_str:00000000000005c2 .LASF153
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3346   .debug_str:0000000000000512 .LASF154
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:3308   .debug_str:0000000000000463 .LASF155
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:21     .text.startup.main:0000000000000002 .LCFI0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s:478    .debug_info:0000000000000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+memcpy
+t5omsi
+colinit
+l88init
+keyinit
+Lcd_SetType
+Lcd_Init
+LCD_Clear
+LCD_WR_Queue
+t5expq
+colset
+l88row
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccKRIK9b.s 			page 21
+
+
+l88mem
+keyscan
+LCD_Fill
+LCD_DrawLine
+LCD_ShowStr
+Draw_Circle

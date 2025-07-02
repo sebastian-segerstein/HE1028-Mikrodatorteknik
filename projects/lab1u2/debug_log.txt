@@ -1,0 +1,57 @@
+
+w +$qSupported:multiprocess+;swbreak+;hwbreak+;qRelocInsn+;fork-events+;vfork-events+;exec-events+;vContSupported+;QThreadEvents+;no-resumed+#df
+r +$PacketSize=109;hwbreak+#14
+w +$vMustReplyEmpty#3a
+r +$#00
+w +$Hg0#df
+r +$OK#9A
+w +$qTStatus#49
+r +$#00
+w +$?#3f
+r +$S05#B8
+w +$qfThreadInfo#bb
+r +$1el#02
+w +$Hc-1#09
+r +$OK#9A
+w +$qC#b4
+r +$#00
+w +$qAttached#8f
+r +$0#30
+w +$qOffsets#4b
+r +$Text=0;Data=0;Bss=0;#3F
+w +$g#67
+r +$000000003002000800700020001000200000000044B484884A0900080900000000000000000000007004000801000000000000000A300C00079F24007C000400040000000B00000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000F000000280000004800000070040008#DD
+w +$m8003c40,40#8f
+r +$4CC982804CC5828018458280B712024003A3C2013363A30023AE62008280B712024003A382013363A30023AC62008280314597000000E780C0FE371501401305#A8
+w +$m8003c70,2#60
+r +$3145#CD
+w +$qfThreadInfo#bb
+r +$1el#02
+w +$qSymbol::#5b
+r +$OK#9A
+w +
+c 
+c 
+c 1016-thread-info 1
+w $qfThreadInfo#bb
+r +$1el#02
+w +
+c 
+c 
+c 1017-break-insert -f main.S:60
+w $m8003c42,2#5f
+r +$8280#D2
+w +
+c 
+c 
+c 1018-symbol-list-lines C:/Users/Sebastian/Downloads/toolchain-gd32v-v201-win/projects/lab1u2/main.S
+c 
+c 
+c 1019-break-insert -f main.S:133
+w $m8003cd6,2#93
+r +$8385#D8
+w +
+c 
+c 
+c 1020-break-insert -f main.S:178
+End of log

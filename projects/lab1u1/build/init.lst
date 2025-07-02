@@ -1,0 +1,403 @@
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s 			page 1
+
+
+   1              		.file	"init.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p0_m2p0_a2p0_c2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.section	.text._init,"ax",@progbits
+  10              		.align	1
+  11              		.globl	_init
+  13              	_init:
+  14              	.LFB5:
+  15              		.file 1 "./../../firmware/RISCV/env_Eclipse/init.c"
+   1:./../../firmware/RISCV/env_Eclipse/init.c **** //See LICENSE for license details.
+   2:./../../firmware/RISCV/env_Eclipse/init.c **** #include <gd32vf103.h>
+   3:./../../firmware/RISCV/env_Eclipse/init.c **** #include <stdint.h>
+   4:./../../firmware/RISCV/env_Eclipse/init.c **** #include <stdio.h>
+   5:./../../firmware/RISCV/env_Eclipse/init.c **** #include <unistd.h>
+   6:./../../firmware/RISCV/env_Eclipse/init.c **** #include "riscv_encoding.h"
+   7:./../../firmware/RISCV/env_Eclipse/init.c **** #include "n200_func.h"
+   8:./../../firmware/RISCV/env_Eclipse/init.c **** 
+   9:./../../firmware/RISCV/env_Eclipse/init.c **** #ifdef USE_SOFTWARE_DEBUGGER
+  10:./../../firmware/RISCV/env_Eclipse/init.c **** #include "debugger.h"
+  11:./../../firmware/RISCV/env_Eclipse/init.c **** #endif
+  12:./../../firmware/RISCV/env_Eclipse/init.c **** 
+  13:./../../firmware/RISCV/env_Eclipse/init.c **** extern uint32_t disable_mcycle_minstret();
+  14:./../../firmware/RISCV/env_Eclipse/init.c **** void _init()
+  15:./../../firmware/RISCV/env_Eclipse/init.c **** {
+  16              		.loc 1 15 1
+  17              		.cfi_startproc
+  16:./../../firmware/RISCV/env_Eclipse/init.c **** 	SystemInit();
+  18              		.loc 1 16 2
+  15:./../../firmware/RISCV/env_Eclipse/init.c **** 	SystemInit();
+  19              		.loc 1 15 1 is_stmt 0
+  20 0000 4111     		addi	sp,sp,-16
+  21              	.LCFI0:
+  22              		.cfi_def_cfa_offset 16
+  23 0002 06C6     		sw	ra,12(sp)
+  24              		.cfi_offset 1, -4
+  25              		.loc 1 16 2
+  26 0004 97000000 		call	SystemInit
+  26      E7800000 
+  27              	.LVL0:
+  17:./../../firmware/RISCV/env_Eclipse/init.c **** 
+  18:./../../firmware/RISCV/env_Eclipse/init.c **** 	//ECLIC init
+  19:./../../firmware/RISCV/env_Eclipse/init.c **** 	eclic_init(ECLIC_NUM_INTERRUPTS);
+  28              		.loc 1 19 2 is_stmt 1
+  29 000c 13057005 		li	a0,87
+  30 0010 97000000 		call	eclic_init
+  30      E7800000 
+  31              	.LVL1:
+  20:./../../firmware/RISCV/env_Eclipse/init.c **** 	eclic_mode_enable();
+  32              		.loc 1 20 2
+  33 0018 97000000 		call	eclic_mode_enable
+  33      E7800000 
+  34              	.LVL2:
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s 			page 2
+
+
+  21:./../../firmware/RISCV/env_Eclipse/init.c **** 
+  22:./../../firmware/RISCV/env_Eclipse/init.c **** 	//printf("After ECLIC mode enabled, the mtvec value is %x \n\n\r", read_csr(mtvec));
+  23:./../../firmware/RISCV/env_Eclipse/init.c **** 
+  24:./../../firmware/RISCV/env_Eclipse/init.c **** 	// // It must be NOTED:
+  25:./../../firmware/RISCV/env_Eclipse/init.c **** 	//  //    * In the RISC-V arch, if user mode and PMP supported, then by default if PMP is not conf
+  26:./../../firmware/RISCV/env_Eclipse/init.c **** 	//  //      with valid entries, then user mode cannot access any memory, and cannot execute any in
+  27:./../../firmware/RISCV/env_Eclipse/init.c **** 	//  //    * So if switch to user-mode and still want to continue, then you must configure PMP firs
+  28:./../../firmware/RISCV/env_Eclipse/init.c **** 	//pmp_open_all_space();
+  29:./../../firmware/RISCV/env_Eclipse/init.c **** 	//switch_m2u_mode();
+  30:./../../firmware/RISCV/env_Eclipse/init.c **** 	
+  31:./../../firmware/RISCV/env_Eclipse/init.c ****     /* Before enter into main, add the cycle/instret disable by default to save power,
+  32:./../../firmware/RISCV/env_Eclipse/init.c ****     only use them when needed to measure the cycle/instret */
+  33:./../../firmware/RISCV/env_Eclipse/init.c **** 	disable_mcycle_minstret();
+  35              		.loc 1 33 2
+  36 0020 97000000 		call	disable_mcycle_minstret
+  36      E7800000 
+  37              	.LVL3:
+  34:./../../firmware/RISCV/env_Eclipse/init.c **** #ifdef USE_SOFTWARE_DEBUGGER
+  35:./../../firmware/RISCV/env_Eclipse/init.c **** 	dbg_init();
+  38              		.loc 1 35 2
+  36:./../../firmware/RISCV/env_Eclipse/init.c **** #endif
+  37:./../../firmware/RISCV/env_Eclipse/init.c **** 	
+  38:./../../firmware/RISCV/env_Eclipse/init.c **** 
+  39:./../../firmware/RISCV/env_Eclipse/init.c **** }
+  39              		.loc 1 39 1 is_stmt 0
+  40 0028 B240     		lw	ra,12(sp)
+  41              		.cfi_restore 1
+  42 002a 4101     		addi	sp,sp,16
+  43              	.LCFI1:
+  44              		.cfi_def_cfa_offset 0
+  35:./../../firmware/RISCV/env_Eclipse/init.c **** #endif
+  45              		.loc 1 35 2
+  46 002c 17030000 		tail	dbg_init
+  46      67000300 
+  47              	.LVL4:
+  48              		.cfi_endproc
+  49              	.LFE5:
+  51              		.section	.text._fini,"ax",@progbits
+  52              		.align	1
+  53              		.globl	_fini
+  55              	_fini:
+  56              	.LFB6:
+  40:./../../firmware/RISCV/env_Eclipse/init.c **** 
+  41:./../../firmware/RISCV/env_Eclipse/init.c **** void _fini()
+  42:./../../firmware/RISCV/env_Eclipse/init.c **** {
+  57              		.loc 1 42 1 is_stmt 1
+  58              		.cfi_startproc
+  43:./../../firmware/RISCV/env_Eclipse/init.c **** }
+  59              		.loc 1 43 1
+  60 0000 8280     		ret
+  61              		.cfi_endproc
+  62              	.LFE6:
+  64              		.text
+  65              	.Letext0:
+  66              		.file 2 "c:\\users\\sebastian\\downloads\\toolchain-gd32v-v201-win\\compiler\\riscv64-unknown-elf\
+  67              		.file 3 "c:\\users\\sebastian\\downloads\\toolchain-gd32v-v201-win\\compiler\\riscv64-unknown-elf\
+  68              		.file 4 "c:\\users\\sebastian\\downloads\\toolchain-gd32v-v201-win\\compiler\\lib\\gcc\\riscv64-un
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s 			page 3
+
+
+  69              		.file 5 "c:\\users\\sebastian\\downloads\\toolchain-gd32v-v201-win\\compiler\\riscv64-unknown-elf\
+  70              		.file 6 "c:\\users\\sebastian\\downloads\\toolchain-gd32v-v201-win\\compiler\\riscv64-unknown-elf\
+  71              		.file 7 "c:\\users\\sebastian\\downloads\\toolchain-gd32v-v201-win\\compiler\\riscv64-unknown-elf\
+  72              		.file 8 "./../../firmware/GD32VF103_standard_peripheral/system_gd32vf103.h"
+  73              		.file 9 "c:\\users\\sebastian\\downloads\\toolchain-gd32v-v201-win\\compiler\\riscv64-unknown-elf\
+  74              		.file 10 "./../../firmware/RISCV/drivers/n200_func.h"
+  75              		.file 11 "./../../firmware/debugger/debugger.h"
+  76              		.file 12 "./../../firmware/GD32VF103_standard_peripheral/gd32vf103.h"
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 init.c
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:13     .text._init:0000000000000000 _init
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:17     .text._init:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:18     .text._init:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:19     .text._init:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:20     .text._init:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:22     .text._init:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:24     .text._init:0000000000000004 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:26     .text._init:0000000000000004 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:29     .text._init:000000000000000c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:33     .text._init:0000000000000018 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:36     .text._init:0000000000000020 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:39     .text._init:0000000000000028 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:40     .text._init:0000000000000028 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:41     .text._init:000000000000002a .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:44     .text._init:000000000000002c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:46     .text._init:000000000000002c .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:48     .text._init:0000000000000034 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:55     .text._fini:0000000000000000 _fini
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:58     .text._fini:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:59     .text._fini:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:60     .text._fini:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:61     .text._fini:0000000000000002 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:51     .text._init:0000000000000034 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:64     .text._fini:0000000000000002 .L0 
+                     .debug_frame:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:1833   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2759   .debug_str:0000000000000797 .LASF200
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2483   .debug_str:0000000000000191 .LASF201
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2507   .debug_str:0000000000000230 .LASF202
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2411   .debug_ranges:0000000000000000 .Ldebug_ranges0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2419   .debug_line:0000000000000000 .Ldebug_line0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2625   .debug_str:00000000000004e8 .LASF203
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2543   .debug_str:0000000000000343 .LASF0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2829   .debug_str:000000000000099d .LASF1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2771   .debug_str:000000000000085a .LASF2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2537   .debug_str:0000000000000314 .LASF3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2617   .debug_str:00000000000004bf .LASF4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2595   .debug_str:0000000000000467 .LASF5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2809   .debug_str:000000000000092b .LASF6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2761   .debug_str:000000000000081f .LASF7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2597   .debug_str:0000000000000472 .LASF8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2801   .debug_str:0000000000000900 .LASF9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2679   .debug_str:0000000000000617 .LASF10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2783   .debug_str:00000000000008a5 .LASF11
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2833   .debug_str:00000000000009b4 .LASF12
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2457   .debug_str:00000000000000ed .LASF13
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2641   .debug_str:0000000000000532 .LASF14
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2681   .debug_str:0000000000000624 .LASF15
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2693   .debug_str:000000000000065a .LASF16
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2453   .debug_str:00000000000000cf .LASF17
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2521   .debug_str:00000000000002b6 .LASF18
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2573   .debug_str:00000000000003e2 .LASF19
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2655   .debug_str:0000000000000587 .LASF20
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2793   .debug_str:00000000000008d0 .LASF21
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2425   .debug_str:0000000000000016 .LASF22
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s 			page 5
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2461   .debug_str:0000000000000107 .LASF23
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2533   .debug_str:00000000000002fc .LASF24
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2427   .debug_str:0000000000000029 .LASF25
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2471   .debug_str:0000000000000156 .LASF26
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2527   .debug_str:00000000000002e0 .LASF27
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2515   .debug_str:000000000000028c .LASF28
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2565   .debug_str:00000000000003b3 .LASF29
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2487   .debug_str:00000000000001c1 .LASF30
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2803   .debug_str:0000000000000909 .LASF31
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2463   .debug_str:0000000000000113 .LASF32
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2637   .debug_str:000000000000051f .LASF33
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2675   .debug_str:0000000000000605 .LASF34
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2741   .debug_str:000000000000073c .LASF35
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2673   .debug_str:00000000000005f8 .LASF36
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2755   .debug_str:0000000000000784 .LASF37
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2437   .debug_str:0000000000000060 .LASF38
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2821   .debug_str:000000000000096d .LASF39
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2557   .debug_str:0000000000000386 .LASF40
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2603   .debug_str:0000000000000489 .LASF41
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2497   .debug_str:00000000000001f5 .LASF42
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2667   .debug_str:00000000000005db .LASF43
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2725   .debug_str:00000000000006f7 .LASF44
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2785   .debug_str:00000000000008b0 .LASF45
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2749   .debug_str:0000000000000764 .LASF46
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2827   .debug_str:000000000000098d .LASF47
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2547   .debug_str:000000000000035a .LASF48
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2501   .debug_str:0000000000000213 .LASF49
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2643   .debug_str:000000000000053d .LASF50
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2659   .debug_str:00000000000005a1 .LASF51
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2535   .debug_str:0000000000000309 .LASF52
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2563   .debug_str:00000000000003a7 .LASF53
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2609   .debug_str:00000000000004a0 .LASF54
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2815   .debug_str:000000000000094e .LASF55
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2661   .debug_str:00000000000005ac .LASF56
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2629   .debug_str:00000000000004f6 .LASF57
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2519   .debug_str:00000000000002a3 .LASF58
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2541   .debug_str:0000000000000330 .LASF59
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2587   .debug_str:0000000000000436 .LASF60
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2429   .debug_str:0000000000000037 .LASF61
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2445   .debug_str:0000000000000096 .LASF62
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2579   .debug_str:000000000000040f .LASF63
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2593   .debug_str:000000000000045c .LASF64
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2645   .debug_str:0000000000000547 .LASF65
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2745   .debug_str:000000000000074e .LASF66
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2477   .debug_str:0000000000000172 .LASF67
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2765   .debug_str:000000000000083e .LASF68
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2423   .debug_str:000000000000000c .LASF69
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2763   .debug_str:000000000000082b .LASF70
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2505   .debug_str:0000000000000227 .LASF71
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2751   .debug_str:0000000000000773 .LASF75
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2577   .debug_str:00000000000003fd .LASF72
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2523   .debug_str:00000000000002c9 .LASF73
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2447   .debug_str:00000000000000a4 .LASF74
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2779   .debug_str:000000000000088f .LASF76
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2569   .debug_str:00000000000003ca .LASF186
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2731   .debug_str:0000000000000715 .LASF77
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2657   .debug_str:000000000000059a .LASF78
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s 			page 6
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2473   .debug_str:0000000000000164 .LASF79
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2729   .debug_str:000000000000070d .LASF80
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2795   .debug_str:00000000000008e3 .LASF81
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2601   .debug_str:0000000000000483 .LASF82
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2567   .debug_str:00000000000003c3 .LASF83
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2721   .debug_str:00000000000006e7 .LASF84
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2723   .debug_str:00000000000006ef .LASF85
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2697   .debug_str:0000000000000674 .LASF86
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2773   .debug_str:0000000000000867 .LASF87
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2665   .debug_str:00000000000005c9 .LASF88
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2685   .debug_str:0000000000000638 .LASF89
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2555   .debug_str:000000000000037e .LASF94
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2753   .debug_str:000000000000077e .LASF90
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2715   .debug_str:00000000000006d2 .LASF91
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2549   .debug_str:0000000000000364 .LASF92
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2789   .debug_str:00000000000008c5 .LASF93
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2531   .debug_str:00000000000002f7 .LASF95
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2469   .debug_str:000000000000014d .LASF96
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2767   .debug_str:000000000000084c .LASF97
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2489   .debug_str:00000000000001d0 .LASF98
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2831   .debug_str:00000000000009aa .LASF99
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2647   .debug_str:000000000000055c .LASF100
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2623   .debug_str:00000000000004de .LASF101
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2727   .debug_str:0000000000000703 .LASF102
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2687   .debug_str:0000000000000641 .LASF103
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2811   .debug_str:0000000000000934 .LASF104
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2493   .debug_str:00000000000001df .LASF105
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2431   .debug_str:0000000000000045 .LASF106
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2421   .debug_str:0000000000000000 .LASF107
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2747   .debug_str:000000000000075b .LASF108
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2511   .debug_str:000000000000027d .LASF109
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2649   .debug_str:0000000000000565 .LASF110
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2707   .debug_str:00000000000006a2 .LASF111
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2545   .debug_str:0000000000000355 .LASF112
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2689   .debug_str:000000000000064b .LASF113
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2485   .debug_str:00000000000001bb .LASF114
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2743   .debug_str:0000000000000748 .LASF115
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2699   .debug_str:000000000000067f .LASF116
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2509   .debug_str:0000000000000276 .LASF117
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2787   .debug_str:00000000000008bf .LASF118
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2449   .debug_str:00000000000000bb .LASF119
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2495   .debug_str:00000000000001ed .LASF120
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2561   .debug_str:00000000000003a1 .LASF121
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2621   .debug_str:00000000000004d7 .LASF122
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2757   .debug_str:0000000000000791 .LASF123
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2475   .debug_str:000000000000016b .LASF124
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2481   .debug_str:000000000000018b .LASF125
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2805   .debug_str:000000000000091d .LASF126
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2739   .debug_str:0000000000000733 .LASF127
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2633   .debug_str:0000000000000510 .LASF128
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2581   .debug_str:000000000000041e .LASF129
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2611   .debug_str:00000000000004ac .LASF130
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2701   .debug_str:0000000000000687 .LASF131
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2691   .debug_str:0000000000000652 .LASF132
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2717   .debug_str:00000000000006da .LASF133
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2735   .debug_str:0000000000000727 .LASF134
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2513   .debug_str:0000000000000285 .LASF135
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s 			page 7
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2571   .debug_str:00000000000003da .LASF136
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2553   .debug_str:0000000000000376 .LASF137
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2705   .debug_str:000000000000069d .LASF138
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2435   .debug_str:0000000000000055 .LASF139
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2713   .debug_str:00000000000006b9 .LASF140
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2709   .debug_str:00000000000006a7 .LASF141
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2651   .debug_str:000000000000056d .LASF142
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2711   .debug_str:00000000000006af .LASF143
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2599   .debug_str:000000000000047b .LASF144
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2517   .debug_str:0000000000000299 .LASF145
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2825   .debug_str:0000000000000988 .LASF146
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2663   .debug_str:00000000000005bf .LASF147
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2575   .debug_str:00000000000003f5 .LASF148
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2529   .debug_str:00000000000002ef .LASF149
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2607   .debug_str:000000000000049b .LASF150
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2439   .debug_str:000000000000006d .LASF151
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2799   .debug_str:00000000000008f6 .LASF152
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2503   .debug_str:000000000000021f .LASF153
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2491   .debug_str:00000000000001da .LASF154
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2737   .debug_str:000000000000072e .LASF155
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2695   .debug_str:000000000000066d .LASF156
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2791   .debug_str:00000000000008ca .LASF157
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2583   .debug_str:0000000000000424 .LASF158
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2677   .debug_str:0000000000000611 .LASF159
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2433   .debug_str:000000000000004d .LASF160
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2719   .debug_str:00000000000006e1 .LASF161
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2613   .debug_str:00000000000004b2 .LASF162
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2769   .debug_str:0000000000000855 .LASF163
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2781   .debug_str:0000000000000898 .LASF164
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2479   .debug_str:000000000000017e .LASF165
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2591   .debug_str:000000000000044f .LASF166
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2813   .debug_str:000000000000093f .LASF167
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2653   .debug_str:0000000000000578 .LASF168
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2585   .debug_str:000000000000042b .LASF169
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2817   .debug_str:0000000000000961 .LASF170
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2703   .debug_str:0000000000000690 .LASF171
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2823   .debug_str:000000000000097a .LASF172
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2467   .debug_str:000000000000013f .LASF173
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2797   .debug_str:00000000000008ec .LASF174
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2589   .debug_str:0000000000000443 .LASF175
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2775   .debug_str:000000000000086f .LASF176
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2539   .debug_str:0000000000000322 .LASF177
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2459   .debug_str:00000000000000f8 .LASF178
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2559   .debug_str:0000000000000390 .LASF179
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2441   .debug_str:0000000000000076 .LASF180
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2443   .debug_str:0000000000000085 .LASF181
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2683   .debug_str:000000000000062f .LASF182
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2639   .debug_str:000000000000052b .LASF183
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2627   .debug_str:00000000000004ed .LASF184
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2807   .debug_str:0000000000000923 .LASF185
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2455   .debug_str:00000000000000e2 .LASF204
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2551   .debug_str:000000000000036a .LASF187
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2777   .debug_str:000000000000087c .LASF188
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2605   .debug_str:0000000000000493 .LASF189
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2631   .debug_str:0000000000000509 .LASF190
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2635   .debug_str:0000000000000518 .LASF191
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2615   .debug_str:00000000000004b8 .LASF192
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s 			page 8
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2819   .debug_str:0000000000000966 .LASF193
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2619   .debug_str:00000000000004ce .LASF194
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2669   .debug_str:00000000000005e7 .LASF205
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:56     .text._fini:0000000000000000 .LFB6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:62     .text._fini:0000000000000002 .LFE6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2733   .debug_str:0000000000000721 .LASF206
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:14     .text._init:0000000000000000 .LFB5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:49     .text._init:0000000000000034 .LFE5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2378   .debug_loc:0000000000000000 .LLST0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:27     .text._init:000000000000000c .LVL0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:31     .text._init:0000000000000018 .LVL1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:34     .text._init:0000000000000020 .LVL2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:37     .text._init:0000000000000028 .LVL3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:47     .text._init:0000000000000034 .LVL4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2671   .debug_str:00000000000005ed .LASF195
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2451   .debug_str:00000000000000c4 .LASF196
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2499   .debug_str:0000000000000201 .LASF197
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2465   .debug_str:0000000000000127 .LASF198
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:2525   .debug_str:00000000000002d7 .LASF199
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:21     .text._init:0000000000000002 .LCFI0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:43     .text._init:000000000000002c .LCFI1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccQgJfEY.s:78     .debug_info:0000000000000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+SystemInit
+eclic_init
+eclic_mode_enable
+disable_mcycle_minstret
+dbg_init

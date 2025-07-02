@@ -1,0 +1,227 @@
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s 			page 1
+
+
+   1              		.file	"close.c"
+   2              		.option nopic
+   3              		.attribute arch, "rv32i2p0_m2p0_a2p0_c2p0"
+   4              		.attribute unaligned_access, 0
+   5              		.attribute stack_align, 16
+   6              		.text
+   7              	.Ltext0:
+   8              		.cfi_sections	.debug_frame
+   9              		.section	.text._close,"ax",@progbits
+  10              		.align	1
+  11              		.globl	_close
+  13              	_close:
+  14              	.LFB1:
+  15              		.file 1 "./../../firmware/RISCV/stubs/close.c"
+   1:./../../firmware/RISCV/stubs/close.c **** /* See LICENSE of license details. */
+   2:./../../firmware/RISCV/stubs/close.c **** 
+   3:./../../firmware/RISCV/stubs/close.c **** #include <errno.h>
+   4:./../../firmware/RISCV/stubs/close.c **** #include "stub.h"
+   5:./../../firmware/RISCV/stubs/close.c **** 
+   6:./../../firmware/RISCV/stubs/close.c **** int _close(int fd)
+   7:./../../firmware/RISCV/stubs/close.c **** {
+  16              		.loc 1 7 1
+  17              		.cfi_startproc
+  18              	.LVL0:
+   8:./../../firmware/RISCV/stubs/close.c ****   return _stub(EBADF);
+  19              		.loc 1 8 3
+  20              		.file 2 "./../../firmware/RISCV/stubs/stub.h"
+   1:./../../firmware/RISCV/stubs/stub.h **** /* See LICENSE of license details. */
+   2:./../../firmware/RISCV/stubs/stub.h **** #ifndef _NUCLEI_SYS_STUB_H
+   3:./../../firmware/RISCV/stubs/stub.h **** #define _NUCLEI_SYS_STUB_H
+   4:./../../firmware/RISCV/stubs/stub.h **** 
+   5:./../../firmware/RISCV/stubs/stub.h **** #include <stdint.h>
+   6:./../../firmware/RISCV/stubs/stub.h **** #if   defined (__GNUC__)
+   7:./../../firmware/RISCV/stubs/stub.h **** #include <unistd.h>
+   8:./../../firmware/RISCV/stubs/stub.h **** #endif
+   9:./../../firmware/RISCV/stubs/stub.h **** 
+  10:./../../firmware/RISCV/stubs/stub.h **** void write_hex(int fd, unsigned long int hex);
+  11:./../../firmware/RISCV/stubs/stub.h **** 
+  12:./../../firmware/RISCV/stubs/stub.h **** static inline int _stub(int err)
+  13:./../../firmware/RISCV/stubs/stub.h **** {
+  14:./../../firmware/RISCV/stubs/stub.h ****   return -1;
+  21              		.loc 2 14 3
+   9:./../../firmware/RISCV/stubs/close.c **** }
+  22              		.loc 1 9 1 is_stmt 0
+  23 0000 7D55     		li	a0,-1
+  24              	.LVL1:
+  25 0002 8280     		ret
+  26              		.cfi_endproc
+  27              	.LFE1:
+  29              		.text
+  30              	.Letext0:
+  31              		.file 3 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\li
+  32              		.file 4 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+  33              		.file 5 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+  34              		.file 6 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+  35              		.file 7 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+  36              		.file 8 "c:\\users\\sebastian\\downloads\\mikrodatorteknik\\toolchain-gd32v-v201-win\\compiler\\ri
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s 			page 2
+
+
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 close.c
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:13     .text._close:0000000000000000 _close
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:17     .text._close:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:19     .text._close:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:21     .text._close:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:22     .text._close:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:23     .text._close:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:26     .text._close:0000000000000004 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:29     .text._close:0000000000000004 .L0 
+                     .debug_frame:0000000000000000 .L0 
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:1540   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2288   .debug_str:0000000000000476 .LASF128
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2094   .debug_str:0000000000000093 .LASF129
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2138   .debug_str:0000000000000186 .LASF130
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2060   .debug_ranges:0000000000000000 .Ldebug_ranges0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2066   .debug_line:0000000000000000 .Ldebug_line0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2158   .debug_str:0000000000000225 .LASF0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2172   .debug_str:0000000000000268 .LASF1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2100   .debug_str:00000000000000cf .LASF2
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2202   .debug_str:00000000000002f2 .LASF3
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2186   .debug_str:00000000000002b3 .LASF10
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2102   .debug_str:00000000000000dd .LASF4
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2220   .debug_str:000000000000034b .LASF5
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2226   .debug_str:0000000000000367 .LASF6
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2118   .debug_str:0000000000000122 .LASF7
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2166   .debug_str:0000000000000249 .LASF8
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2084   .debug_str:0000000000000053 .LASF9
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2214   .debug_str:0000000000000328 .LASF11
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2272   .debug_str:0000000000000439 .LASF12
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2308   .debug_str:0000000000000556 .LASF13
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2182   .debug_str:00000000000002a5 .LASF14
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2160   .debug_str:0000000000000232 .LASF15
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2264   .debug_str:0000000000000417 .LASF16
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2266   .debug_str:000000000000041f .LASF17
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2236   .debug_str:000000000000038f .LASF18
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2294   .debug_str:000000000000050c .LASF19
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2218   .debug_str:0000000000000339 .LASF20
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2144   .debug_str:00000000000001e8 .LASF21
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2148   .debug_str:00000000000001f9 .LASF26
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2284   .debug_str:0000000000000463 .LASF22
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2258   .debug_str:0000000000000402 .LASF23
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2142   .debug_str:00000000000001e2 .LASF24
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2302   .debug_str:0000000000000541 .LASF25
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2156   .debug_str:0000000000000220 .LASF27
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2098   .debug_str:00000000000000c6 .LASF28
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2278   .debug_str:000000000000044d .LASF29
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2108   .debug_str:00000000000000f5 .LASF30
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2332   .debug_str:00000000000005c1 .LASF31
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2208   .debug_str:000000000000030c .LASF32
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2196   .debug_str:00000000000002d8 .LASF33
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2304   .debug_str:0000000000000546 .LASF34
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2228   .debug_str:0000000000000371 .LASF35
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2318   .debug_str:0000000000000581 .LASF36
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2112   .debug_str:0000000000000104 .LASF37
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2072   .debug_str:0000000000000012 .LASF38
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2068   .debug_str:0000000000000000 .LASF39
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s 			page 4
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2290   .debug_str:00000000000004fe .LASF40
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2122   .debug_str:0000000000000132 .LASF41
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2210   .debug_str:0000000000000315 .LASF42
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2250   .debug_str:00000000000003d2 .LASF43
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2140   .debug_str:00000000000001dd .LASF44
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2230   .debug_str:000000000000037b .LASF45
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2106   .debug_str:00000000000000ef .LASF46
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2070   .debug_str:000000000000000c .LASF47
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2238   .debug_str:000000000000039a .LASF48
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2120   .debug_str:000000000000012b .LASF49
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2168   .debug_str:000000000000025b .LASF50
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2086   .debug_str:000000000000006a .LASF51
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2114   .debug_str:0000000000000112 .LASF52
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2152   .debug_str:0000000000000210 .LASF53
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2194   .debug_str:00000000000002d1 .LASF54
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2268   .debug_str:0000000000000427 .LASF55
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2322   .debug_str:000000000000059b .LASF56
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2104   .debug_str:00000000000000e9 .LASF57
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2314   .debug_str:0000000000000573 .LASF58
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2126   .debug_str:0000000000000141 .LASF59
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2132   .debug_str:000000000000015f .LASF60
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2078   .debug_str:000000000000002d .LASF61
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2188   .debug_str:00000000000002ba .LASF62
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2242   .debug_str:00000000000003ac .LASF63
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2190   .debug_str:00000000000002c0 .LASF64
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2260   .debug_str:000000000000040a .LASF65
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2274   .debug_str:0000000000000441 .LASF66
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2124   .debug_str:000000000000013a .LASF67
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2162   .debug_str:0000000000000239 .LASF68
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2146   .debug_str:00000000000001f1 .LASF69
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2248   .debug_str:00000000000003cd .LASF70
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2076   .debug_str:0000000000000022 .LASF71
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2256   .debug_str:00000000000003e9 .LASF72
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2252   .debug_str:00000000000003d7 .LASF73
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2212   .debug_str:000000000000031d .LASF74
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2254   .debug_str:00000000000003df .LASF75
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2180   .debug_str:000000000000029d .LASF76
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2154   .debug_str:0000000000000216 .LASF77
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2330   .debug_str:00000000000005bc .LASF78
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2216   .debug_str:000000000000032f .LASF79
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2164   .debug_str:0000000000000241 .LASF80
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2130   .debug_str:0000000000000157 .LASF81
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2222   .debug_str:0000000000000359 .LASF82
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2174   .debug_str:000000000000027b .LASF83
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2312   .debug_str:0000000000000569 .LASF84
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2116   .debug_str:000000000000011a .LASF85
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2110   .debug_str:00000000000000ff .LASF86
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2276   .debug_str:0000000000000448 .LASF87
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2234   .debug_str:0000000000000388 .LASF88
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2306   .debug_str:0000000000000550 .LASF89
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2170   .debug_str:0000000000000261 .LASF90
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2232   .debug_str:0000000000000382 .LASF91
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2074   .debug_str:000000000000001a .LASF92
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2262   .debug_str:0000000000000411 .LASF93
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2282   .debug_str:000000000000045d .LASF94
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2292   .debug_str:0000000000000507 .LASF95
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2300   .debug_str:0000000000000534 .LASF96
+GAS LISTING C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s 			page 5
+
+
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2286   .debug_str:0000000000000469 .LASF97
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2178   .debug_str:0000000000000290 .LASF98
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2320   .debug_str:000000000000058c .LASF99
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2150   .debug_str:0000000000000201 .LASF100
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2244   .debug_str:00000000000003b5 .LASF101
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2324   .debug_str:00000000000005a2 .LASF102
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2246   .debug_str:00000000000003c0 .LASF103
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2328   .debug_str:00000000000005ae .LASF104
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2096   .debug_str:00000000000000b8 .LASF105
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2310   .debug_str:000000000000055f .LASF106
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2176   .debug_str:0000000000000284 .LASF107
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2296   .debug_str:0000000000000514 .LASF108
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2136   .debug_str:0000000000000178 .LASF109
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2092   .debug_str:0000000000000084 .LASF110
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2134   .debug_str:0000000000000167 .LASF111
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2080   .debug_str:0000000000000033 .LASF112
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2082   .debug_str:0000000000000042 .LASF113
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2224   .debug_str:000000000000035e .LASF114
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2206   .debug_str:0000000000000305 .LASF115
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2198   .debug_str:00000000000002e2 .LASF116
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2316   .debug_str:0000000000000579 .LASF117
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2088   .debug_str:0000000000000073 .LASF131
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2270   .debug_str:000000000000042d .LASF118
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2298   .debug_str:0000000000000521 .LASF119
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2128   .debug_str:000000000000014a .LASF120
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2240   .debug_str:00000000000003a2 .LASF121
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2184   .debug_str:00000000000002ab .LASF122
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2200   .debug_str:00000000000002eb .LASF123
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2204   .debug_str:00000000000002fe .LASF124
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2280   .debug_str:0000000000000456 .LASF125
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2326   .debug_str:00000000000005a7 .LASF126
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2192   .debug_str:00000000000002c8 .LASF127
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:14     .text._close:0000000000000000 .LFB1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:27     .text._close:0000000000000004 .LFE1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2033   .debug_loc:0000000000000000 .LLST0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:2090   .debug_str:000000000000007e .LASF132
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:18     .text._close:0000000000000000 .LVL0
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:24     .text._close:0000000000000002 .LVL1
+C:\Users\SEBAST~1\AppData\Local\Temp\ccBYO7Vr.s:38     .debug_info:0000000000000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS
